@@ -9,6 +9,9 @@ class Additionalinfo(models.Model):
         managed = False
         db_table = 'additionalInfo'
 
+    def __str__(self):
+        return "%s - $s" % (self.additionalinfoname, self.additionalinfotype)
+
 class Area(models.Model):
     areaid = models.AutoField(db_column='areaID', primary_key=True)  # Field name made lowercase.
     areaname = models.CharField(db_column='areaName', max_length=30)  # Field name made lowercase.
@@ -16,6 +19,9 @@ class Area(models.Model):
     class Meta:
         managed = False
         db_table = 'area'
+
+    def __str__(self):
+        return self.areaname
 
 
 class AuthGroup(models.Model):
@@ -84,6 +90,21 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Owner(models.Model):
+    ownerid = models.AutoField(db_column='ownerID', primary_key=True)  # Field name made lowercase.
+    ownername = models.CharField(db_column='ownerName', max_length=70)  # Field name made lowercase.
+    firstname = models.CharField(db_column='firstName', max_length=40)  # Field name made lowercase.
+    lastname = models.CharField(db_column='lastName', max_length=40)  # Field name made lowercase.
+    email = models.CharField(max_length=60, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'owner'
+
+    def __str__(self):
+        return self.ownername
+
+
 class Contact(models.Model):
     contactid = models.AutoField(db_column='contactID', primary_key=True)  # Field name made lowercase.
     contactno = models.CharField(db_column='contactNo', max_length=11)  # Field name made lowercase.
@@ -92,6 +113,9 @@ class Contact(models.Model):
     class Meta:
         managed = False
         db_table = 'contact'
+
+    def __str__(self):
+        return "%s - %s" %(self.ownerid, self.contactno)
 
 
 class DjangoAdminLog(models.Model):
@@ -150,6 +174,7 @@ class Feedback(models.Model):
         db_table = 'feedback'
 
 
+
 class Housetype(models.Model):
     housetypeid = models.AutoField(db_column='houseTypeID', primary_key=True)  # Field name made lowercase.
     housetypename = models.CharField(db_column='houseTypeName', max_length=20)  # Field name made lowercase.
@@ -157,6 +182,9 @@ class Housetype(models.Model):
     class Meta:
         managed = False
         db_table = 'houseType'
+
+    def __str__(self):
+        return self.housetypename
 
 
 class Housing(models.Model):
@@ -169,24 +197,16 @@ class Housing(models.Model):
     maphtml = models.CharField(db_column='mapHTML', max_length=500, blank=True, null=True)  # Field name made lowercase.
     creationdate = models.DateField(db_column='creationDate')  # Field name made lowercase.
     createdby = models.CharField(db_column='createdBy', max_length=45)  # Field name made lowercase.
-    lastediteddate = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
-    lasteditedby = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
+    lasteditedby = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
+    lastediteddate = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'housing'
 
+    def __str__(self):
+        return self.housingname
 
-class Owner(models.Model):
-    ownerid = models.AutoField(db_column='ownerID', primary_key=True)  # Field name made lowercase.
-    ownername = models.CharField(db_column='ownerName', max_length=70)  # Field name made lowercase.
-    firstname = models.CharField(db_column='firstName', max_length=40)  # Field name made lowercase.
-    lastname = models.CharField(db_column='lastName', max_length=40)  # Field name made lowercase.
-    email = models.CharField(max_length=60, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'owner'
 
 
 class Propertytype(models.Model):
@@ -196,6 +216,9 @@ class Propertytype(models.Model):
     class Meta:
         managed = False
         db_table = 'propertyType'
+
+    def __str__(self):
+        return self.propertytypename
 
 
 class Request(models.Model):
@@ -209,3 +232,6 @@ class Request(models.Model):
     class Meta:
         managed = False
         db_table = 'request'
+
+    def __str__(self):
+        return "%s - %s" % (self.sender, self.requestid)
