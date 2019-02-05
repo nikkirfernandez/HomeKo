@@ -239,7 +239,7 @@ class Request(models.Model):
 class HousingAdditionalInfo(models.Model):
     housingadditionalinfoid = models.AutoField(db_column='housingAdditionalInfoID', primary_key=True)
     additionalinfoid = models.ForeignKey(Additionalinfo, models.DO_NOTHING, db_column='additionalInfoID')
-    description = models.CharField(max_length=300, db_column='description')
+    description = models.CharField(max_length=300, db_column='description', blank=True, null=True)
     housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
 
     class Meta:
