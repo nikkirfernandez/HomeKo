@@ -7,6 +7,7 @@ def home(request):
 
 def enduserHome(request):
 	content = {}
+	#return HttpResponse('HELLO WORLD!');
 	return render(request, 'mainpage/home.html', content)
 
 def enduserSearchResult(request):
@@ -16,3 +17,11 @@ def enduserSearchResult(request):
 def enduserRecord(request):
 	content = {}
 	return render(request, 'mainpage/housing_record.html', content)
+
+def enduserRequest(request):
+	content = {}
+	return render(request, 'mainpage/request_enduser.html', content)
+
+def ownerLogin(request):
+	content = {}
+	return render(request, 'mainpage/login_owner.html', content)
