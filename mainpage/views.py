@@ -37,7 +37,7 @@ def enduserHome(request):
 			curfew = searchForm.cleaned_data['curfew']
 
 			### read from db according to the filters ###
-			housingResults = 
+			#housingResults = 
 
 
 	searchForm = SearchHousing()
