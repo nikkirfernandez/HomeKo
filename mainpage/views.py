@@ -3,6 +3,7 @@ from django.http import HttpResponse
 
 from .forms import *
 from .choices import *
+from .models import *
 
 def home(request):
     return HttpResponse('HELLO WORLD!');
@@ -16,15 +17,30 @@ def enduserHome(request):
 		print(searchForm.errors)
 		if searchForm.is_valid():
 			print("FORM IS VALID")
+			filtersSet1={}
+
 			areaIndex = searchForm.cleaned_data['area']
-			area = AREA_CHOICES[int(areaIndex)-1][1]
+			if areaIndex!='1':
+				area = AREA_CHOICES[int(areaIndex)-1][1]
+				filtersSet1['housingid__area'] = area
+						
 			propertyIndex = searchForm.cleaned_data['propertyType']
-			propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+			if propertyIndex!='1':
+				propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+				filtersSet1['housingid__propertytype__propertytypename'] = propertyType
+
 			homeIndex = searchForm.cleaned_data['homeType']
-			homeType = HOME_CHOICES[int(homeIndex)-1][1]
-			priceMin = searchForm.cleaned_data['priceMin']
+			if homeIndex!='1':
+				homeType = HOME_CHOICES[int(homeIndex)-1][1]
+				filtersSet1['housingid__housetype__housetypename'] = homeType
+
 			priceMax = searchForm.cleaned_data['priceMax']
+
+			filtersSet2={}
+
 			kitchen = searchForm.cleaned_data['kitchen']
+			if kitchen==True:
+				filtersSet2['additionalinfoid__additionalinfoname'] = "Kitchen"
 			aircon = searchForm.cleaned_data['aircon']
 			washer = searchForm.cleaned_data['washer']
 			dryer = searchForm.cleaned_data['dryer']
@@ -37,7 +53,38 @@ def enduserHome(request):
 			curfew = searchForm.cleaned_data['curfew']
 
 			### read from db according to the filters ###
-			#housingResults = 
+			arguments1 = {}
+			for k, v in filtersSet1.items():
+				if v:
+					arguments1[k] = v
+					#print(v)
+
+			arguments2 = {}
+			for k, v in filtersSet2.items():
+				if v:
+					arguments2[k] = v
+					print(v)
+
+			housingResults = Housing.objects.filter(**arguments1)
+			results2 = []
+			for result in housingResults:
+				print(result.housingname)
+				if priceMax!=None:
+					result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
+					if result2temp!=None: 
+						results2.append(result2temp.housingid)
+				else:
+					results2.append(result.housingid)
+
+			results3 = []
+			print(results2)
+			print("results3")
+			for result in results2:
+				result3temp = HousingAdditionalInfo.objects.filter(**arguments2, housingid=result).first()
+				print(result3temp)
+				if result3temp!=None: 
+					results3.append(result3temp.housingid.housingname)
+			print(results3)
 
 
 	searchForm = SearchHousing()
