@@ -52,7 +52,7 @@ CREATE TABLE `area` (
   `areaName` varchar(30) NOT NULL,
   PRIMARY KEY (`areaID`),
   KEY `areaName` (`areaName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,6 +61,7 @@ CREATE TABLE `area` (
 
 LOCK TABLES `area` WRITE;
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
+INSERT INTO `area` VALUES (1,'Area 1'),(2,'Area 2'),(3,'Hardin ng Doña Aurora'),(4,'Kapitbalay ng Kalinaw'),(5,'Pook Dagohoy'),(6,'Pook Palaris'),(7,'Pook Ricarte'),(8,'Village A'),(9,'Village B');
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +282,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -290,6 +291,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
+INSERT INTO `django_admin_log` VALUES (1,'2019-02-05 09:11:58.688573','1','Area object (1)',1,'[{\"added\": {}}]',2,1),(2,'2019-02-05 09:12:07.954334','2','Area object (2)',1,'[{\"added\": {}}]',2,1),(3,'2019-02-05 09:16:15.727255','3','Area object (3)',1,'[{\"added\": {}}]',2,1),(4,'2019-02-05 09:16:44.477045','4','Area object (4)',1,'[{\"added\": {}}]',2,1),(5,'2019-02-05 09:16:54.461578','5','Area object (5)',1,'[{\"added\": {}}]',2,1),(6,'2019-02-05 09:16:59.742191','6','Area object (6)',1,'[{\"added\": {}}]',2,1),(7,'2019-02-05 09:17:09.648568','7','Area object (7)',1,'[{\"added\": {}}]',2,1),(8,'2019-02-05 09:17:15.023646','8','Area object (8)',1,'[{\"added\": {}}]',2,1),(9,'2019-02-05 09:17:20.929979','9','Area object (9)',1,'[{\"added\": {}}]',2,1),(10,'2019-02-05 09:17:46.335454','1','Propertytype object (1)',1,'[{\"added\": {}}]',18,1),(11,'2019-02-05 09:17:53.444944','2','Propertytype object (2)',1,'[{\"added\": {}}]',18,1),(12,'2019-02-05 09:18:04.943793','1','Propertytype object (1)',2,'[]',18,1),(13,'2019-02-05 09:18:35.458828','1','Housetype object (1)',1,'[{\"added\": {}}]',15,1),(14,'2019-02-05 09:18:51.021550','2','Housetype object (2)',1,'[{\"added\": {}}]',15,1),(15,'2019-02-05 09:19:16.817238','3','Housetype object (3)',1,'[{\"added\": {}}]',15,1),(16,'2019-02-05 09:19:21.489195','3','Housetype object (3)',2,'[]',15,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,7 +414,7 @@ CREATE TABLE `housetype` (
   `houseTypeName` varchar(20) NOT NULL,
   PRIMARY KEY (`houseTypeID`),
   KEY `typeName` (`houseTypeName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,6 +423,7 @@ CREATE TABLE `housetype` (
 
 LOCK TABLES `housetype` WRITE;
 /*!40000 ALTER TABLE `housetype` DISABLE KEYS */;
+INSERT INTO `housetype` VALUES (1,'Entire place'),(2,'Private room'),(3,'Shared room');
 /*!40000 ALTER TABLE `housetype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -612,7 +615,7 @@ CREATE TABLE `propertytype` (
   `propertyTypeName` varchar(20) NOT NULL,
   PRIMARY KEY (`propertyTypeID`),
   KEY `typeName` (`propertyTypeName`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -621,6 +624,7 @@ CREATE TABLE `propertytype` (
 
 LOCK TABLES `propertytype` WRITE;
 /*!40000 ALTER TABLE `propertytype` DISABLE KEYS */;
+INSERT INTO `propertytype` VALUES (2,'Apartment'),(1,'House');
 /*!40000 ALTER TABLE `propertytype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -660,4 +664,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-05 16:53:50
+-- Dump completed on 2019-02-05 17:20:01
