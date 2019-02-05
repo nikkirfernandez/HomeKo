@@ -20,5 +20,6 @@ from mainpage import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('mainpage/', include('mainpage.urls')),
     path('admin/', admin.site.urls),
 ]
