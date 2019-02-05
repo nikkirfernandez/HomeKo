@@ -1,12 +1,102 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from .forms import *
+from .choices import *
+from .models import *
+
 def home(request):
     return HttpResponse('HELLO WORLD!');
 # Create your views here.
 
 def enduserHome(request):
-	content = {}
+	print("outside post")
+	if request.method == "POST" :
+		searchForm = SearchHousing(request.POST)
+		print("inside post")
+		print(searchForm.errors)
+		if searchForm.is_valid():
+			print("FORM IS VALID")
+			filtersSet1={}
+
+			areaIndex = searchForm.cleaned_data['area']
+			if areaIndex!='1':
+				area = AREA_CHOICES[int(areaIndex)-1][1]
+				filtersSet1['housingid__area'] = area
+						
+			propertyIndex = searchForm.cleaned_data['propertyType']
+			if propertyIndex!='1':
+				propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+				filtersSet1['housingid__propertytype__propertytypename'] = propertyType
+
+			homeIndex = searchForm.cleaned_data['homeType']
+			if homeIndex!='1':
+				homeType = HOME_CHOICES[int(homeIndex)-1][1]
+				filtersSet1['housingid__housetype__housetypename'] = homeType
+
+			priceMax = searchForm.cleaned_data['priceMax']
+
+			filtersSet2={}
+
+			kitchen = searchForm.cleaned_data['kitchen']
+			if kitchen==True:
+				filtersSet2['additionalinfoid__additionalinfoname'] = "Kitchen"
+			aircon = searchForm.cleaned_data['aircon']
+			washer = searchForm.cleaned_data['washer']
+			dryer = searchForm.cleaned_data['dryer']
+			wifi = searchForm.cleaned_data['wifi']
+			iron = searchForm.cleaned_data['iron']
+			tv = searchForm.cleaned_data['tv']
+			parking = searchForm.cleaned_data['parking']
+			pet = searchForm.cleaned_data['pet']
+			smoking = searchForm.cleaned_data['smoking']
+			curfew = searchForm.cleaned_data['curfew']
+
+			### read from db according to the filters ###
+			arguments1 = {}
+			for k, v in filtersSet1.items():
+				if v:
+					arguments1[k] = v
+					#print(v)
+
+			arguments2 = {}
+			for k, v in filtersSet2.items():
+				if v:
+					arguments2[k] = v
+					print(v)
+
+			housingResults = Housing.objects.filter(**arguments1)
+			results2 = []
+			for result in housingResults:
+				print(result.housingname)
+				if priceMax!=None:
+					result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
+					if result2temp!=None: 
+						results2.append(result2temp.housingid)
+				else:
+					results2.append(result.housingid)
+
+			results3 = []
+			print(results2)
+			print("results3")
+			for result in results2:
+				result3temp = HousingAdditionalInfo.objects.filter(**arguments2, housingid=result).first()
+				print(result3temp)
+				if result3temp!=None: 
+					results3.append(result3temp.housingid.housingname)
+			print(results3)
+
+
+	searchForm = SearchHousing()
+
+	content = {
+	    'areaChoices' : AREA_CHOICES,
+	    'propertyChoices' : PROPERTY_CHOICES,
+	    'homeChoices' : HOME_CHOICES,
+	    'amenityChoices' : AMENITY_CHOICES,
+	    'facilityChoices' : FACILITY_CHOICES,
+	    'ruleChoices' : RULE_CHOICES,
+	}
 	#return HttpResponse('HELLO WORLD!');
 	return render(request, 'mainpage/home.html', content)
 
@@ -19,7 +109,49 @@ def enduserRecord(request):
 	return render(request, 'mainpage/housing_record.html', content)
 
 def enduserRequest(request):
-	content = {}
+	if request.method == "POST" :
+		requestForm = AddRequest(request.POST)
+		searchForm = SearchHousing(request.POST)
+		if requestForm.is_valid():
+			print("FORM IS VALID")
+			email = requestForm.cleaned_data['email']
+			requestIndex = requestForm.cleaned_data['requestType']
+			requestType = REQUEST_CHOICES[int(requestIndex)-1][1]
+			reqcontent = requestForm.cleaned_data['content']
+		elif searchForm.is_valid():
+			print("FORM IS VALID")
+			areaIndex = searchForm.cleaned_data['area']
+			area = AREA_CHOICES[int(areaIndex)-1][1]
+			propertyIndex = searchForm.cleaned_data['propertyType']
+			propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+			homeIndex = searchForm.cleaned_data['homeType']
+			homeType = HOME_CHOICES[int(homeIndex)-1][1]
+			priceMin = searchForm.cleaned_data['priceMin']
+			priceMax = searchForm.cleaned_data['priceMax']
+			kitchen = searchForm.cleaned_data['kitchen']
+			aircon = searchForm.cleaned_data['aircon']
+			washer = searchForm.cleaned_data['washer']
+			dryer = searchForm.cleaned_data['dryer']
+			wifi = searchForm.cleaned_data['wifi']
+			iron = searchForm.cleaned_data['iron']
+			tv = searchForm.cleaned_data['tv']
+			parking = searchForm.cleaned_data['parking']
+			pet = searchForm.cleaned_data['pet']
+			smoking = searchForm.cleaned_data['smoking']
+			curfew = searchForm.cleaned_data['curfew']
+
+	requestForm = AddRequest()
+	searchForm = SearchHousing()
+
+	content = {
+	    'requestChoices' : REQUEST_CHOICES,
+	    'areaChoices' : AREA_CHOICES,
+	    'propertyChoices' : PROPERTY_CHOICES,
+	    'homeChoices' : HOME_CHOICES,
+	    'amenityChoices' : AMENITY_CHOICES,
+	    'facilityChoices' : FACILITY_CHOICES,
+	    'ruleChoices' : RULE_CHOICES,
+	}
 	return render(request, 'mainpage/request_enduser.html', content)
 
 def ownerLogin(request):
