@@ -1,4 +1,16 @@
+
+<!-- CODE HISTORY 
+# Sontillano     # Jan 27, 2019    # made layout of the page
+# Sontillano     # Jan 28, 2019    # changed the fonts
+# Sontillano     # Feb 5, 2019     # integrated with django views.py
+
+# File creation date: Jan. 27, 2019
+-->
+
 <!DOCTYPE html>
+
+{% load static %}
+
 <html>
      <head>
           <meta charset="UTF-8">
@@ -78,249 +90,223 @@
           </style>
      </head>
      <body>
-          <!--modal-->
+          <!-- search modal: overlay search housing form -->
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-          <div class="modal-content">
-
-          <form method="post">
-          {% csrf_token %}
-
-          <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
+               <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                         <form method="post">
+                         {% csrf_token %}
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">         
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="area_modal" class="col-form-label">Area</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="area_modal" name="area">
+                                             {% for n, area in areaChoices %}
+                                                  <option value={{ n }}>{{area}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>                                   
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="propertyType_modal" class="col-form-label">Property Type</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="propertyType_modal" name="propertyType">
+                                             {% for n, property in propertyChoices %}
+                                                  <option value={{ n }}>{{property}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="houseType_modal" class="col-form-label">Home Type</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="houseType_modal" name="homeType">
+                                             {% for n, home in homeChoices %}
+                                                  <option value={{ n }}>{{home}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="price_modal" class="col-form-label">Max cost (per month)</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <input type="text" class="form-control" placeholder="Maximum" name="priceMax">
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">Amenities</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="kitchen" name="kitchen">
+                                                  <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="aircon" name="aircon">
+                                                  <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="washer" name="washer">
+                                                  <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="dryer" name="dryer">
+                                                  <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="wifi" name="wifi">
+                                                  <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="iron" name="iron">
+                                                  <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="tv" name="tv">
+                                                  <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
+                                             </div> 
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">Facilities</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="parking" name="parking">
+                                                  <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
+                                             </div> 
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">House Rules</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="pets" name="pet">
+                                                  <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="smoking" name="smoking">
+                                                  <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="nocurfew" name="curfew">
+                                                  <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
+                                             </div> 
+                                        </div>
+                                   </div>                                  
+                              </div>          
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                   <button type="submit" class="btn btn-primary">Search</button>
+                              </div>
+                         </form>          
+                    </div>
+               </div>
           </div>
-
-          <div class="modal-body">
-          
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="area_modal" class="col-form-label">Area</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="area_modal" name="area">
-          {% for n, area in areaChoices %}
-               <option value={{ n }}>{{area}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          </div>
-                                   
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="propertyType_modal" class="col-form-label">Property Type</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="propertyType_modal" name="propertyType">
-          {% for n, property in propertyChoices %}
-               <option value={{ n }}>{{property}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="houseType_modal" class="col-form-label">Home Type</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="houseType_modal" name="homeType">
-          {% for n, home in homeChoices %}
-               <option value={{ n }}>{{home}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="price_modal" class="col-form-label">Price Range</label>
-          </div>
-          <div class="col-8">
-
-          <div class="form-row">
-          <div class="col">
-          <input type="text" class="form-control" placeholder="Maximum" name="priceMax">
-          </div>
-          <div class="col">
-          <input type="text" class="form-control" placeholder="Minimum" name="priceMin">
-          </div>
-
-          </div>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">Amenities</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="kitchen" name="kitchen">
-          <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="aircon" name="aircon">
-          <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="washer" name="washer">
-          <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="dryer" name="dryer">
-          <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="wifi" name="wifi">
-          <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="iron" name="iron">
-          <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="tv" name="tv">
-          <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
-          </div> 
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">Facilities</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="parking" name="parking">
-          <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
-          </div> 
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">House Rules</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="pets" name="pet">
-          <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="smoking" name="smoking">
-          <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="nocurfew" name="curfew">
-          <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
-          </div> 
-          </div>
-          </div>
-                                  
-          </div>
-          
-          <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-
-          </form>
-          
-          </div>
-          </div>
-          </div>
-
-          <!--modal end-->
+          <!--search modal end-->
 
           <!--navbar-->
-          <nav class="navbar navbar-expand-sm">
-          
-          <div class="container">
-
-          <a class="navbar-brand" href="#">
-               <img src="homeko_logo.svg" width="40" height="40" alt="">
-               HomeKo
-          </a>
-  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse justify-content-between" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-          <!--<li class="nav-item active">
-          <a class="nav-link" href="#">HomeKo <span class="sr-only">(current)</span></a>
-          </li>-->
-          </ul>
-          <ul class="navbar-nav">
-          <li class="nav-item">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Search</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Housing Request</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Housing Owner</a>
-          </li>
-          </ul>
-
-          </div>
-          </div>
+          <nav class="navbar navbar-expand-sm navbar-light bg-light">          
+               <div class="container">
+                    <a class="navbar-brand" href="/">
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="40" height="40" alt="">HomeKo
+                    </a>  
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarText">
+                         <ul class="navbar-nav mr-auto"></ul>
+                         <ul class="navbar-nav">
+                              <li class="nav-item">
+                                   <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Search</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link active" href="/request" >Housing Request</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/ownerlogin">Housing Owner</a>
+                              </li>
+                         </ul>
+                    </div>
+               </div>
           </nav>
           <!--navbar end-->
-          
+
+          <!-- separator of navbar and actual page content -->
           <div class="top_content_separator"></div>
 
+          <!-- actual page content -->
           <div class="container">
+               <!--page title-->
+               <div class="row title_request justify-content-center">
+                    Housing Request   
+               </div>
 
-          <div class="row title_request justify-content-center">
-          Housing Request   
+               <!--page description-->
+               <div class="row desc_request justify-content-center">
+                    <div class="col-6">
+                         Do you know any housing that is still not in our website? Send us a request to add a housing. Or is there any outdated housing information? Send a request to update or delete a housing. 
+                    </div> 
+               </div>
+               
+               <!--separate page description and form-->
+               <div class="form_separator"></div>
+               
+               <!--request form-->
+               <div class="row form_request justify-content-center">
+                    <div class="col-4">
+                         <form method="post">
+                         {% csrf_token %}
+                              <!--email textbox-->          
+                              <div class="form-group">
+                                   <label for="senderEmail" class="formLabel">Email</label>
+                                   <input type="email" class="form-control" id="senderEmail" required="true" name="email">
+                              </div>
+                              
+                              <!--request type dropdown-->
+                              <div class="form-group">
+                                   <label for="requestType" class="formLabel">Request Type</label>
+                                   <select class="form-control" id="requestType" required="true" name="requestType">
+                                   {% for n, request in requestChoices %}
+                                        <option value={{ n }}>{{request}}</option>
+                                   {% endfor %}
+                                   </select>
+                              </div>
+                              
+                              <!--request content textarea-->          
+                              <div class="form-group">
+                                   <label for="reuestContent" class="formLabel">Request content: </label>
+                                   <textarea class="form-control" id="requestContent" rows="3" required="true" name="content"></textarea>
+                              </div>
+                              
+                              <!-- submit button -->
+                              <div class="form-group">
+                                   <button type="submit" class="btn">Submit</button>
+                              </div>
+                         </form>
+                    </div>
+               </div>
           </div>
 
-          <div class="row desc_request justify-content-center">
-          <div class="col-6">
-          Do you know any housing that is still not in our website? Send us a request to add a housing.
-          Or is there any outdated housing information? Send a request to update or delete a housing. 
-          </div> 
-          </div>
-
-          <div class="form_separator"></div>
-
-          <div class="row form_request justify-content-center">
-          <div class="col-4">
-          <form method="post">
-          {% csrf_token %}
-          
-          <div class="form-group">
-          <label for="senderEmail" class="formLabel">Email</label>
-          <input type="email" class="form-control" id="senderEmail" required="true" name="email">
-          </div>
-
-          <div class="form-group">
-          <label for="requestType" class="formLabel">Request Type</label>
-          <select class="form-control" id="requestType" required="true" name="requestType">
-          {% for n, request in requestChoices %}
-               <option value={{ n }}>{{request}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          
-          <div class="form-group">
-          <label for="reuestContent" class="formLabel">Request content: </label>
-          <textarea class="form-control" id="requestContent" rows="3" required="true" name="content"></textarea>
-          </div>
-          <div class="form-group">
-          <button type="submit" class="btn">Submit</button>
-          </div>
-          </form>
-          </div>
-          </div>
-
-          </div>
-
+          <!-- space at the bottom -->
           <div class="bottom_content_separator"></div>
      </body>
 </html>

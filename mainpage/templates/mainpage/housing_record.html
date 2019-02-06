@@ -1,4 +1,16 @@
+
+<!-- CODE HISTORY 
+# Sontillano     # Jan 27, 2019    # made layout of the page
+# Sontillano     # Jan 28, 2019    # changed the fonts
+# Sontillano     # Feb 5, 2019     # integrated with django views.py
+
+# File creation date: Jan. 27, 2019
+-->
+
 <!DOCTYPE html>
+
+{% load static %}
+
 <html>
      <head>
           <meta charset="UTF-8">
@@ -105,427 +117,371 @@
           
      </head>
      <body>
-          <!--modal-->
+          <!-- search modal: overlay search housing form -->
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-          <div class="modal-content">
-
-          <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
+               <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                         <form method="post">
+                         {% csrf_token %}
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">         
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="area_modal" class="col-form-label">Area</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="area_modal" name="area">
+                                             {% for n, area in areaChoices %}
+                                                  <option value={{ n }}>{{area}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>                                   
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="propertyType_modal" class="col-form-label">Property Type</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="propertyType_modal" name="propertyType">
+                                             {% for n, property in propertyChoices %}
+                                                  <option value={{ n }}>{{property}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="houseType_modal" class="col-form-label">Home Type</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <select class="form-control" id="houseType_modal" name="homeType">
+                                             {% for n, home in homeChoices %}
+                                                  <option value={{ n }}>{{home}}</option>
+                                             {% endfor %}
+                                             </select>
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="price_modal" class="col-form-label">Max cost (per month)</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <input type="text" class="form-control" placeholder="Maximum" name="priceMax">
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">Amenities</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="kitchen" name="kitchen">
+                                                  <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="aircon" name="aircon">
+                                                  <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="washer" name="washer">
+                                                  <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="dryer" name="dryer">
+                                                  <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="wifi" name="wifi">
+                                                  <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="iron" name="iron">
+                                                  <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="tv" name="tv">
+                                                  <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
+                                             </div> 
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">Facilities</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="parking" name="parking">
+                                                  <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
+                                             </div> 
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="rate" class="col-form-label">House Rules</label>
+                                        </div>
+                                        <div class="col-8">
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="pets" name="pet">
+                                                  <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="smoking" name="smoking">
+                                                  <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
+                                             </div> 
+                                             <div class="form-check">
+                                                  <input class="form-check-input" type="checkbox" id="nocurfew" name="curfew">
+                                                  <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
+                                             </div> 
+                                        </div>
+                                   </div>                                  
+                              </div>          
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                   <button type="submit" class="btn btn-primary">Search</button>
+                              </div>
+                         </form>          
+                    </div>
+               </div>
           </div>
-
-          <div class="modal-body">
-          <form>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="area_modal" class="col-form-label">Area</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="area_modal">
-          <option>Anywhere</option>
-          <option>Area 1</option>
-          <option>Area 2</option>
-          <option>Hardin ng Doña Aurora</option>
-          <option>Kapitbalay ng Kalinaw</option>
-          <option>Pook Dagohoy</option>
-          <option>Pook Palaris</option>
-          <option>Pook Ricarte</option>
-          <option>Village A</option>
-          <option>Village B</option>
-          </select>
-          </div>
-          </div>
-                                   
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="propertyType_modal" class="col-form-label">Property Type</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="propertyType_modal">
-          <option>Anything</option>
-          <option>House</option>
-          <option>Apartment</option>
-          </select>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="houseType_modal" class="col-form-label">Home Type</label>
-          </div>
-          <div class="col-8">
-          <select class="form-control" id="houseType_modal">
-          <option>Anything</option>
-          <option>Entire place</option>
-          <option>Private Room</option>
-          <option>Shared room</option>
-          </select>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="price_modal" class="col-form-label">Price Range</label>
-          </div>
-          <div class="col-8">
-
-          <div class="form-row">
-          <div class="col">
-          <input type="text" class="form-control" placeholder="Maximum">
-          </div>
-          <div class="col">
-          <input type="text" class="form-control" placeholder="Minimum">
-          </div>
-
-          </div>
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">Amenities</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="kitchen">
-          <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="aircon">
-          <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="washer">
-          <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="dryer">
-          <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="wifi">
-          <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="iron">
-          <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="tv">
-          <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
-          </div> 
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">Facilities</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="parking">
-          <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
-          </div> 
-          </div>
-          </div>
-
-          <div class="form-group row">
-          <div class="col-4">
-          <label for="rate" class="col-form-label">House Rules</label>
-          </div>
-          <div class="col-8">
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="pets">
-          <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="smoking">
-          <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
-          </div> 
-          <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="nocurfew">
-          <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
-          </div> 
-          </div>
-          </div>
-
-          </form>                        
-          </div>
-          
-          <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Search</button>
-          </div>
-          
-          </div>
-          </div>
-          </div>
-
-
-
-          <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-          <div class="modal-content">
-          <div class="modal-header">
-          <h5 class="modal-title">Comment approval</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-          </div>
-          <div class="modal-body">
-          <p>HomeKo team will review your comment before it will be posted.</p>
-          </div>
-          </div>
-          </div>
-          </div>
-
-          <!--modal end-->
+          <!--search modal end-->
 
           <!--navbar-->
-          <nav class="navbar navbar-expand-sm navbar-light bg-light">
-          
-          <div class="container">
-
-          <a class="navbar-brand" href="#">
-               <img src="homeko_logo.svg" width="40" height="40" alt="">
-               HomeKo
-          </a>
-  
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse justify-content-between" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-          <!--<li class="nav-item active">
-          <a class="nav-link" href="#">HomeKo <span class="sr-only">(current)</span></a>
-          </li>-->
-          </ul>
-          <ul class="navbar-nav">
-          <li class="nav-item">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Search</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Housing Request</a>
-          </li>
-          <li class="nav-item">
-          <a class="nav-link" href="#">Housing Owner</a>
-          </li>
-          </ul>
-
-          </div>
-          </div>
+          <nav class="navbar navbar-expand-sm navbar-light bg-light">          
+               <div class="container">
+                    <a class="navbar-brand" href="/">
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="40" height="40" alt="">HomeKo
+                    </a>  
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarText">
+                         <ul class="navbar-nav mr-auto"></ul>
+                         <ul class="navbar-nav">
+                              <li class="nav-item">
+                                   <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Search</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/request">Housing Request</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/ownerlogin">Housing Owner</a>
+                              </li>
+                         </ul>
+                    </div>
+               </div>
           </nav>
           <!--navbar end-->
 
+          <!-- separator of navbar and actual page content -->
           <div class="top_content_separator"></div>
 
+          <!-- actual page content -->
           <div class="container">
-          
-          <div class="row housing_name justify-content-center">
-          <div class="col-9">
-          {{housing.housingname}}     
-          </div>
+               <!-- housing name -->
+               <div class="row housing_name justify-content-center">
+                    <div class="col-9">
+                         {{housing.housingname}}     
+                    </div>
+               </div>
+
+               <!-- housing types -->
+               <div class="row housing_types justify-content-center pb-3">
+                    <div class="col-9">
+                         {{housing.propertytype.propertytypename}} | {{housing.housetype.housetypename}}
+                    </div>
+               </div>
+
+               <!-- housing contact -->
+               <div class="row housing_contact justify-content-center pb-3">
+                    <div class="col-9">
+                         <div class="housing_contact_title">
+                              Contact: 
+                         </div>
+                         {{ownername}} ({{contact}})
+                    </div>
+               </div>
+
+               <!-- housing address -->
+               <div class="row housing_address justify-content-center pb-3">
+                    <div class="col-9">
+                         <div class="housing_address_title">
+                              Address 
+                         </div>
+                         {{housing.address}}
+                    </div>
+               </div>
+
+               <!-- housing map -->
+               {% if housing.maphtml %}
+               <div class="row housing_map justify-content-center pb-3">
+                    <div class="col-9">
+                         <div class="iframe-container">                             
+                              <iframe src="{{housing.maphtml}}" allowfullscreen></iframe>
+                         </div>
+                    </div>
+               </div>
+               {% endif %}
+
+               <!-- housing cost -->
+               <div class="row housing_price_title justify-content-center align-items-center pb-3">
+                    <div class="col-9">
+                         <a class="housing_price_link" data-toggle="collapse" data-target="#housing_price_desc" aria-expanded="true" aria-controls="housing_price_desc">
+                              Cost
+                              <ion-icon name="arrow-dropdown"></ion-icon>
+                         </a>          
+                    </div>
+               </div>
+               <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
+                    <div class="col-8 table-responsive">
+                         <table class="table">
+                              <tbody>
+                              {% if rooms %}
+                              {% for room in rooms %}
+                                   <tr>
+                                        <td>{{room.roomname}}</td>
+                                        <td>{{room.cost}}</td>
+                                   </tr>
+                              {% endfor %}
+                              {% endif %}
+                              </tbody>
+                         </table>
+                    </div>
+               </div>
+
+               <!-- housing amenities -->
+               <div class="row housing_amenity_title justify-content-center align-items-center pb-3">
+                    <div class="col-9">
+                         <a class="housing_amenity_link" data-toggle="collapse" data-target="#housing_amenity_desc" aria-expanded="false" aria-controls="housing_amenity_desc">
+                              Amenities
+                              <ion-icon name="arrow-dropdown"></ion-icon>
+                         </a>          
+                    </div>
+               </div>
+               {% if amenities %}
+               {% for amenity in amenities %}         
+               <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
+                    <div class="col-8 amenity_item">
+                         {{amenity.additionalinfoid.additionalinfoname}}
+                    </div>
+                    {% if amenity.description %}
+                    <div class="col-7 amenity_desc">
+                         {{amenity.description}}
+                    </div>
+                    {% endif %} 
+               </div>
+               {% endfor %}
+               {% else %}
+               <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %} 
+
+               <!-- housing facilities -->         
+               <div class="row housing_facility_title justify-content-center align-items-center pb-3">
+                    <div class="col-9">         
+                         <a class="housing_facility_link" data-toggle="collapse" data-target="#housing_facility_desc" aria-expanded="false" aria-controls="housing_facility_desc">
+                              Facilities
+                              <ion-icon name="arrow-dropdown"></ion-icon>
+                         </a>            
+                    </div>
+               </div>
+               {% if facilities %}
+               {% for facility in facilities %}
+               <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">          
+                    <div class="col-8 facility_item">
+                         {{facility.additionalinfoid.additionalinfoname}}
+                    </div>
+                    {% if facility.description %}
+                    <div class="col-7 facility_desc">
+                         {{facility.description}}
+                    </div>
+                    {% endif %}
+               </div>
+               {% endfor %}
+               {% else %}
+               <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %} 
+
+               <!-- housing rules -->
+               <div class="row housing_rule_title justify-content-center align-items-center pb-3">
+                    <div class="col-9">         
+                         <a class="housing_rule_link" data-toggle="collapse" data-target="#housing_rule_desc" aria-expanded="false" aria-controls="housing_rule_desc">
+                              House Rules
+                              <ion-icon name="arrow-dropdown"></ion-icon>
+                         </a>                  
+                    </div>
+               </div>
+               {% if rules %}
+               {% for rule in rules %}
+               <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">         
+                    <div class="col-8 rule_item">
+                         {{rule.additionalinfoid.additionalinfoname}}
+                    </div>
+                    {% if rule.description %}
+                    <div class="col-7 rule_desc">
+                         {{rule.description}}
+                    </div>
+                    {% endif %}
+               </div>
+               {% endfor %}
+               {% else %}
+               <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %}
+
+               <!-- housing comments -->
+               <div class="row justify-content-center pt-5 pb-2">
+                    <div class="col-9 housing_comment_title ">      
+                         Comments  
+                    </div>
+               </div>
+               {% for comment in comments %}
+               <div class="row justify-content-center pt-2">
+                    <div class="col-8 comment_item ">         
+                         {{comment.comment}}
+                    </div>
+               </div>
+               <div class="row justify-content-center">
+                    <div class="col-8 comment_date pb-2">
+                         {{comment.dateposted}}
+                    </div>
+               </div>
+               {% endfor %}
+               <form onsubmit="openModal()" id="myForm">
+                    <div class="row justify-content-center">          
+                         <div class="col-7 comment_new pt-4">
+                              <textarea class="form-control" id="requestContent" rows="1" placeholder="Add comment" required="true"></textarea>
+                         </div>
+                         <div class="col-1 comment_post pt-4">
+                              <button type="submit" class="btn btn-primary">Post</button>
+                         </div>          
+                    </div>
+               </form>         
           </div>
 
-          <div class="row housing_types justify-content-center pb-3">
-          <div class="col-9">
-          {{housing.propertytype.propertytypename}} | {{housing.housetype.housetypename}}
-          </div>
-          </div>
-
-          <div class="row housing_contact justify-content-center pb-3">
-          <div class="col-9">
-          <div class="housing_contact_title">
-          Contact: 
-          </div>
-          {{ownername}}
-          </div>
-          </div>
-
-          <div class="row housing_address justify-content-center pb-3">
-          <div class="col-9">
-
-          <div class="housing_address_title">
-          Address 
-          </div>
-          {{housing.address}}
-          
-          </div>
-          </div>
-
-          <div class="row housing_map justify-content-center pb-3">
-          <div class="col-9">
-          <div class="iframe-container">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.9385911281083!2d121.07119751435769!3d14.659426389765029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b75dfef56eb3%3A0x83cbae2de31e220a!2sIlang+Ilang+Residence+Hall!5e0!3m2!1sen!2sph!4v1549024344251" allowfullscreen></iframe> 
-          </div>
-          </div>
-          </div>
-
-          <div class="row housing_price_title justify-content-center align-items-center pb-3">
-          <div class="col-9">
-              
-          <a class="housing_price_link" data-toggle="collapse" data-target="#housing_price_desc" aria-expanded="true" aria-controls="housing_price_desc">
-          Price
-          <ion-icon name="arrow-dropdown"></ion-icon>
-          </a>
-          
-          </div>
-          </div>
-
-          <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
-
-          <div class="col-8 table-responsive">
-          <table class="table">
-          <tbody>
-          {% for room in rooms %}
-          <tr>
-          <td>
-          {{room.roomname}}
-          </td>
-          <td>
-          {{room.cost}}
-          </td>
-          </tr>
-          {% endfor %}
-          </tbody>
-          </table>
-          </div>
-
-          </div>
-          
-
-          <div class="row housing_amenity_title justify-content-center align-items-center pb-3">
-          <div class="col-9">
-
-          <a class="housing_amenity_link" data-toggle="collapse" data-target="#housing_amenity_desc" aria-expanded="false" aria-controls="housing_amenity_desc">
-          Amenities
-          <ion-icon name="arrow-dropdown"></ion-icon>
-          </a>
-          
-          </div>
-          </div>
-
-          {% for amenity in amenities %}
-          
-          <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
-
-          <div class="col-8 amenity_item">
-          {{amenity.additionalinfoid.additionalinfoname}}
-          </div>
-
-          <div class="col-7 amenity_desc">
-          {{amenity.description}}
-          </div>
-
-          </div>
-
-          {% endfor %}
-
-          
-          <div class="row housing_facility_title justify-content-center align-items-center pb-3">
-          <div class="col-9">
-          
-          <a class="housing_facility_link" data-toggle="collapse" data-target="#housing_facility_desc" aria-expanded="false" aria-controls="housing_facility_desc">
-          Facilities
-          <ion-icon name="arrow-dropdown"></ion-icon>
-          </a>  
-          
-          </div>
-          </div>
-
-          {% for facility in facilities %}
-
-          <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">
-          
-          <div class="col-8 facility_item">
-          {{facility.additionalinfoid.additionalinfoname}}
-          </div>
-
-          <div class="col-7 facility_desc">
-          {{facility.description}}
-          </div>
-
-          </div>
-
-          {% endfor %}
-
-
-          <div class="row housing_rule_title justify-content-center align-items-center pb-3">
-          <div class="col-9">
-          
-          <a class="housing_rule_link" data-toggle="collapse" data-target="#housing_rule_desc" aria-expanded="false" aria-controls="housing_rule_desc">
-          House Rules
-          <ion-icon name="arrow-dropdown"></ion-icon>
-          </a>        
-          
-          </div>
-          </div>
-
-          {% for rule in rules %}
-
-          <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">
-          
-          <div class="col-8 rule_item">
-          {{rule.additionalinfoid.additionalinfoname}}
-          </div>
-
-          <div class="col-7 rule_desc">
-          {{rule.description}}
-          </div>
-
-          </div>
-
-          {% endfor %}
-
-
-          <div class="row justify-content-center pt-5 pb-2">
-          <div class="col-9 housing_comment_title ">      
-          Comments  
-          </div>
-          </div>
-
-          {% for comment in comments %}
-
-          <div class="row justify-content-center pt-2">
-          <div class="col-8 comment_item ">         
-          {{comment.comment}}
-          </div>
-          </div>
-
-          <div class="row justify-content-center">
-          <div class="col-8 comment_date pb-2">
-          {{comment.dateposted}}
-          </div>
-          </div>
-
-          {% endfor %}
-
-          <form onsubmit="openModal()" id="myForm">
-          <div class="row justify-content-center">          
-          <div class="col-7 comment_new pt-4">
-          <textarea class="form-control" id="requestContent" rows="1" placeholder="Add comment" required="true"></textarea>
-          </div>
-          <div class="col-1 comment_post pt-4">
-          <button type="submit" class="btn btn-primary">Post</button>
-          </div>          
-          </div>
-          </form>
-          
-          </div>
-
+          <!-- space at the bottom -->
           <div class="bottom_content_separator"></div>
 
+          <!-- show modal when comment is successfully submitted -->
           <script>        
-          $('#myForm').on('submit', function(e) {
-          $('#myModal').modal('show');
-          e.preventDefault();
-          });                    
-          </script>
-          
+               $('#myForm').on('submit', function(e) {
+                    $('#myModal').modal('show');
+                    e.preventDefault();
+               });                    
+          </script>         
      </body>
 </html>
