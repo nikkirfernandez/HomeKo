@@ -328,21 +328,22 @@
           
           <div class="row housing_name justify-content-center">
           <div class="col-9">
-          My House     
+          {{housing.housingname}}     
           </div>
           </div>
 
           <div class="row housing_types justify-content-center pb-3">
           <div class="col-9">
-          TYPES
+          {{housing.propertytype.propertytypename}} | {{housing.housetype.housetypename}}
           </div>
           </div>
 
           <div class="row housing_contact justify-content-center pb-3">
           <div class="col-9">
           <div class="housing_contact_title">
-          Contact:
+          Contact: 
           </div>
+          {{ownername}}
           </div>
           </div>
 
@@ -350,9 +351,9 @@
           <div class="col-9">
 
           <div class="housing_address_title">
-          Address: 
+          Address 
           </div>
-          
+          {{housing.address}}
           
           </div>
           </div>
@@ -381,14 +382,16 @@
           <div class="col-8 table-responsive">
           <table class="table">
           <tbody>
+          {% for room in rooms %}
           <tr>
           <td>
-          Room 1
+          {{room.roomname}}
           </td>
           <td>
-          5000
+          {{room.cost}}
           </td>
           </tr>
+          {% endfor %}
           </tbody>
           </table>
           </div>

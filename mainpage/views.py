@@ -128,7 +128,18 @@ def enduserSearchResult(request):
 	return render(request, 'mainpage/search_enduser.html', content)
 
 def enduserRecord(request):
-	content = {}
+	housingid=1
+	housing = Housing.objects.filter(housingid=housingid).first()
+	owner = HousingOwner.objects.filter(housingid=housingid).first().ownerid
+	ownerName = str(owner.firstname) + str(owner.lastname)
+	housingRooms = RoomCost.objects.filter(housingid=housingid)
+	#amenities = HousingAdditionalInfo.objects.filter()
+
+	content = {
+		'housing' : housing,
+		'ownername' : ownerName,
+		'rooms' : housingRooms,
+	}
 	return render(request, 'mainpage/housing_record.html', content)
 
 def enduserRequest(request):
