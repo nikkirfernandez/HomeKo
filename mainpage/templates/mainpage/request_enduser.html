@@ -243,52 +243,58 @@
 
           <!-- actual page content -->
           <div class="container">
+               <!--page title-->
+               <div class="row title_request justify-content-center">
+                    Housing Request   
+               </div>
 
-          <div class="row title_request justify-content-center">
-          Housing Request   
+               <!--page description-->
+               <div class="row desc_request justify-content-center">
+                    <div class="col-6">
+                         Do you know any housing that is still not in our website? Send us a request to add a housing. Or is there any outdated housing information? Send a request to update or delete a housing. 
+                    </div> 
+               </div>
+               
+               <!--separate page description and form-->
+               <div class="form_separator"></div>
+               
+               <!--request form-->
+               <div class="row form_request justify-content-center">
+                    <div class="col-4">
+                         <form method="post">
+                         {% csrf_token %}
+                              <!--email textbox-->          
+                              <div class="form-group">
+                                   <label for="senderEmail" class="formLabel">Email</label>
+                                   <input type="email" class="form-control" id="senderEmail" required="true" name="email">
+                              </div>
+                              
+                              <!--request type dropdown-->
+                              <div class="form-group">
+                                   <label for="requestType" class="formLabel">Request Type</label>
+                                   <select class="form-control" id="requestType" required="true" name="requestType">
+                                   {% for n, request in requestChoices %}
+                                        <option value={{ n }}>{{request}}</option>
+                                   {% endfor %}
+                                   </select>
+                              </div>
+                              
+                              <!--request content textarea-->          
+                              <div class="form-group">
+                                   <label for="reuestContent" class="formLabel">Request content: </label>
+                                   <textarea class="form-control" id="requestContent" rows="3" required="true" name="content"></textarea>
+                              </div>
+                              
+                              <!-- submit button -->
+                              <div class="form-group">
+                                   <button type="submit" class="btn">Submit</button>
+                              </div>
+                         </form>
+                    </div>
+               </div>
           </div>
 
-          <div class="row desc_request justify-content-center">
-          <div class="col-6">
-          Do you know any housing that is still not in our website? Send us a request to add a housing.
-          Or is there any outdated housing information? Send a request to update or delete a housing. 
-          </div> 
-          </div>
-
-          <div class="form_separator"></div>
-
-          <div class="row form_request justify-content-center">
-          <div class="col-4">
-          <form method="post">
-          {% csrf_token %}
-          
-          <div class="form-group">
-          <label for="senderEmail" class="formLabel">Email</label>
-          <input type="email" class="form-control" id="senderEmail" required="true" name="email">
-          </div>
-
-          <div class="form-group">
-          <label for="requestType" class="formLabel">Request Type</label>
-          <select class="form-control" id="requestType" required="true" name="requestType">
-          {% for n, request in requestChoices %}
-               <option value={{ n }}>{{request}}</option>
-          {% endfor %}
-          </select>
-          </div>
-          
-          <div class="form-group">
-          <label for="reuestContent" class="formLabel">Request content: </label>
-          <textarea class="form-control" id="requestContent" rows="3" required="true" name="content"></textarea>
-          </div>
-          <div class="form-group">
-          <button type="submit" class="btn">Submit</button>
-          </div>
-          </form>
-          </div>
-          </div>
-
-          </div>
-
+          <!-- space at the bottom -->
           <div class="bottom_content_separator"></div>
      </body>
 </html>
