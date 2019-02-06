@@ -242,7 +242,10 @@ def enduserRecord(request, housingid):
      # get the information of the selected housing record
      housing = Housing.objects.filter(housingid=housingid).first()
      owner = HousingOwner.objects.filter(housingid=housingid).first().ownerid
-     ownerName = str(owner.firstname) + str(owner.lastname)
+     ownerName = str(owner.firstname) + " " + str(owner.lastname)
+     contact = Contact.objects.filter(ownerid=owner)
+     contactNo = [ c.contactno for c in contact]
+     contactNo = ", ".join(contactNo)
      housingRooms = RoomCost.objects.filter(housingid=housingid)
      amenities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=1)
      facilities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=2)
@@ -332,6 +335,7 @@ def enduserRecord(request, housingid):
      content = {
           'housing' : housing,
           'ownername' : ownerName,
+          'contact' : contactNo,
           'rooms' : housingRooms,
           'amenities' : amenities,
           'facilities' : facilities,
