@@ -91,14 +91,19 @@ def enduserHome(request):
 
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
-               for result in results2:
-                    housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                    for filters in filtersSet2:
-                         result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                         if result3temp != None:
-                              results3.append(result3temp.housingid.housingid)
                if len(filtersSet2)==0:
                     results3=results2
+               else:
+                    for result in results2:
+                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                         ctr = 0
+                         for filters in filtersSet2:
+                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                              if result3temp == None:
+                                   break
+                              ctr = ctr+1
+                         if ctr==len(filtersSet2):
+                              results3.append(result3temp.housingid.housingid)
                
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3
@@ -126,21 +131,24 @@ def enduserSearchResult(request):
      # get the passed search result from enduserHome 
      searchResult = request.session.get('searchResult')
 
-     # initialize lists of necessary information of each record in the search result
-     housingResults = []
-     priceRange = []
+     if len(searchResult)!=0:
+          # initialize lists of necessary information of each record in the search result
+          housingResults = []
+          priceRange = []     
 
-     # get the necessary information of each record in the search result
-     for result in searchResult:
-          housing = Housing.objects.filter(housingid=result).first()
-          housingResults.append(housing)
-          housingRooms = RoomCost.objects.filter(housingid=result)
-          priceMin = housingRooms.aggregate(Min('cost'))
-          priceMax = housingRooms.aggregate(Max('cost'))
-          priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
-	
-     # zip to loop easily in the html
-     searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
+          # get the necessary information of each record in the search result
+          for result in searchResult:
+               housing = Housing.objects.filter(housingid=result).first()
+               housingResults.append(housing)
+               housingRooms = RoomCost.objects.filter(housingid=result)
+               priceMin = housingRooms.aggregate(Min('cost'))
+               priceMax = housingRooms.aggregate(Max('cost'))
+               priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
+
+          # zip to loop easily in the html
+          searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
+     else:
+          searchResults = False
      
      # if the user submitted the form
      if request.method == "POST" :
@@ -206,14 +214,19 @@ def enduserSearchResult(request):
 
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
-               for result in results2:
-                    housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                    for filters in filtersSet2:
-                         result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                         if result3temp != None:
-                              results3.append(result3temp.housingid.housingid)
                if len(filtersSet2)==0:
                     results3=results2
+               else:
+                    for result in results2:
+                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                         ctr = 0
+                         for filters in filtersSet2:
+                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                              if result3temp == None:
+                                   break
+                              ctr = ctr+1
+                         if ctr==len(filtersSet2):
+                              results3.append(result3temp.housingid.housingid)
                
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3
@@ -316,14 +329,19 @@ def enduserRecord(request, housingid):
 
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
-               for result in results2:
-                    housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                    for filters in filtersSet2:
-                         result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                         if result3temp != None:
-                              results3.append(result3temp.housingid.housingid)
                if len(filtersSet2)==0:
                     results3=results2
+               else:
+                    for result in results2:
+                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                         ctr = 0
+                         for filters in filtersSet2:
+                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                              if result3temp == None:
+                                   break
+                              ctr = ctr+1
+                         if ctr==len(filtersSet2):
+                              results3.append(result3temp.housingid.housingid)
                
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3
@@ -420,14 +438,19 @@ def enduserRequest(request):
 
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
-               for result in results2:
-                    housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                    for filters in filtersSet2:
-                         result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                         if result3temp != None:
-                              results3.append(result3temp.housingid.housingid)
                if len(filtersSet2)==0:
                     results3=results2
+               else:
+                    for result in results2:
+                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                         ctr = 0
+                         for filters in filtersSet2:
+                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                              if result3temp == None:
+                                   break
+                              ctr = ctr+1
+                         if ctr==len(filtersSet2):
+                              results3.append(result3temp.housingid.housingid)
                
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3
@@ -511,14 +534,20 @@ def ownerLogin(request):
 
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
-               for result in results2:
-                    housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                    for filters in filtersSet2:
-                         result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                         if result3temp != None:
-                              results3.append(result3temp.housingid.housingid)
                if len(filtersSet2)==0:
                     results3=results2
+               else:
+                    for result in results2:
+                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                         ctr = 0
+                         for filters in filtersSet2:
+                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                              if result3temp == None:
+                                   break
+                              ctr = ctr+1
+                         if ctr==len(filtersSet2):
+                              results3.append(result3temp.housingid.housingid)
+               
                
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3

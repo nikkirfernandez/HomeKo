@@ -335,12 +335,14 @@
                     <div class="col-8 table-responsive">
                          <table class="table">
                               <tbody>
+                              {% if rooms %}
                               {% for room in rooms %}
                                    <tr>
                                         <td>{{room.roomname}}</td>
                                         <td>{{room.cost}}</td>
                                    </tr>
                               {% endfor %}
+                              {% endif %}
                               </tbody>
                          </table>
                     </div>
@@ -355,16 +357,26 @@
                          </a>          
                     </div>
                </div>
+               {% if amenities %}
                {% for amenity in amenities %}         
                <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
                     <div class="col-8 amenity_item">
                          {{amenity.additionalinfoid.additionalinfoname}}
                     </div>
+                    {% if amenity.description %}
                     <div class="col-7 amenity_desc">
                          {{amenity.description}}
                     </div>
+                    {% endif %} 
                </div>
-               {% endfor %} 
+               {% endfor %}
+               {% else %}
+               <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %} 
 
                <!-- housing facilities -->         
                <div class="row housing_facility_title justify-content-center align-items-center pb-3">
@@ -375,16 +387,26 @@
                          </a>            
                     </div>
                </div>
+               {% if facilities %}
                {% for facility in facilities %}
                <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">          
                     <div class="col-8 facility_item">
                          {{facility.additionalinfoid.additionalinfoname}}
                     </div>
+                    {% if facility.description %}
                     <div class="col-7 facility_desc">
                          {{facility.description}}
                     </div>
+                    {% endif %}
                </div>
                {% endfor %}
+               {% else %}
+               <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %} 
 
                <!-- housing rules -->
                <div class="row housing_rule_title justify-content-center align-items-center pb-3">
@@ -395,16 +417,26 @@
                          </a>                  
                     </div>
                </div>
+               {% if rules %}
                {% for rule in rules %}
                <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">         
                     <div class="col-8 rule_item">
                          {{rule.additionalinfoid.additionalinfoname}}
                     </div>
+                    {% if rule.description %}
                     <div class="col-7 rule_desc">
                          {{rule.description}}
                     </div>
+                    {% endif %}
                </div>
                {% endfor %}
+               {% else %}
+               <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %}
 
                <!-- housing comments -->
                <div class="row justify-content-center pt-5 pb-2">

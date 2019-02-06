@@ -270,27 +270,35 @@
                <!--separate title and results-->
                <div class="results_separator"></div>
                
-               <!--list of results-->
-               {% for result in searchResults %}
-               <!--housing name and types-->
-               <div class="row single_record_top justify-content-center clickable-row" data-href="/record/{{ result.item1.housingid }}">
-                    <div class="col-4 record_top_left">
-                         {{result.item1.housingname}}       
+               {% if searchResults %}
+                    <!--list of results-->
+                    {% for result in searchResults %}
+                    <!--housing name and types-->
+                    <div class="row single_record_top justify-content-center clickable-row" data-href="/record/{{ result.item1.housingid }}">
+                         <div class="col-4 record_top_left">
+                              {{result.item1.housingname}}       
+                         </div>
+                         <div class="col-4 record_top_right">
+                              {{result.item1.propertytype.propertytypename}} | {{result.item1.housetype.housetypename}}
+                         </div>
                     </div>
-                    <div class="col-4 record_top_right">
-                         {{result.item1.propertytype.propertytypename}} | {{result.item1.housetype.housetypename}}
+                    <!--housing area and price range-->
+                    <div class="row single_record_bottom justify-content-center clickable-row" data-href="/">
+                         <div class="col-4 record_bottom_left pb-2">
+                              {{result.item1.area.areaname}}
+                         </div>
+                         <div class="col-4 record_bottom_right pb-2">
+                              {{result.item2}}
+                         </div>
                     </div>
-               </div>
-               <!--housing area and price range-->
-               <div class="row single_record_bottom justify-content-center clickable-row" data-href="/">
-                    <div class="col-4 record_bottom_left pb-2">
-                         {{result.item1.area.areaname}}
+                    {% endfor %}
+               {% else %}
+                    <div class="row single_record_top justify-content-center">
+                         <div class="col-8">
+                              NONE
+                         </div>
                     </div>
-                    <div class="col-4 record_bottom_right pb-2">
-                         {{result.item2}}
-                    </div>
-               </div>
-               {% endfor %}
+               {% endif %}
           </div>
 
           <!-- space at the bottom -->
