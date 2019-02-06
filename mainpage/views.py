@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from .forms import *
 from .choices import *
 from .models import *
+
+from django.db.models import Max, Min
 
 def home(request):
     return HttpResponse('HELLO WORLD!');
@@ -81,10 +84,14 @@ def enduserHome(request):
 			print("results3")
 			for result in results2:
 				result3temp = HousingAdditionalInfo.objects.filter(**arguments2, housingid=result).first()
-				print(result3temp)
+				#print(result3temp)
 				if result3temp!=None: 
-					results3.append(result3temp.housingid.housingname)
+					results3.append(result3temp.housingid.housingid)
 			print(results3)
+			print("session")
+			request.session['searchResult'] = results3
+			print("after session")
+			return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
 
 
 	searchForm = SearchHousing()
@@ -101,7 +108,23 @@ def enduserHome(request):
 	return render(request, 'mainpage/home.html', content)
 
 def enduserSearchResult(request):
-	content = {}
+	searchResult = request.session.get('searchResult')
+
+	housingResults = []
+	priceRange = []
+	for result in searchResult:
+		print(result)
+		housing = Housing.objects.filter(housingid=result).first()
+		housingResults.append(housing)
+		housingRooms = RoomCost.objects.filter(housingid=result)
+		priceMin = housingRooms.aggregate(Min('cost'))
+		priceMax = housingRooms.aggregate(Max('cost'))
+		priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
+
+	searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
+	content = {
+		'searchResults' : searchResults,
+	}
 	return render(request, 'mainpage/search_enduser.html', content)
 
 def enduserRecord(request):
