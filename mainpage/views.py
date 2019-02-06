@@ -13,14 +13,14 @@ def home(request):
 # Create your views here.
 
 def enduserHome(request):
-	print("outside post")
+
 	if request.method == "POST" :
 		searchForm = SearchHousing(request.POST)
-		print("inside post")
-		print(searchForm.errors)
+
 		if searchForm.is_valid():
-			print("FORM IS VALID")
+
 			filtersSet1={}
+			filtersSet2=[]
 
 			areaIndex = searchForm.cleaned_data['area']
 			if areaIndex!='1':
@@ -39,61 +39,63 @@ def enduserHome(request):
 
 			priceMax = searchForm.cleaned_data['priceMax']
 
-			filtersSet2={}
+			
 
-			kitchen = searchForm.cleaned_data['kitchen']
-			if kitchen==True:
-				filtersSet2['additionalinfoid__additionalinfoname'] = "Kitchen"
-			aircon = searchForm.cleaned_data['aircon']
-			washer = searchForm.cleaned_data['washer']
-			dryer = searchForm.cleaned_data['dryer']
-			wifi = searchForm.cleaned_data['wifi']
-			iron = searchForm.cleaned_data['iron']
-			tv = searchForm.cleaned_data['tv']
-			parking = searchForm.cleaned_data['parking']
-			pet = searchForm.cleaned_data['pet']
-			smoking = searchForm.cleaned_data['smoking']
-			curfew = searchForm.cleaned_data['curfew']
+			if(searchForm.cleaned_data['kitchen'])==True:
+				filtersSet2.append("Kitchen")
+			if(searchForm.cleaned_data['aircon']) == True:
+				filtersSet2.append("Air conditioning")
+			if(searchForm.cleaned_data['washer']) == True:
+				filtersSet2.append("Washer")
+			if(searchForm.cleaned_data['dryer'])==True:
+				filtersSet2.append("Dryer")
+			if(searchForm.cleaned_data['wifi']) == True:
+				filtersSet2.append("Wifi")
+			if(searchForm.cleaned_data['iron'])==True:
+				filtersSet2.append("Iron")
+			if(searchForm.cleaned_data['tv'])==True:
+				filtersSet2.append("TV")
+			if(searchForm.cleaned_data['parking'])==True:
+				filtersSet2.append("Parking")
+			if(searchForm.cleaned_data['pet'])==True:
+				filtersSet2.append("Pets allowed")
+			if(searchForm.cleaned_data['smoking'])==True:
+				filtersSet2.append("Smoking allowed")
+			if(searchForm.cleaned_data['curfew'])==True:
+				filtersSet2.append("No curfew")
 
 			### read from db according to the filters ###
 			arguments1 = {}
 			for k, v in filtersSet1.items():
 				if v:
 					arguments1[k] = v
-					#print(v)
-
-			arguments2 = {}
-			for k, v in filtersSet2.items():
-				if v:
-					arguments2[k] = v
-					print(v)
 
 			housingResults = Housing.objects.filter(**arguments1)
+
 			results2 = []
-			for result in housingResults:
-				print(result.housingname)
-				if priceMax!=None:
+			if priceMax!=None:
+				for result in housingResults:
 					result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
 					if result2temp!=None: 
-						results2.append(result2temp.housingid)
-				else:
-					results2.append(result.housingid)
+						results2.append(result2temp.housingid.housingid)
+			else:
+				results2 = [result.housingid for result in housingResults]
 
+			
 			results3 = []
-			print(results2)
-			print("results3")
 			for result in results2:
-				result3temp = HousingAdditionalInfo.objects.filter(**arguments2, housingid=result).first()
-				#print(result3temp)
-				if result3temp!=None: 
-					results3.append(result3temp.housingid.housingid)
+				housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+				for filters in filtersSet2:
+					result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+					if result3temp != None:
+						results3.append(result3temp.housingid.housingid)
+			if len(filtersSet2)==0:
+				results3=results2
+
 			print(results3)
-			print("session")
+			
 			request.session['searchResult'] = results3
-			print("after session")
 			return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
-
-
 	searchForm = SearchHousing()
 
 	content = {
@@ -104,10 +106,11 @@ def enduserHome(request):
 	    'facilityChoices' : FACILITY_CHOICES,
 	    'ruleChoices' : RULE_CHOICES,
 	}
-	#return HttpResponse('HELLO WORLD!');
+
 	return render(request, 'mainpage/home.html', content)
 
 def enduserSearchResult(request):
+	
 	searchResult = request.session.get('searchResult')
 
 	housingResults = []
@@ -120,6 +123,7 @@ def enduserSearchResult(request):
 		priceMin = housingRooms.aggregate(Min('cost'))
 		priceMax = housingRooms.aggregate(Max('cost'))
 		priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
+	
 
 	searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
 	content = {
@@ -127,18 +131,26 @@ def enduserSearchResult(request):
 	}
 	return render(request, 'mainpage/search_enduser.html', content)
 
-def enduserRecord(request):
-	housingid=1
+def enduserRecord(request, housingid):
 	housing = Housing.objects.filter(housingid=housingid).first()
 	owner = HousingOwner.objects.filter(housingid=housingid).first().ownerid
 	ownerName = str(owner.firstname) + str(owner.lastname)
 	housingRooms = RoomCost.objects.filter(housingid=housingid)
-	#amenities = HousingAdditionalInfo.objects.filter()
+	amenities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=1)
+	facilities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=2)
+	rules = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=3)
+	comments = Feedback.objects.filter(housingid=housingid, status=2)
+
+
 
 	content = {
 		'housing' : housing,
 		'ownername' : ownerName,
 		'rooms' : housingRooms,
+		'amenities' : amenities,
+		'facilities' : facilities,
+		'rules' : rules,
+		'comments' : comments,
 	}
 	return render(request, 'mainpage/housing_record.html', content)
 
@@ -147,13 +159,11 @@ def enduserRequest(request):
 		requestForm = AddRequest(request.POST)
 		searchForm = SearchHousing(request.POST)
 		if requestForm.is_valid():
-			print("FORM IS VALID")
 			email = requestForm.cleaned_data['email']
 			requestIndex = requestForm.cleaned_data['requestType']
 			requestType = REQUEST_CHOICES[int(requestIndex)-1][1]
 			reqcontent = requestForm.cleaned_data['content']
 		elif searchForm.is_valid():
-			print("FORM IS VALID")
 			areaIndex = searchForm.cleaned_data['area']
 			area = AREA_CHOICES[int(areaIndex)-1][1]
 			propertyIndex = searchForm.cleaned_data['propertyType']

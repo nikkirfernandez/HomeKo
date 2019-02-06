@@ -409,18 +409,22 @@
           
           </div>
           </div>
+
+          {% for amenity in amenities %}
           
           <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
 
           <div class="col-8 amenity_item">
-          Amenity Item
+          {{amenity.additionalinfoid.additionalinfoname}}
           </div>
 
           <div class="col-7 amenity_desc">
-          Amenity Description
+          {{amenity.description}}
           </div>
 
           </div>
+
+          {% endfor %}
 
           
           <div class="row housing_facility_title justify-content-center align-items-center pb-3">
@@ -434,17 +438,21 @@
           </div>
           </div>
 
+          {% for facility in facilities %}
+
           <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">
           
           <div class="col-8 facility_item">
-          Facility Item
+          {{facility.additionalinfoid.additionalinfoname}}
           </div>
 
           <div class="col-7 facility_desc">
-          Facility Description
+          {{facility.description}}
           </div>
 
           </div>
+
+          {% endfor %}
 
 
           <div class="row housing_rule_title justify-content-center align-items-center pb-3">
@@ -458,17 +466,21 @@
           </div>
           </div>
 
+          {% for rule in rules %}
+
           <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">
           
           <div class="col-8 rule_item">
-          Rule Item
+          {{rule.additionalinfoid.additionalinfoname}}
           </div>
 
           <div class="col-7 rule_desc">
-          Rule Description
+          {{rule.description}}
           </div>
 
           </div>
+
+          {% endfor %}
 
 
           <div class="row justify-content-center pt-5 pb-2">
@@ -477,17 +489,21 @@
           </div>
           </div>
 
+          {% for comment in comments %}
+
           <div class="row justify-content-center pt-2">
           <div class="col-8 comment_item ">         
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate magna vitae odio laoreet vehicula.
+          {{comment.comment}}
           </div>
           </div>
 
           <div class="row justify-content-center">
           <div class="col-8 comment_date pb-2">
-          01/01/19
+          {{comment.dateposted}}
           </div>
           </div>
+
+          {% endfor %}
 
           <form onsubmit="openModal()" id="myForm">
           <div class="row justify-content-center">          
