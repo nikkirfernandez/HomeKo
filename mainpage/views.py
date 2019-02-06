@@ -9,105 +9,100 @@ from .models import *
 from django.db.models import Max, Min
 
 def home(request):
-    return HttpResponse('HELLO WORLD!');
+     return HttpResponse('HELLO WORLD!');
 # Create your views here.
 
 def enduserHome(request):
+     if request.method == "POST" :
+          searchForm = SearchHousing(request.POST)
 
-	if request.method == "POST" :
-		searchForm = SearchHousing(request.POST)
+     if searchForm.is_valid():
 
-		if searchForm.is_valid():
+          filtersSet1={}
+          filtersSet2=[]
 
-			filtersSet1={}
-			filtersSet2=[]
-
-			areaIndex = searchForm.cleaned_data['area']
-			if areaIndex!='1':
-				area = AREA_CHOICES[int(areaIndex)-1][1]
-				filtersSet1['housingid__area'] = area
+          areaIndex = searchForm.cleaned_data['area']
+          if areaIndex!='1':
+               area = AREA_CHOICES[int(areaIndex)-1][1]
+               filtersSet1['housingid__area'] = area
 						
-			propertyIndex = searchForm.cleaned_data['propertyType']
-			if propertyIndex!='1':
-				propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
-				filtersSet1['housingid__propertytype__propertytypename'] = propertyType
+          propertyIndex = searchForm.cleaned_data['propertyType']
+          if propertyIndex!='1':
+               propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+               filtersSet1['housingid__propertytype__propertytypename'] = propertyType
 
-			homeIndex = searchForm.cleaned_data['homeType']
-			if homeIndex!='1':
-				homeType = HOME_CHOICES[int(homeIndex)-1][1]
-				filtersSet1['housingid__housetype__housetypename'] = homeType
+          homeIndex = searchForm.cleaned_data['homeType']
+          if homeIndex!='1':
+               homeType = HOME_CHOICES[int(homeIndex)-1][1]
+               filtersSet1['housingid__housetype__housetypename'] = homeType
 
-			priceMax = searchForm.cleaned_data['priceMax']
+               priceMax = searchForm.cleaned_data['priceMax']
 
-			
+          if(searchForm.cleaned_data['kitchen'])==True:
+               filtersSet2.append("Kitchen")
+          if(searchForm.cleaned_data['aircon']) == True:
+               filtersSet2.append("Air conditioning")
+          if(searchForm.cleaned_data['washer']) == True:
+               filtersSet2.append("Washer")
+          if(searchForm.cleaned_data['dryer'])==True:
+               filtersSet2.append("Dryer")
+          if(searchForm.cleaned_data['wifi']) == True:
+               filtersSet2.append("Wifi")
+          if(searchForm.cleaned_data['iron'])==True:
+               filtersSet2.append("Iron")
+          if(searchForm.cleaned_data['tv'])==True:
+               filtersSet2.append("TV")
+          if(searchForm.cleaned_data['parking'])==True:
+               filtersSet2.append("Parking")
+          if(searchForm.cleaned_data['pet'])==True:
+               filtersSet2.append("Pets allowed")
+          if(searchForm.cleaned_data['smoking'])==True:
+               filtersSet2.append("Smoking allowed")
+          if(searchForm.cleaned_data['curfew'])==True:
+               filtersSet2.append("No curfew")
 
-			if(searchForm.cleaned_data['kitchen'])==True:
-				filtersSet2.append("Kitchen")
-			if(searchForm.cleaned_data['aircon']) == True:
-				filtersSet2.append("Air conditioning")
-			if(searchForm.cleaned_data['washer']) == True:
-				filtersSet2.append("Washer")
-			if(searchForm.cleaned_data['dryer'])==True:
-				filtersSet2.append("Dryer")
-			if(searchForm.cleaned_data['wifi']) == True:
-				filtersSet2.append("Wifi")
-			if(searchForm.cleaned_data['iron'])==True:
-				filtersSet2.append("Iron")
-			if(searchForm.cleaned_data['tv'])==True:
-				filtersSet2.append("TV")
-			if(searchForm.cleaned_data['parking'])==True:
-				filtersSet2.append("Parking")
-			if(searchForm.cleaned_data['pet'])==True:
-				filtersSet2.append("Pets allowed")
-			if(searchForm.cleaned_data['smoking'])==True:
-				filtersSet2.append("Smoking allowed")
-			if(searchForm.cleaned_data['curfew'])==True:
-				filtersSet2.append("No curfew")
+          ### read from db according to the filters ###
+          arguments1 = {}
+          for k, v in filtersSet1.items():
+               if v:
+                    arguments1[k] = v
+          
+          housingResults = Housing.objects.filter(**arguments1)
+          
+          results2 = []
+          if priceMax!=None:
+               for result in housingResults:
+                    result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
+                    if result2temp!=None: 
+                         results2.append(result2temp.housingid.housingid)
+          else:
+               results2 = [result.housingid for result in housingResults]
 
-			### read from db according to the filters ###
-			arguments1 = {}
-			for k, v in filtersSet1.items():
-				if v:
-					arguments1[k] = v
+          results3 = []
+          for result in results2:
+               housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+               for filters in filtersSet2:
+                    result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                    if result3temp != None:
+                         results3.append(result3temp.housingid.housingid)
+          if len(filtersSet2)==0:
+               results3=results2
+          
+          request.session['searchResult'] = results3
+          return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
+     
+     searchForm = SearchHousing()
 
-			housingResults = Housing.objects.filter(**arguments1)
+     content = {
+          'areaChoices' : AREA_CHOICES,
+          'propertyChoices' : PROPERTY_CHOICES,
+          'homeChoices' : HOME_CHOICES,
+          'amenityChoices' : AMENITY_CHOICES,
+          'facilityChoices' : FACILITY_CHOICES,
+          'ruleChoices' : RULE_CHOICES,
+     }
 
-			results2 = []
-			if priceMax!=None:
-				for result in housingResults:
-					result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-					if result2temp!=None: 
-						results2.append(result2temp.housingid.housingid)
-			else:
-				results2 = [result.housingid for result in housingResults]
-
-			
-			results3 = []
-			for result in results2:
-				housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-				for filters in filtersSet2:
-					result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-					if result3temp != None:
-						results3.append(result3temp.housingid.housingid)
-			if len(filtersSet2)==0:
-				results3=results2
-
-			print(results3)
-			
-			request.session['searchResult'] = results3
-			return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
-	searchForm = SearchHousing()
-
-	content = {
-	    'areaChoices' : AREA_CHOICES,
-	    'propertyChoices' : PROPERTY_CHOICES,
-	    'homeChoices' : HOME_CHOICES,
-	    'amenityChoices' : AMENITY_CHOICES,
-	    'facilityChoices' : FACILITY_CHOICES,
-	    'ruleChoices' : RULE_CHOICES,
-	}
-
-	return render(request, 'mainpage/home.html', content)
+     return render(request, 'mainpage/home.html', content)
 
 def enduserSearchResult(request):
 	
