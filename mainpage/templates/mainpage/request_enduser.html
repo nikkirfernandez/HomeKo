@@ -1,4 +1,16 @@
+
+<!-- CODE HISTORY 
+# Sontillano     # Jan 27, 2019    # made layout of the page
+# Sontillano     # Jan 28, 2019    # changed the fonts
+# Sontillano     # Feb 5, 2019     # integrated with django views.py
+
+# File creation date: Jan. 27, 2019
+-->
+
 <!DOCTYPE html>
+
+{% load static %}
+
 <html>
      <head>
           <meta charset="UTF-8">
@@ -214,8 +226,8 @@
           <!--navbar-->
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
                <div class="container">
-                    <a class="navbar-brand" href="#">
-                         <img src="homeko_logo.svg" width="40" height="40" alt="">HomeKo
+                    <a class="navbar-brand" href="/">
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="40" height="40" alt="">HomeKo
                     </a>  
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

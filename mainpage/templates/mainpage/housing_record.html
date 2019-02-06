@@ -8,6 +8,9 @@
 -->
 
 <!DOCTYPE html>
+
+{% load static %}
+
 <html>
      <head>
           <meta charset="UTF-8">
@@ -250,8 +253,8 @@
           <!--navbar-->
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
                <div class="container">
-                    <a class="navbar-brand" href="#">
-                         <img src="homeko_logo.svg" width="40" height="40" alt="">HomeKo
+                    <a class="navbar-brand" href="/">
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="40" height="40" alt="">HomeKo
                     </a>  
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -314,13 +317,15 @@
                </div>
 
                <!-- housing map -->
+               {% if housing.maphtml %}
                <div class="row housing_map justify-content-center pb-3">
                     <div class="col-9">
-                         <div class="iframe-container">
-                              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.9385911281083!2d121.07119751435769!3d14.659426389765029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b75dfef56eb3%3A0x83cbae2de31e220a!2sIlang+Ilang+Residence+Hall!5e0!3m2!1sen!2sph!4v1549024344251" allowfullscreen></iframe> 
+                         <div class="iframe-container">                             
+                              <iframe src="{{housing.maphtml}}" allowfullscreen></iframe>
                          </div>
                     </div>
                </div>
+               {% endif %}
 
                <!-- housing cost -->
                <div class="row housing_price_title justify-content-center align-items-center pb-3">
