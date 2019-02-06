@@ -7,10 +7,10 @@ class Additionalinfo(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'additionalInfo'
+        db_table = 'additionalinfo'
 
     def __str__(self):
-        return "%s - $s" % (self.additionalinfoname, self.additionalinfotype)
+        return "%s - %s" % (self.additionalinfoname, self.additionalinfotype)
 
 class Area(models.Model):
     areaid = models.AutoField(db_column='areaID', primary_key=True)  # Field name made lowercase.
@@ -165,8 +165,8 @@ class DjangoSession(models.Model):
 class Feedback(models.Model):
     feedbackid = models.AutoField(db_column='feedbackID', primary_key=True)  # Field name made lowercase.
     housingid = models.ForeignKey('Housing', models.DO_NOTHING, db_column='housingID')  # Field name made lowercase.
-    comment = models.CharField(max_length=500)
-    status = models.IntegerField()
+    comment = models.CharField(max_length=500, db_column='comment')
+    status = models.IntegerField(db_column='status')
     dateposted = models.DateField(db_column='datePosted')  # Field name made lowercase.
 
     class Meta:
@@ -181,7 +181,7 @@ class Housetype(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'houseType'
+        db_table = 'housetype'
 
     def __str__(self):
         return self.housetypename
@@ -191,7 +191,7 @@ class Housing(models.Model):
     housingid = models.AutoField(db_column='housingID', primary_key=True)  # Field name made lowercase.
     housingname = models.CharField(db_column='housingName', max_length=50)  # Field name made lowercase.
     area = models.ForeignKey(Area, models.DO_NOTHING, db_column='area')
-    address = models.CharField(max_length=80)
+    address = models.CharField(db_column='address', max_length=80)
     propertytype = models.ForeignKey('Propertytype', models.DO_NOTHING, db_column='propertyType')  # Field name made lowercase.
     housetype = models.ForeignKey(Housetype, models.DO_NOTHING, db_column='houseType')  # Field name made lowercase.
     maphtml = models.CharField(db_column='mapHTML', max_length=500, blank=True, null=True)  # Field name made lowercase.
@@ -215,7 +215,7 @@ class Propertytype(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'propertyType'
+        db_table = 'propertytype'
 
     def __str__(self):
         return self.propertytypename
@@ -223,11 +223,11 @@ class Propertytype(models.Model):
 
 class Request(models.Model):
     requestid = models.AutoField(db_column='requestID', primary_key=True)  # Field name made lowercase.
-    type = models.IntegerField()
-    message = models.CharField(max_length=500)
-    status = models.IntegerField()
+    reqtype = models.IntegerField(db_column='type')
+    message = models.CharField(db_column='message', max_length=500)
+    status = models.IntegerField(db_column='status')
     datesent = models.DateField(db_column='dateSent')  # Field name made lowercase.
-    sender = models.CharField(max_length=50)
+    sender = models.CharField(db_column='sender', max_length=50)
 
     class Meta:
         managed = False
@@ -235,3 +235,50 @@ class Request(models.Model):
 
     def __str__(self):
         return "%s - %s" % (self.sender, self.requestid)
+
+class HousingAdditionalInfo(models.Model):
+    housingadditionalinfoid = models.AutoField(db_column='housingAdditionalInfoID', primary_key=True)
+    additionalinfoid = models.ForeignKey(Additionalinfo, models.DO_NOTHING, db_column='additionalInfoID')
+    description = models.CharField(max_length=300, db_column='description', blank=True, null=True)
+    housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+
+    class Meta:
+        managed = False
+        db_table = 'housingadditionalinfo'
+
+class HousingOwner(models.Model):
+    housingownerid = models.AutoField(db_column='HousingOwnerID', primary_key=True)
+    housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+    ownerid = models.ForeignKey(Owner, models.DO_NOTHING, db_column='ownerID')
+
+    class Meta:
+        managed = False
+        db_table = 'housingowner'
+
+class HousingRequest(models.Model):
+    housingrequestid = models.AutoField(db_column='HousingRequestID', primary_key=True)
+    housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+    requestid = models.ForeignKey(Request, models.DO_NOTHING, db_column='requestID')
+
+    class Meta:
+        managed = False
+        db_table = 'housingrequest'
+
+class Picture(models.Model):
+    pictureid = models.AutoField(db_column='pictureID', primary_key=True)
+    filename = models.CharField(db_column='fileName', max_length=30)
+    housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+
+    class Meta:
+        managed = False
+        db_table = 'picture'
+
+class RoomCost(models.Model):
+    roomid = models.AutoField(db_column='roomID', primary_key=True)
+    roomname = models.CharField(db_column='roomName', max_length=100)
+    cost = models.FloatField(db_column='cost')
+    housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+
+    class Meta:
+        managed = False
+        db_table = 'roomcost'
