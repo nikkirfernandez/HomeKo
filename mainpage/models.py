@@ -3,7 +3,7 @@ from django.db import models
 class Additionalinfo(models.Model):
     additionalinfoid = models.AutoField(db_column='additionalInfoID', primary_key=True)  # Field name made lowercase.
     additionalinfoname = models.CharField(db_column='additionalInfoName', max_length=70)  # Field name made lowercase.
-    additionalinfotype = models.IntegerField(db_column='additionalInfoType', max_length=70)  # Field name made lowercase.
+    additionalinfotype = models.IntegerField(db_column='additionalInfoType')  # Field name made lowercase.
 
     class Meta:
         managed = False
