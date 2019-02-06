@@ -98,6 +98,9 @@
           <div class="modal-dialog" role="document">
           <div class="modal-content">
 
+          <form method="post">
+          {% csrf_token %}
+
           <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -106,24 +109,16 @@
           </div>
 
           <div class="modal-body">
-          <form>
-
+          
           <div class="form-group row">
           <div class="col-4">
           <label for="area_modal" class="col-form-label">Area</label>
           </div>
           <div class="col-8">
-          <select class="form-control" id="area_modal">
-          <option>Anywhere</option>
-          <option>Area 1</option>
-          <option>Area 2</option>
-          <option>Hardin ng Doña Aurora</option>
-          <option>Kapitbalay ng Kalinaw</option>
-          <option>Pook Dagohoy</option>
-          <option>Pook Palaris</option>
-          <option>Pook Ricarte</option>
-          <option>Village A</option>
-          <option>Village B</option>
+          <select class="form-control" id="area_modal" name="area">
+          {% for n, area in areaChoices %}
+               <option value={{ n }}>{{area}}</option>
+          {% endfor %}
           </select>
           </div>
           </div>
@@ -133,10 +128,10 @@
           <label for="propertyType_modal" class="col-form-label">Property Type</label>
           </div>
           <div class="col-8">
-          <select class="form-control" id="propertyType_modal">
-          <option>Anything</option>
-          <option>House</option>
-          <option>Apartment</option>
+          <select class="form-control" id="propertyType_modal" name="propertyType">
+          {% for n, property in propertyChoices %}
+               <option value={{ n }}>{{property}}</option>
+          {% endfor %}
           </select>
           </div>
           </div>
@@ -146,11 +141,10 @@
           <label for="houseType_modal" class="col-form-label">Home Type</label>
           </div>
           <div class="col-8">
-          <select class="form-control" id="houseType_modal">
-          <option>Anything</option>
-          <option>Entire place</option>
-          <option>Private Room</option>
-          <option>Shared room</option>
+          <select class="form-control" id="houseType_modal" name="homeType">
+          {% for n, home in homeChoices %}
+               <option value={{ n }}>{{home}}</option>
+          {% endfor %}
           </select>
           </div>
           </div>
@@ -163,10 +157,10 @@
 
           <div class="form-row">
           <div class="col">
-          <input type="text" class="form-control" placeholder="Maximum">
+          <input type="text" class="form-control" placeholder="Maximum" name="priceMax">
           </div>
           <div class="col">
-          <input type="text" class="form-control" placeholder="Minimum">
+          <input type="text" class="form-control" placeholder="Minimum" name="priceMin">
           </div>
 
           </div>
@@ -179,31 +173,31 @@
           </div>
           <div class="col-8">
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="kitchen">
+          <input class="form-check-input" type="checkbox" id="kitchen" name="kitchen">
           <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="aircon">
+          <input class="form-check-input" type="checkbox" id="aircon" name="aircon">
           <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="washer">
+          <input class="form-check-input" type="checkbox" id="washer" name="washer">
           <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="dryer">
+          <input class="form-check-input" type="checkbox" id="dryer" name="dryer">
           <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="wifi">
+          <input class="form-check-input" type="checkbox" id="wifi" name="wifi">
           <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="iron">
+          <input class="form-check-input" type="checkbox" id="iron" name="iron">
           <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="tv">
+          <input class="form-check-input" type="checkbox" id="tv" name="tv">
           <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
           </div> 
           </div>
@@ -215,7 +209,7 @@
           </div>
           <div class="col-8">
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="parking">
+          <input class="form-check-input" type="checkbox" id="parking" name="parking">
           <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
           </div> 
           </div>
@@ -227,27 +221,28 @@
           </div>
           <div class="col-8">
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="pets">
+          <input class="form-check-input" type="checkbox" id="pets" name="pet">
           <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="smoking">
+          <input class="form-check-input" type="checkbox" id="smoking" name="smoking">
           <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
           </div> 
           <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="nocurfew">
+          <input class="form-check-input" type="checkbox" id="nocurfew" name="curfew">
           <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
           </div> 
           </div>
           </div>
-
-          </form>                        
+                                  
           </div>
           
           <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">Search</button>
           </div>
+
+          </form>
           
           </div>
           </div>
