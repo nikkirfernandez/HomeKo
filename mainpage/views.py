@@ -1,8 +1,11 @@
 
 
 # CODE HISTORY #
-# Sontillano     # Feb 5, 2018     # added enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
-# Sontillano     # Feb 6, 2018     # fixed enduserHome, enduserSearchResult, enduserRecord       
+# Sontillano     # Feb 5, 2019     # added enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
+# Sontillano     # Feb 6, 2019     # fixed enduserHome, enduserSearchResult, enduserRecord 
+
+# File creation date: Feb. 1, 2019
+
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,33 +21,38 @@ from django.db.models import Max, Min
 def home(request):
      return HttpResponse('HELLO WORLD!');
 
-# This is the view for the home page.
+# Method name: enduserHome
+# Creation date: Feb 5, 2019 
+# Purpose: View for the home page. Contains the processing of forms when submitted. It also passes the choices for the dropdown. 
+# Calling arguments: No arguments for calling this function.
+# Required files: home.html
 def enduserHome(request):
+     # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
 
           if searchForm.is_valid():     
-
                filtersSet1={}
                filtersSet2=[]     
-
+               
+               # get the inputs to these dropdown boxes then add to filterSet1 to be used in the query later 
                areaIndex = searchForm.cleaned_data['area']
                if areaIndex!='1':
                     area = AREA_CHOICES[int(areaIndex)-1][1]
-                    filtersSet1['housingid__area'] = area
-     						
+                    filtersSet1['area__areaname'] = area						
                propertyIndex = searchForm.cleaned_data['propertyType']
                if propertyIndex!='1':
                     propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
-                    filtersSet1['housingid__propertytype__propertytypename'] = propertyType     
-
+                    filtersSet1['propertytype__propertytypename'] = propertyType     
                homeIndex = searchForm.cleaned_data['homeType']
                if homeIndex!='1':
                     homeType = HOME_CHOICES[int(homeIndex)-1][1]
-                    filtersSet1['housingid__housetype__housetypename'] = homeType     
+                    filtersSet1['housetype__housetypename'] = homeType     
+               
+               # get the input to this textbox
+               priceMax = searchForm.cleaned_data['priceMax']
 
-                    priceMax = searchForm.cleaned_data['priceMax']     
-
+               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
                if(searchForm.cleaned_data['kitchen'])==True:
                     filtersSet2.append("Kitchen")
                if(searchForm.cleaned_data['aircon']) == True:
@@ -68,14 +76,10 @@ def enduserHome(request):
                if(searchForm.cleaned_data['curfew'])==True:
                     filtersSet2.append("No curfew")     
 
-               ### read from db according to the filters ###
-               arguments1 = {}
-               for k, v in filtersSet1.items():
-                    if v:
-                         arguments1[k] = v
+               # Filter round 1: get the queryset with the filtersSet1 
+               housingResults = Housing.objects.filter(**filtersSet1)
                
-               housingResults = Housing.objects.filter(**arguments1)
-               
+               # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
                results2 = []
                if priceMax!=None:
                     for result in housingResults:
@@ -85,6 +89,7 @@ def enduserHome(request):
                else:
                     results2 = [result.housingid for result in housingResults]     
 
+               # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                results3 = []
                for result in results2:
                     housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
@@ -95,7 +100,9 @@ def enduserHome(request):
                if len(filtersSet2)==0:
                     results3=results2
                
+               # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results3
+               # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
      searchForm = SearchHousing()
@@ -108,9 +115,13 @@ def enduserHome(request):
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
      }
-
      return render(request, 'mainpage/home.html', content)
 
+# Method name: enduserSearchResult
+# Creation date: Feb 5, 2019 
+# Purpose: View for the search result page. Contains the processing of search form when submitted. Passes the choices for the dropdown. Passes the information needed in the search result page. 
+# Calling arguments: No arguments for calling this function.
+# Required files: search_enduser.html
 def enduserSearchResult(request):
      searchResult = request.session.get('searchResult')
      housingResults = []
@@ -124,8 +135,10 @@ def enduserSearchResult(request):
           priceMax = housingRooms.aggregate(Max('cost'))
           priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
 	
-
      searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
+     
+
+
      content = {
           'searchResults' : searchResults,
      }
