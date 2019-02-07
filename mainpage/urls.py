@@ -14,4 +14,4 @@ urlpatterns = [
      path('ownerlogin/', views.ownerLogin, name='ownerLogin'),
      path('search/', views.enduserSearchResult, name='enduserSearchResult'),
      path('record/<housingid>/', views.enduserRecord, name='enduserRecord'),
-]
+]    

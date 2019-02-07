@@ -23,7 +23,7 @@ class Additionalinfo(models.Model):
 # This class contains the table for Areas designated to each housing entry in the database
 class Area(models.Model):
 	areaID = models.AutoField(db_column='areaID', primary_key=True)
-	areaMame = models.CharField(db_column='areaName', max_length=30)
+	areaName = models.CharField(db_column='areaName', max_length=30)
 
 	class Meta:
 		managed = False
