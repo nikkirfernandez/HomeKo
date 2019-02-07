@@ -1,4 +1,4 @@
-
+# License: MIT License
 # CODE HISTORY #
 # Sontillano     # Feb 5, 2019     # added paths for enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
 
@@ -14,4 +14,4 @@ urlpatterns = [
      path('ownerlogin/', views.ownerLogin, name='ownerLogin'),
      path('search/', views.enduserSearchResult, name='enduserSearchResult'),
      path('record/<housingid>/', views.enduserRecord, name='enduserRecord'),
-]
+]    

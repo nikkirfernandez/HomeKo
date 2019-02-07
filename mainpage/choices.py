@@ -1,4 +1,4 @@
-
+# License: MIT License
 # CODE HISTORY #
 # Sontillano     # Feb 5, 2019     # added AREA_CHOICES, PROPERTY_CHOICES, HOME_CHOICES, AMENITY_CHOICES, FACILITY_CHOICES, RULE_CHOICES, REQUEST_CHOICES
 
@@ -19,13 +19,13 @@ AREA_CHOICES = (
 
 PROPERTY_CHOICES = (
 	(1, ("Anything")),
-	(2, ("House")), 
+	(2, ("House")),
 	(3, ("Apartment")),
 )
 
 HOME_CHOICES = (
 	(1, ("Anything")),
-	(2, ("Entire place")), 
+	(2, ("Entire place")),
 	(3, ("Private room")),
 	(4, ("Shared room")),
 )
@@ -46,12 +46,12 @@ FACILITY_CHOICES = (
 
 RULE_CHOICES = (
 	(1, ("Pets allowed")),
-	(2, ("Smoking allowed")), 
+	(2, ("Smoking allowed")),
 	(3, ("No curfew")),
 )
 
 REQUEST_CHOICES = (
 	(1, ("Add")),
-	(2, ("Update")), 
+	(2, ("Update")),
 	(3, ("Delete")),
 )
