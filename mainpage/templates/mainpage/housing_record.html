@@ -302,7 +302,9 @@ CODE HISTORY
                          <div class="housing_contact_title">
                               Contact: 
                          </div>
+                         {% if ownername %}
                          {{ownername}} ({{contact}})
+                         {% endif %}
                     </div>
                </div>
 
@@ -336,22 +338,30 @@ CODE HISTORY
                          </a>          
                     </div>
                </div>
+               {% if rooms %}
                <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
                     <div class="col-8 table-responsive">
                          <table class="table">
                               <tbody>
-                              {% if rooms %}
+                              
                               {% for room in rooms %}
                                    <tr>
                                         <td>{{room.roomname}}</td>
                                         <td>{{room.cost}}</td>
                                    </tr>
                               {% endfor %}
-                              {% endif %}
+                              
                               </tbody>
                          </table>
                     </div>
                </div>
+               {% else %}
+               <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
+                    <div class="col-8">
+                         NONE
+                    </div>
+               </div>
+               {% endif %}
 
                <!-- housing amenities -->
                <div class="row housing_amenity_title justify-content-center align-items-center pb-3">

@@ -254,11 +254,15 @@ def enduserSearchResult(request):
 def enduserRecord(request, housingid):
      # get the information of the selected housing record
      housing = Housing.objects.filter(housingid=housingid).first()
-     owner = HousingOwner.objects.filter(housingid=housingid).first().ownerid
-     ownerName = str(owner.firstname) + " " + str(owner.lastname)
-     contact = Contact.objects.filter(ownerid=owner)
-     contactNo = [ c.contactno for c in contact]
-     contactNo = ", ".join(contactNo)
+     owner = HousingOwner.objects.filter(housingid=housingid).first()
+     if owner!=None:
+          ownerName = str(owner.ownerid.firstname) + " " + str(owner.ownerid.lastname)
+          contact = Contact.objects.filter(ownerid=owner)
+          contactNo = [ c.contactno for c in contact]
+          contactNo = ", ".join(contactNo)
+     else:
+          ownerName = None
+          contactNo = None
      housingRooms = RoomCost.objects.filter(housingid=housingid)
      amenities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=1)
      facilities = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=2)
