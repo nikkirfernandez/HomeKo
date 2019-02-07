@@ -9,29 +9,28 @@ from django.db import models
 
 # This class contains the table for additionalInfo
 class Additionalinfo(models.Model):
-	additionalInfoID = models.AutoField(db_column='additionalInfoID', primary_key=True)
-	additionalInfoName = models.CharField(db_column='additionalInfoName', max_length=70)
-	additionalInfoType = models.IntegerField(db_column='additionalInfoType', max_length=70)
-	additionalInfoType = models.IntegerField(db_column='additionalInfoType')
+    additionalinfoid = models.AutoField(db_column='additionalInfoID', primary_key=True)
+    additionalinfoname = models.CharField(db_column='additionalInfoName', max_length=70)
+    additionalinfotype = models.IntegerField(db_column='additionalInfoType')
 
-	class Meta:
-		managed = False
-		db_table = 'additionalinfo'
-	# For Readability
-	def __str__(self):
-		return "%s - %s" % (self.additionalInfoName, self.additionalInfoType)
+    class Meta:
+        managed = False
+        db_table = 'additionalinfo'
+    # For Readability
+    def __str__(self):
+        return "%s - %s" % (self.additionalinfoname, self.additionalinfotype)
 
 # This class contains the table for Areas designated to each housing entry in the database
 class Area(models.Model):
-	areaID = models.AutoField(db_column='areaID', primary_key=True)
-	areaName = models.CharField(db_column='areaName', max_length=30)
+	areaid = models.AutoField(db_column='areaid', primary_key=True)
+	areaname = models.CharField(db_column='areaname', max_length=30)
 
 	class Meta:
 		managed = False
 		db_table = 'area'
 
 	def __str__(self):
-		return self.areaName
+		return self.areaname
 
 # The Following Classes are generated for MySQL
 
@@ -66,24 +65,20 @@ class AuthPermission(models.Model):
 
 
 class AuthUser(models.Model):
-	password = models.CharField(max_length=128)
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
 
-
-last_login = models.DateTimeField(blank=True, null=True)
-is_superuser = models.IntegerField()
-username = models.CharField(unique=True, max_length=150)
-first_name = models.CharField(max_length=30)
-last_name = models.CharField(max_length=150)
-email = models.CharField(max_length=254)
-is_staff = models.IntegerField()
-is_active = models.IntegerField()
-date_joined = models.DateTimeField()
-
-###################################################################################
-
-class Meta:
-	managed = False
-	db_table = 'auth_user'
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
 
 
 class AuthUserGroups(models.Model):
@@ -110,10 +105,10 @@ class AuthUserUserPermissions(models.Model):
 
 # This class contains the attributes for the Owner Table to be added to the connected MySQL Database
 class Owner(models.Model):
-	ownerID = models.AutoField(db_column='ownerID', primary_key=True)  # Field name made lowercase.
-	ownerName = models.CharField(db_column='ownerName', max_length=70)  # Field name made lowercase.
-	firstName = models.CharField(db_column='firstName', max_length=40)  # Field name made lowercase.
-	lastName = models.CharField(db_column='lastName', max_length=40)  # Field name made lowercase.
+	ownerid = models.AutoField(db_column='ownerID', primary_key=True)  # Field name made lowercase.
+	ownername = models.CharField(db_column='ownerName', max_length=70)  # Field name made lowercase.
+	firstname = models.CharField(db_column='firstName', max_length=40)  # Field name made lowercase.
+	lastname = models.CharField(db_column='lastName', max_length=40)  # Field name made lowercase.
 	email = models.CharField(max_length=60, blank=True, null=True)
 
 	class Meta:
@@ -121,14 +116,14 @@ class Owner(models.Model):
 		db_table = 'owner'
 
 	def __str__(self):
-		return self.ownerName
+		return self.ownername
 
 
 #This class contains the attributes for Owner Table to be added to the connected MySQL Database
 class Contact(models.Model):
-	contactID = models.AutoField(db_column='contactID', primary_key=True)  # Field name made lowercase.
-	contactNo = models.CharField(db_column='contactNo', max_length=11)  # Field name made lowercase.
-	ownerID = models.ForeignKey('Owner', models.DO_NOTHING, db_column='ownerID')  # Field name made lowercase.
+	contactid = models.AutoField(db_column='contactID', primary_key=True)  # Field name made lowercase.
+	contactno = models.CharField(db_column='contactNo', max_length=11)  # Field name made lowercase.
+	ownerid = models.ForeignKey('Owner', models.DO_NOTHING, db_column='ownerID')  # Field name made lowercase.
 
 	class Meta:
 		managed = False
@@ -187,11 +182,11 @@ class DjangoSession(models.Model):
 
 #This class contains the attributes for Feedback Table to be added to the connected MySQL Database
 class Feedback(models.Model):
-	feedbackID = models.AutoField(db_column='feedbackID', primary_key=True)  # Field name made lowercase.
-	housingID = models.ForeignKey('Housing', models.DO_NOTHING, db_column='housingID')  # Field name made lowercase.
+	feedbackid = models.AutoField(db_column='feedbackID', primary_key=True)  # Field name made lowercase.
+	housingid = models.ForeignKey('Housing', models.DO_NOTHING, db_column='housingID')  # Field name made lowercase.
 	comment = models.CharField(max_length=500, db_column='comment')
 	status = models.IntegerField(db_column='status')
-	datePosted = models.DateField(db_column='datePosted')  # Field name made lowercase.
+	dateposted = models.DateField(db_column='datePosted')  # Field name made lowercase.
 
 	class Meta:
 		managed = False
@@ -200,8 +195,8 @@ class Feedback(models.Model):
 
 #This class contains the attributes for HouseType Table to be added to the connected MySQL Database
 class Housetype(models.Model):
-	houseTypeID = models.AutoField(db_column='houseTypeID', primary_key=True)  # Field name made lowercase.
-	houseTypeName = models.CharField(db_column='houseTypeName', max_length=20)  # Field name made lowercase.
+	housetypeid = models.AutoField(db_column='houseTypeID', primary_key=True)  # Field name made lowercase.
+	housetypename = models.CharField(db_column='houseTypeName', max_length=20)  # Field name made lowercase.
 
 	class Meta:
 		managed = False
@@ -212,19 +207,19 @@ class Housetype(models.Model):
 
 #This class contains the attributes for Housing Table to be added to the connected MySQL Database
 class Housing(models.Model):
-	housingID = models.AutoField(db_column='housingID', primary_key=True)  # Field name made lowercase.
-	housingName = models.CharField(db_column='housingName', max_length=50)  # Field name made lowercase.
+	housingid = models.AutoField(db_column='housingID', primary_key=True)  # Field name made lowercase.
+	housingname = models.CharField(db_column='housingName', max_length=50)  # Field name made lowercase.
 	area = models.ForeignKey(Area, models.DO_NOTHING, db_column='area')
 	address = models.CharField(db_column='address', max_length=80)
-	propertyType = models.ForeignKey('Propertytype', models.DO_NOTHING,
+	propertytype = models.ForeignKey('Propertytype', models.DO_NOTHING,
 							   db_column='propertyType')  # Field name made lowercase.
-	houseType = models.ForeignKey(Housetype, models.DO_NOTHING, db_column='houseType')  # Field name made lowercase.
-	mapHtml = models.CharField(db_column='mapHTML', max_length=500, blank=True,
+	housetype = models.ForeignKey(Housetype, models.DO_NOTHING, db_column='houseType')  # Field name made lowercase.
+	maphtml = models.CharField(db_column='mapHTML', max_length=500, blank=True,
 						  null=True)  # Field name made lowercase.
-	creationDate = models.DateField(db_column='creationDate')  # Field name made lowercase.
-	createdBy = models.CharField(db_column='createdBy', max_length=45)  # Field name made lowercase.
-	lastEditedBy = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
-	lastEditedDate = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
+	creationdate = models.DateField(db_column='creationDate')  # Field name made lowercase.
+	createdby = models.CharField(db_column='createdBy', max_length=45)  # Field name made lowercase.
+	lasteditedby = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
+	lastediteddate = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
 
 	class Meta:
 		managed = False
@@ -235,8 +230,8 @@ class Housing(models.Model):
 
 #This class contains the attributes for Propertytype Table to be added to the connected MySQL Database
 class Propertytype(models.Model):
-	propertyTypeID = models.AutoField(db_column='propertyTypeID', primary_key=True)  # Field name made lowercase.
-	propertyTypeName = models.CharField(db_column='propertyTypeName', max_length=20)  # Field name made lowercase.
+	propertytypeid = models.AutoField(db_column='propertyTypeID', primary_key=True)  # Field name made lowercase.
+	propertytypename = models.CharField(db_column='propertyTypeName', max_length=20)  # Field name made lowercase.
 
 	class Meta:
 		managed = False
@@ -247,11 +242,11 @@ class Propertytype(models.Model):
 
 #This class contains the attributes for Request Table to be added to the connected MySQL Database
 class Request(models.Model):
-	requestID = models.AutoField(db_column='requestID', primary_key=True)  # Field name made lowercase.
-	reqType = models.IntegerField(db_column='type')
+	requestid = models.AutoField(db_column='requestID', primary_key=True)  # Field name made lowercase.
+	reqtype = models.IntegerField(db_column='type')
 	message = models.CharField(db_column='message', max_length=500)
 	status = models.IntegerField(db_column='status')
-	dateSent = models.DateField(db_column='dateSent')  # Field name made lowercase.
+	datesent = models.DateField(db_column='dateSent')  # Field name made lowercase.
 	sender = models.CharField(db_column='sender', max_length=50)
 
 	class Meta:
@@ -263,10 +258,10 @@ class Request(models.Model):
 
 #This class contains the attributes for HousingAdditionalInfo Table to be added to the connected MySQL Database
 class HousingAdditionalInfo(models.Model):
-	housingAdditionalInfoID = models.AutoField(db_column='housingAdditionalInfoID', primary_key=True)
-	additionalInfoID = models.ForeignKey(Additionalinfo, models.DO_NOTHING, db_column='additionalInfoID')
+	housingadditionalinfoid = models.AutoField(db_column='housingAdditionalInfoID', primary_key=True)
+	additionalinfoid = models.ForeignKey(Additionalinfo, models.DO_NOTHING, db_column='additionalInfoID')
 	description = models.CharField(max_length=300, db_column='description', blank=True, null=True)
-	housingID = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
 
 	class Meta:
 		managed = False
@@ -274,9 +269,9 @@ class HousingAdditionalInfo(models.Model):
 
 #This class contains the attributes for HousingOwner Table to be added to the connected MySQL Database
 class HousingOwner(models.Model):
-	housingOwnerID = models.AutoField(db_column='HousingOwnerID', primary_key=True)
-	housingID = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
-	ownerID = models.ForeignKey(Owner, models.DO_NOTHING, db_column='ownerID')
+	housingownerid = models.AutoField(db_column='HousingOwnerID', primary_key=True)
+	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	ownerid = models.ForeignKey(Owner, models.DO_NOTHING, db_column='ownerID')
 
 	class Meta:
 		managed = False
@@ -284,9 +279,9 @@ class HousingOwner(models.Model):
 
 #This class contains the attributes for HousingRequest Table to be added to the connected MySQL Database
 class HousingRequest(models.Model):
-	housingRequestID = models.AutoField(db_column='HousingRequestID', primary_key=True)
-	housingID = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
-	requestID = models.ForeignKey(Request, models.DO_NOTHING, db_column='requestID')
+	housingrequestid = models.AutoField(db_column='HousingRequestID', primary_key=True)
+	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	requestid = models.ForeignKey(Request, models.DO_NOTHING, db_column='requestID')
 
 	class Meta:
 		managed = False
@@ -294,9 +289,9 @@ class HousingRequest(models.Model):
 
 #This class contains the attributes for Picture Table to be added to the connected MySQL Database
 class Picture(models.Model):
-	pictureID = models.AutoField(db_column='pictureID', primary_key=True)
-	fileName = models.CharField(db_column='fileName', max_length=30)
-	housingID = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	pictureid = models.AutoField(db_column='pictureID', primary_key=True)
+	filename = models.CharField(db_column='fileName', max_length=30)
+	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
 
 	class Meta:
 		managed = False
@@ -304,10 +299,10 @@ class Picture(models.Model):
 
 #This class contains the attributes for RoomCost Table to be added to the connected MySQL Database
 class RoomCost(models.Model):
-	roomID = models.AutoField(db_column='roomID', primary_key=True)
-	roomName = models.CharField(db_column='roomName', max_length=100)
+	roomid = models.AutoField(db_column='roomID', primary_key=True)
+	roomname = models.CharField(db_column='roomName', max_length=100)
 	cost = models.FloatField(db_column='cost')
-	housingID = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
 
 	class Meta:
 		managed = False
