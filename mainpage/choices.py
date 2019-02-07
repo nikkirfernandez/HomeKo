@@ -1,4 +1,9 @@
 
+# CODE HISTORY #
+# Sontillano     # Feb 5, 2019     # added AREA_CHOICES, PROPERTY_CHOICES, HOME_CHOICES, AMENITY_CHOICES, FACILITY_CHOICES, RULE_CHOICES, REQUEST_CHOICES
+
+# File creation date: Feb. 5, 2019
+
 AREA_CHOICES = (
 	(1, ("Anywhere")),
 	(2, ("Area 1")),
