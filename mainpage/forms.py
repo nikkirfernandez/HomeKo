@@ -9,22 +9,22 @@ from .choices import *
 
 
 class SearchHousing(forms.Form):
-	area = forms.ChoiceField(choices=AREA_CHOICES, widget=forms.Select(), required=False)
-	propertyType = forms.ChoiceField(choices=PROPERTY_CHOICES, widget=forms.Select(), required=False)
-	homeType = forms.ChoiceField(choices=HOME_CHOICES, widget=forms.Select(), required=False)
-	priceMin = forms.FloatField(required=False)
-	priceMax = forms.FloatField(required=False)
-	kitchen = forms.BooleanField(initial=False, required=False)
-	aircon = forms.BooleanField(initial=False, required=False)
-	washer = forms.BooleanField(initial=False, required=False)
-	dryer = forms.BooleanField(initial=False, required=False)
-	wifi = forms.BooleanField(initial=False, required=False)
-	iron = forms.BooleanField(initial=False, required=False)
-	tv = forms.BooleanField(initial=False, required=False)
-	parking = forms.BooleanField(initial=False, required=False)
-	pet = forms.BooleanField(initial=False, required=False)
-	smoking = forms.BooleanField(initial=False, required=False)
-	curfew = forms.BooleanField(initial=False, required=False)
+     area = forms.ChoiceField(choices=AREA_CHOICES, widget=forms.Select(), required=False)
+     propertyType = forms.ChoiceField(choices=PROPERTY_CHOICES, widget=forms.Select(), required=False)
+     homeType = forms.ChoiceField(choices=HOME_CHOICES, widget=forms.Select(), required=False)
+     priceMin = forms.FloatField(required=False)
+     priceMax = forms.FloatField(required=False)
+     kitchen = forms.BooleanField(initial=False, required=False)
+     aircon = forms.BooleanField(initial=False, required=False)
+     washer = forms.BooleanField(initial=False, required=False)
+     dryer = forms.BooleanField(initial=False, required=False)
+     wifi = forms.BooleanField(initial=False, required=False)
+     iron = forms.BooleanField(initial=False, required=False)
+     tv = forms.BooleanField(initial=False, required=False)
+     parking = forms.BooleanField(initial=False, required=False)
+     pet = forms.BooleanField(initial=False, required=False)
+     smoking = forms.BooleanField(initial=False, required=False)
+     curfew = forms.BooleanField(initial=False, required=False)
 
 
 class AddRequest(forms.Form):
