@@ -1,4 +1,4 @@
-
+# License: MIT License
 # CODE HISTORY #
 # Sontillano     # Feb 5, 2019     # added paths for enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
 
