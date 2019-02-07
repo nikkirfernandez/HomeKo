@@ -26,11 +26,11 @@ class SearchHousing(forms.Form):
      curfew = forms.BooleanField(initial=False, required=False)
     
 class AddRequest(forms.Form):
-	 email = forms.CharField(max_length=50, required=True)
- 	 requestType = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
- 	 content = forms.CharField(required=True, widget=forms.Textarea)
+     email = forms.CharField(max_length=50, required=True)
+     requestType = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+     content = forms.CharField(required=True, widget=forms.Textarea)
 
 class SignUp(forms.Form):
-	 lname = forms.CharField(max_length=40, required=True)
- 	 fname = forms.CharField(max_length=40, required=True)
-  	 contact = forms.CharField(max_length=70, required=True)  
+     lname = forms.CharField(max_length=40, required=True)
+     fname = forms.CharField(max_length=40, required=True)
+     contact = forms.CharField(max_length=70, required=True)  
