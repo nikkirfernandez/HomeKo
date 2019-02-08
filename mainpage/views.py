@@ -257,7 +257,7 @@ def enduserRecord(request, housingid):
      owner = HousingOwner.objects.filter(housingid=housingid).first()
      if owner!=None:
           ownerName = str(owner.ownerid.firstname) + " " + str(owner.ownerid.lastname)
-          contact = Contact.objects.filter(ownerid=owner)
+          contact = Contact.objects.filter(ownerid=owner.ownerid)
           contactNo = [ c.contactno for c in contact]
           contactNo = ", ".join(contactNo)
      else:
