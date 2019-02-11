@@ -11,61 +11,61 @@ class AdminLogin(forms.Form):
 	pw = forms.CharField(max_length=50, required=True)
 
 class addAdditionalinfo(forms.Form):
-	name = forms.CharField(max_length=50, required=True)
-	infotype = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	name = forms.CharField(max_length=70, required=True)
+	infotype = forms.ChoiceField(choices = INFOTYPE_CHOICES, widget=forms.Select(), required=True)
 
 class addArea(forms.Form):
-     name = forms.CharField(max_length=50, required=True)
+     name = forms.CharField(max_length=30, required=True)
 		
 class addContact(forms.Form):
-     contactno = forms.CharField(max_length=50, required=True)
-     ownerid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+     contactno = forms.CharField(max_length=1, required=True)
+     ownerid = forms.ChoiceField(widget=forms.Select(), required=True)
 
 class addFeedback(forms.Form):
-	status = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	status = forms.ChoiceField(choices = FEEDBACK_STATUS_CHOICES, widget=forms.Select(), required=True)
 
 class addHousetype(forms.Form):
-	name = forms.CharField(max_length=50, required=True)
+	name = forms.CharField(max_length=20, required=True)
 
 class addHousingAddtnlinfo(forms.Form):
-     addtnlinfoid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-     description = forms.CharField(max_length=50, required=False)
-     housingid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+     addtnlinfoid = forms.ChoiceField(widget=forms.Select(), required=True)
+     description = forms.CharField(max_length=300, required=False)
+     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
 
 class addHousingOwner(forms.Form):
-	housingid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-	ownerid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	housingid = forms.ChoiceField(widget=forms.Select(), required=True)
+	ownerid = forms.ChoiceField(widget=forms.Select(), required=True)
 
 class addHousingRequest(forms.Form):
-	housingid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-	requestid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	housingid = forms.ChoiceField(widget=forms.Select(), required=True)
+	requestid = forms.ChoiceField(widget=forms.Select(), required=True)
 
 class addHousing(forms.Form):
 	name = forms.CharField(max_length=50, required=True)
-	area = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-    address = forms.CharField(max_length=50, required=True)
-    propertytype = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-	housetype = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-	maphtml = forms.CharField(max_length=50, required=False)
+	area = forms.ChoiceField(widget=forms.Select(), required=True)
+    address = forms.CharField(max_length=80, required=True)
+    propertytype = forms.ChoiceField(widget=forms.Select(), required=True)
+	housetype = forms.ChoiceField(widget=forms.Select(), required=True)
+	maphtml = forms.CharField(max_length=500, required=False)
 
 class addOwner(forms.Form):
-     name = forms.CharField(max_length=50, required=True)
-     fName = forms.CharField(max_length=50, required=True)
-     lName = forms.CharField(max_length=50, required=True)
-     email = forms.CharField(max_length=50, required=False)
+     uname = forms.CharField(max_length=70, required=True)
+     fName = forms.CharField(max_length=40, required=True)
+     lName = forms.CharField(max_length=40, required=True)
+     email = forms.CharField(max_length=60, required=False)
 
 class addPicture(forms.Form):
-	file = forms.CharField(max_length=50, required=True)
-	housingid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	file = forms.CharField(max_length=30, required=True)
+	housingid = forms.ChoiceField(widget=forms.Select(), required=True)
 
 class addPropertytype(forms.Form):
-	name = forms.CharField(max_length=50, required=True)
+	name = forms.CharField(max_length=20, required=True)
 
 class addRequest(forms.Form):
-     status = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+     status = forms.ChoiceField(choices = REQUEST_STATUS_CHOICES, widget=forms.Select(), required=True)
 
 class addRoomCost(forms.Form):
-	name = forms.CharField(max_length=50, required=True)
-	cost = forms.CharField(max_length=50, required=True)
-	housingid = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
+	name = forms.CharField(max_length=100, required=True)
+	cost = forms.FloatField(required=True)
+	housingid = forms.ChoiceField(widget=forms.Select(), required=True)
 		
