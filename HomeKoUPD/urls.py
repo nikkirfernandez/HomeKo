@@ -21,5 +21,6 @@ from mainpage import views
 urlpatterns = [
     #path('', views.enduserHome, name='home'),
     path('', include('mainpage.urls')),
-    path('admin/', admin.site.urls),
+    path('adminpage/', include('adminpage.urls')),
+    #path('admin/', admin.site.urls),
 ]
