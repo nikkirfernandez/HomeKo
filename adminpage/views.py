@@ -174,8 +174,8 @@ def editRequest(request, id):
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		'typeChoices' : REQUEST_TYPE_CHOICES
-		'statusChoices' : REQUEST_STATUS_CHOICES
+		'typeChoices' : REQUEST_TYPE_CHOICES,
+		'statusChoices' : REQUEST_STATUS_CHOICES,
 		'recordExist' : True,
 		# 'reqtype' : add, update or delete
 		# 'status' : NOT YET EVALUATED, CONTENT COMPLETE, CONTENT CORRECT or REQUEST DONE
