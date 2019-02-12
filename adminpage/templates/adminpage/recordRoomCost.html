@@ -1,16 +1,10 @@
-<!--
-# CODE HISTORY 
-# Sontillano     # Feb 10, 2019    # made layout of the page
--->
-
 <!DOCTYPE html>
 
 <html lang="en-us" >
      <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width+device-width, initial-scale=1">
-          <title>Log in | Django site admin</title>
-
+          <title>Change housing | Django site admin</title>
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -47,17 +41,7 @@
                .nav-link:hover {
                     color: white;
                }
-
-               .btn {
-                    background-color: #f09450;
-                    color: #705947;
-                    font-weight: 550;
-               }
-
-               .btn:hover {
-                    background-color: #f09450;
-                    color: #704525;
-               }
+              
           </style>
      </head>
      <body>
@@ -74,7 +58,7 @@
                          <ul class="navbar-nav mr-auto"></ul>
                          <ul class="navbar-nav">
                               <li class="nav-item">
-                                   <a class="nav-link" href="/" data-toggle="modal" data-target="#exampleModal">View Website</a>
+                                   <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">View Website</a>
                               </li>
                               <li class="nav-item dropdown">
                                    <a class="nav-link dropdown-toggle" id="tablesDropDown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tables</a>
@@ -96,33 +80,54 @@
           <!-- separator of navbar and actual page content -->
           <div class="top_content_separator"></div>
 
-          <!-- actual page content -->
-          <div class="container">
+          <!-- Container -->          
+          <div id="container">
                <div class="row title_owner justify-content-center">
-                    Admin Log in
-               </div>
-
-               <!--log in form-->
-               <div class="row form_login justify-content-center">
-                    <div class="col-4">
-                         <form method="post">
-                              <!--username textbox-->        
-                              <div class="form-group">
-                                   <label for="uname" class="formLabel">Username</label>
-                                   <input type="text" class="form-control" id="uname" name="uname" required="true">
-                              </div>
-
-                              <!--password textbox-->         
-                              <div class="form-group">
-                                   <label for="ownerPW" class="formLabel">Password </label>
-                                   <input type="password" class="form-control" id="adminPW" name="pw" placeholder="Password" required="true">
-                              </div>
-
-                              <!-- submit button -->
-                              <button type="submit" class="btn">Log in</button>          
-                         </form>
+                    <div class="col-8">
+                         RoomCost 
                     </div>
-              </div>
+               </div>
+               <form method="post">
+                    <div class="row justify-content-center form-group">
+                         <div class="col-3">
+                              <label class="col-form-label" >roomname</label>
+                         </div>
+                         <div class="col-6">
+                              <input type="text" class="form-control" name="name" value={{record.roomname}}>
+                         </div>
+                    </div> 
+                    <div class="row justify-content-center form-group">
+                         <div class="col-3">
+                              <label class="col-form-label" >roomcost</label>
+                         </div>
+                         <div class="col-6">
+                              <input type="text" class="form-control" name="cost" value={{record.cost}}>
+                         </div>
+                    </div> 
+                    <div class="row justify-content-center form-group">
+                         <div class="col-3">
+                              <label class="col-form-label">housing</label>
+                         </div>
+                         <div class="col-6">
+                              <select class="form-control" name="housingid">
+                                   {% if recordExist %}
+                                   <option selected value={{record.housingid.housingid}}>{{record.housingid.housingname}}</option>
+                                   {% endif %}
+                                   {% for housing in housingChoices %}
+                                   <option value={{ housing.housingid }}>{{housing.housingname}}</option>
+                                   {% endfor %}
+                              </select>
+                         </div>
+                    </div>  
+                    <div class="row justify-content-center form-group">
+                         <button type="button" class="btn btn-secondary">Cancel</button>
+                         {% if recordExist %}
+                         <button type="button" class="btn btn-secondary">Delete</button>
+                         {% endif %}
+                         <button type="submit" class="btn btn-primary">Save and add another</button>
+                         <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+               </form>
           </div>
 
           <!-- space at the bottom -->

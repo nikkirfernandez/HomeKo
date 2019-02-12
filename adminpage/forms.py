@@ -62,6 +62,7 @@ class addPropertytype(forms.Form):
 	name = forms.CharField(max_length=20, required=True)
 
 class addRequest(forms.Form):
+	 reqtype = forms.ChoiceField(choices = REQUEST_TYPE_CHOICES, widget=forms.Select(), required=True)
      status = forms.ChoiceField(choices = REQUEST_STATUS_CHOICES, widget=forms.Select(), required=True)
 
 class addRoomCost(forms.Form):

@@ -4,22 +4,28 @@
 # File creation date: Feb. 11, 2019
 
 INFOTYPE_CHOICES = (
-     (1, (1)),     # AMENITY
-     (2, (2)),     # FACILITY
-     (3, (3)),     # RULE
+     (1, ("Amenity")),     # AMENITY
+     (2, ("Facility")),     # FACILITY
+     (3, ("Rule")),     # RULE
 )
 
 FEEDBACK_STATUS_CHOICES = (
-     (1, (1)),     # PENDING
-     (2, (2)),     # APPROVED
-     (3, (3)),     # NOT APPROVED
+     (1, ("Pending")),     # PENDING
+     (2, ("Approved")),     # APPROVED
+     (3, ("Not Approved")),     # NOT APPROVED
+)
+
+REQUEST_TYPE_CHOICES = (
+     (1, ("Add")),     # ADD
+     (2, ("Update")),     # UPDATE
+     (3, ("Delete")),     # DELETE
 )
 
 REQUEST_STATUS_CHOICES = (
-     (1, (1)),     # NOT YET EVALUATED
-     (2, (2)),     # CONTENT COMPLETE
-     (3, (3)),     # CONTENT CORRECT
-     (4, (4)),     # REQUEST DONE
+     (1, ("Not yet evaluated")),     # NOT YET EVALUATED
+     (2, ("Content complete")),     # CONTENT COMPLETE
+     (3, ("Content correct")),     # CONTENT CORRECT
+     (4, ("Request done")),     # REQUEST DONE
 )
 
 TABLES_CHOICES = (
