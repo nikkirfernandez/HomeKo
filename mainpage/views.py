@@ -143,7 +143,14 @@ def enduserSearchResult(request):
                housingRooms = RoomCost.objects.filter(housingid=result)
                priceMin = housingRooms.aggregate(Min('cost'))
                priceMax = housingRooms.aggregate(Max('cost'))
-               priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
+               if priceMin['cost__min']==None and priceMax['cost__max']==None:
+                    priceRange.append("")
+               elif priceMin['cost__min']==None: 
+                    priceRange.append(str(priceMin['cost__min']))
+               elif priceMax['cost__max']==None: 
+                    priceRange.append(str(priceMax['cost__max']))
+               else:
+                    priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
 
           # zip to loop easily in the html
           searchResults = [{'item1': t[0], 'item2': t[1]} for t in zip(housingResults, priceRange)]
@@ -470,6 +477,7 @@ def enduserRequest(request):
           'amenityChoices' : AMENITY_CHOICES,
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
+          'requestChoices' : REQUEST_CHOICES,
      }
      return render(request, 'mainpage/request_enduser.html', content)
 
