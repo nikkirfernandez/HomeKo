@@ -18,21 +18,19 @@ CODE HISTORY
           <title>Search Result</title>
 
           <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans" rel="stylesheet"> 
-
-          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <link href="{% static 'mainpage/css/bootstrap.min.css' %}" rel="stylesheet">
+          <script src="{% static 'mainpage/js/bootstrap.min.js' %}"></script>
+<!--
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
           <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
+-->
           <style>
                .top_content_separator, .bottom_content_separator {
                     height: 80px;
                }
 
-               .navbar {
-                    background-color: #705947;
-               }
 
                .navbar-brand {
                     font-size: 23px;
@@ -46,14 +44,6 @@ CODE HISTORY
                .navbar-brand, .nav-link {
                     font-family: 'Nunito', sans-serif;
                     color: #f09450;
-               }
-
-               .navbar-brand:hover {
-                    color: #f09450;
-               } 
-
-               .nav-link:hover {
-                    color: white;
                }
 
                .btn {
@@ -70,6 +60,7 @@ CODE HISTORY
                .search_result {
                     font-family: 'Noto Serif SC', serif;
                     font-size: 30px;
+                    color: #705947;
                } 
 
                .single_record_top, .single_record_bottom {
@@ -80,6 +71,7 @@ CODE HISTORY
                .record_bottom_left, .record_bottom_right {
                     border-style: solid;
                     border-width: 0 0 1px 0;
+                    border-color: #e1e1e1;
                }
 
                .record_top_right, .record_bottom_right {
@@ -89,6 +81,7 @@ CODE HISTORY
                .record_top_left {
                     text-transform: uppercase;
                     font-weight: bold;
+                    color: #f09450;
                }
 
                .results_separator {
@@ -104,7 +97,7 @@ CODE HISTORY
       });
     </script>
      </head>
-     <body>
+     <body style="background-color:#f8f9fa">
           <!-- search modal: overlay search housing form -->
           <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
@@ -229,8 +222,8 @@ CODE HISTORY
                                    </div>                                  
                               </div>          
                               <div class="modal-footer">
-                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                   <button type="submit" class="btn btn-primary">Search</button>
+                                   <button type="button" class="btn" data-dismiss="modal">Close</button>
+                                   <button type="submit" class="btn">Search</button>
                               </div>
                          </form>          
                     </div>
@@ -242,7 +235,7 @@ CODE HISTORY
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
                <div class="container">
                     <a class="navbar-brand" href="/">
-                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="40" height="40" alt="">HomeKo
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="45" height="45" alt=""> HomeKo
                     </a>  
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -287,20 +280,22 @@ CODE HISTORY
                     {% for result in searchResults %}
                     <!--housing name and types-->
                     <div class="row single_record_top justify-content-center clickable-row" data-href="/record/{{ result.item1.housingid }}">
-                         <div class="col-4 record_top_left">
+                         <div class="col-4 record_top_left pt-1">
                               {{result.item1.housingname}}       
                          </div>
-                         <div class="col-4 record_top_right">
+                         <div class="col-4 record_top_right pt-1">
                               {{result.item1.propertytype.propertytypename}} | {{result.item1.housetype.housetypename}}
                          </div>
                     </div>
                     <!--housing area and price range-->
                     <div class="row single_record_bottom justify-content-center clickable-row" data-href="/">
-                         <div class="col-4 record_bottom_left pb-2">
+                         <div class="col-4 record_bottom_left pb-1">
                               {{result.item1.area.areaname}}
                          </div>
-                         <div class="col-4 record_bottom_right pb-2">
+                         <div class="col-4 record_bottom_right pb-1">
+                              {% if result.item2 %}
                               {{result.item2}}
+                              {% endif %}
                          </div>
                     </div>
                     {% endfor %}
