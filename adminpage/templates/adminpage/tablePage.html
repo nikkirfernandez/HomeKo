@@ -72,8 +72,21 @@
                th {
                     font-family: 'Open Sans', sans-serif;
                }
+
+               .clickable-row:hover {
+                    cursor: pointer;
+               }
               
           </style>
+
+          <script>
+               jQuery(document).ready(function($) {
+                    $(".clickable-row").click(function() {
+                         window.location = $(this).data("href");
+                    });
+               });
+          </script>
+
      </head>
      <body style="background-color:#f8f9fa">
           <!--navbar-->
@@ -134,7 +147,7 @@
                               </thead>
                               <tbody>
                                    {% for record in records %}
-                                   <tr>
+                                   <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.item1}}">
                                         <td>{{record.item1}}</td>
                                         <td>{{record.item2}}</td>
                                    </tr>
