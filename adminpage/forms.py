@@ -1,5 +1,5 @@
 # CODE HISTORY #
-# Sontillano     # Feb 11, 2019     # added the forms
+# Sontillano     # Feb 11, 2019     # added AdminLogin, addAdditionalinfo, addArea, addContact, addFeedback, addHousetype, addHousingAddtnlinfo, addHousingOwner, addHousingRequest, addHousing, addOwner, addPicture, addPropertytype, addRequest, addRoomCost
 
 # File creation date: Feb. 11, 2019
 

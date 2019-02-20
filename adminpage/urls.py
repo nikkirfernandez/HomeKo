@@ -1,5 +1,5 @@
 # CODE HISTORY #
-# Sontillano     # Feb 12, 2019     # added paths for enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
+# Sontillano     # Feb 12, 2019     # added paths
 
 # File creation date: Feb. 12, 2019
 
