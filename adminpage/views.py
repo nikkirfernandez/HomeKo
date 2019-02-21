@@ -1,6 +1,10 @@
 from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
 from .choices import *
+from .forms import *
+from .models import *
 
 # Create your views here.
 
@@ -56,6 +60,13 @@ def editAdditionalInfo(request, id):
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
 def addArea(request):
+	if request.method == "POST" :
+		addAreaForm1 = addAreaForm(request.POST)
+		print(addAreaForm1.errors)
+		if addAreaForm1.is_valid(): 
+			print("valid")
+
+	addAreaForm1 = addAreaForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
