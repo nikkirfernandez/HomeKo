@@ -189,13 +189,35 @@ def addHousing(request):
 
 def editHousing(request, id):
 
+	idVal = int(id[1])
+	print(idVal)
+	housing = Housing.objects.get(pk=idVal)
+	# form = addHousingForm(instance=housing)
+	areaChoices = Area.objects.all()
+	propertytypeChoices = Propertytype.objects.all()
+	housetypeChoices = Housetype.objects.all()
+
+	if request.method == "POST":
+		# houseModel = addHousingForm(request.POST, instance=housing)
+		houseName = request.POST['name']
+		houseArea = request.POST['area']
+		areaVal = Area.objects.filter(areaid=houseArea).first()
+		houseAddress = request.POST['address']
+		housepType = request.POST['propertytype']
+		pTypeVal = Propertytype.objects.filter(propertytypeid=housepType).first()
+		houseType = request.POST['housetype']
+		houseTypeVal = Housetype.objects.filter(housetypeid=houseType).first()
+
+		houseModel = Housing(housingname=houseName, area=areaVal, address=houseAddress, propertytype=pTypeVal,
+						 housetype=houseTypeVal, createdby="dummyuser", lastediteddate="dummyuser")
+		houseModel.save()
+
 	content = {
-		'tableChoices' : TABLES_CHOICES,
-		#'areaChoices' :  query of all records in Area table 
-		#'propertytypeChoices' :  query of all records in propertytype table 
-		#'housetypeChoices' :  query of all records in housetype table 
-		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'tableChoices': TABLES_CHOICES,
+		'areaChoices': areaChoices,
+		'propertytypeChoices': propertytypeChoices,
+		'housetypeChoices': housetypeChoices,
+		'recordExist': False,
 	}
 
 	return render(request, 'adminpage/recordHousing.html', content)
