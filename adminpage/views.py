@@ -25,12 +25,16 @@ def home(request):
 	return render(request, 'adminpage/adminHome.html', content)
 
 def tablePage(request, table):
-	# recordPK is a list of the primary keys 
+	# recordPK is a list of the primary keys
 	# recordName is a list of names that represent the records
-    # records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	recordPK = Area.objects.values_list('areaid')
+	recordName = Area.objects.values_list('areaname')
+	records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
 
-	records = Area.objects.all()
-	print(records)
+	print(recordPK)
+	print(recordName)
+
+	# records = zip(recordPK, recordName)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
