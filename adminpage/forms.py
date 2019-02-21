@@ -7,6 +7,7 @@
 
 from django import forms
 from .choices import *
+from .models import Area
 
 class AdminLogin(forms.Form):
      uname = forms.CharField(max_length=50, required=True)
@@ -18,7 +19,13 @@ class addAdditionalinfoForm(forms.Form):
 
 class addAreaForm(forms.Form):
      name = forms.CharField(max_length=30, required=True)
-		
+
+     # class Meta:
+     #      model = Area
+     #      fields = [
+     #           'areaname'
+     #      ]
+	#
 class addContactForm(forms.Form):
      contactno = forms.CharField(max_length=1, required=True)
      ownerid = forms.ChoiceField(widget=forms.Select(), required=True)
