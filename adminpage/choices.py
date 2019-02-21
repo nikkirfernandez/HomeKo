@@ -1,3 +1,5 @@
+# This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
+
 # CODE HISTORY #
 # Sontillano     # Feb 11, 2019     # added INFOTYPE_CHOICES, FEEDBACK_STATUS_CHOICES, REQUEST_TYPE_CHOICES, REQUEST_STATUS_CHOICES, TABLES_CHOICES
 
