@@ -214,10 +214,10 @@ class Housing(models.Model):
 	propertytype = models.ForeignKey('Propertytype', models.DO_NOTHING, db_column='propertyType')  # Field name made lowercase.
 	housetype = models.ForeignKey(Housetype, models.DO_NOTHING, db_column='houseType')  # Field name made lowercase.
 	maphtml = models.CharField(db_column='mapHTML', max_length=500, blank=True, null=True)  # Field name made lowercase.
-	creationdate = models.DateField(db_column='creationDate')  # Field name made lowercase.
+	creationdate = models.DateField(db_column='creationDate', auto_now_add=True)  # Field name made lowercase.
 	createdby = models.CharField(db_column='createdBy', max_length=45)  # Field name made lowercase.
-	lasteditedby = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
-	lastediteddate = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
+	lastediteddate = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
+	lasteditedby = models.DateField(db_column='lastEditedBy', auto_now_add=True)  # Field name made lowercase.
 
 	class Meta:
 		managed = False
