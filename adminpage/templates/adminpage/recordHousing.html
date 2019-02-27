@@ -173,7 +173,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="name" value={{record.housingname}}>
+                              <input type="text" class="form-control" name="name" value={{record.housingname}} required="true">
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -181,7 +181,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">area</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="area">
+                              <select class="form-control" name="area" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.area.areaid}}>{{record.area.areaname}}</option>
                                    {% endif %}
@@ -196,7 +196,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >address</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="address" value={{record.address}}>
+                              <input type="text" class="form-control" name="address" value={{record.address}} required="true">
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -204,7 +204,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">propertytype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="propertytype">
+                              <select class="form-control" name="propertytype" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.propertytype.propertytypeid}}>{{record.propertytype.propertytypename}}</option>
                                    {% endif %}
@@ -219,7 +219,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">housetype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="housetype">
+                              <select class="form-control" name="housetype" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.housetype.housetypeid}}>{{record.housetype.housetypename}}</option>
                                    {% endif %}

@@ -172,7 +172,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">housing</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="housingid">
+                              <select class="form-control" name="housingid" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.housingid.housingid}}>{{record.housingid.housingname}}</option>
                                    {% endif %}
@@ -187,7 +187,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">owner</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="ownerid">
+                              <select class="form-control" name="ownerid" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.ownerid.ownerid}}>{{record.ownerid.ownername}}</option>
                                    {% endif %}

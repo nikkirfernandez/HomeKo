@@ -168,7 +168,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">request type</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="reqtype">
+                              <select class="form-control" name="reqtype" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.reqtype}}>{{reqtype}}</option>
                                    {% endif %}
@@ -191,7 +191,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">status</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="status">
+                              <select class="form-control" name="status" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.status}}>{{status}}</option>
                                    {% endif %}

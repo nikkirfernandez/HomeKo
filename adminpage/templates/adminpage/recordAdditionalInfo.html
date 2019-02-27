@@ -170,7 +170,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="name" value={{record.additionalinfoname}}>
+                              <input type="text" class="form-control" name="name" value={{record.additionalinfoname}} required="true">
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -178,7 +178,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">infotype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="infotype">
+                              <select class="form-control" name="infotype" required="true">
                                    {% if recordExist %}
                                    <option selected value={{record.additionalinfotype}}>{{additionalinfotype}}</option>
                                    {% endif %}
