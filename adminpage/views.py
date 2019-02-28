@@ -232,9 +232,12 @@ def editHousing(request, id):
 
 def addPropertytype(request):
 
+	form = addPropertytypeForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
@@ -251,6 +254,8 @@ def editPropertytype(request, id):
 
 def editRequest(request, id):
 
+	form = addRequestForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'typeChoices' : REQUEST_TYPE_CHOICES,
@@ -259,17 +264,21 @@ def editRequest(request, id):
 		# 'reqtype' : add, update or delete
 		# 'status' : NOT YET EVALUATED, CONTENT COMPLETE, CONTENT CORRECT or REQUEST DONE
 		# 'record' : record, 				Ito yung record na result ng query sa db
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordRequest.html', content)
 
 def addHousingAdditionalInfo(request):
 
+	form = addHousingAddtnlinfoForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'infoChoices' :    query of all records in additionalinfo table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
@@ -288,11 +297,14 @@ def editHousingAdditionalInfo(request, id):
 
 def addHousingOwner(request):
 
+	form = addHousingOwnerForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'ownerChoices' :    query of all records in Owner table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
@@ -311,11 +323,14 @@ def editHousingOwner(request, id):
 
 def addHousingRequest(request):
 
+	form = addHousingRequestForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'requestChoices' :    query of all records in Request table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
@@ -334,10 +349,13 @@ def editHousingRequest(request, id):
 
 def addPicture(request):
 
+	form = addPictureForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordPicture.html', content)
@@ -355,10 +373,13 @@ def editPicture(request, id):
 
 def addRoomCost(request):
 
+	form = addRoomCostForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
@@ -376,9 +397,12 @@ def editRoomCost(request, id):
 
 def addOwner(request):
 
+	form = addOwnerForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordOwner.html', content)

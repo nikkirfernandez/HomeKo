@@ -6,6 +6,7 @@
 
 from django import forms
 from .choices import *
+from .models import *
 
 
 class SearchHousing(forms.Form):
