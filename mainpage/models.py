@@ -6,12 +6,13 @@
 
 
 from django.db import models
+from .choices import *
 
 # This class contains the table for additionalInfo
 class Additionalinfo(models.Model):
     additionalinfoid = models.AutoField(db_column='additionalInfoID', primary_key=True)
     additionalinfoname = models.CharField(db_column='additionalInfoName', max_length=70)
-    additionalinfotype = models.IntegerField(db_column='additionalInfoType')
+    additionalinfotype = models.IntegerField(db_column='additionalInfoType', choices = INFOTYPE_CHOICES)
 
     class Meta:
         managed = False
@@ -185,7 +186,7 @@ class Feedback(models.Model):
 	feedbackid = models.AutoField(db_column='feedbackID', primary_key=True)  # Field name made lowercase.
 	housingid = models.ForeignKey('Housing', models.DO_NOTHING, db_column='housingID')  # Field name made lowercase.
 	comment = models.CharField(max_length=500, db_column='comment')
-	status = models.IntegerField(db_column='status')
+	status = models.IntegerField(db_column='status', choices = FEEDBACK_STATUS_CHOICES)
 	dateposted = models.DateField(db_column='datePosted')  # Field name made lowercase.
 
 	class Meta:
@@ -214,11 +215,7 @@ class Housing(models.Model):
 	propertytype = models.ForeignKey('Propertytype', models.DO_NOTHING, db_column='propertyType')  # Field name made lowercase.
 	housetype = models.ForeignKey(Housetype, models.DO_NOTHING, db_column='houseType')  # Field name made lowercase.
 	maphtml = models.CharField(db_column='mapHTML', max_length=500, blank=True, null=True)  # Field name made lowercase.
-	creationdate = models.DateField(db_column='creationDate')  # Field name made lowercase.
-	createdby = models.CharField(db_column='createdBy', max_length=45)  # Field name made lowercase.
-	lasteditedby = models.CharField(db_column='lastEditedDate', max_length=45)  # Field name made lowercase.
-	lastediteddate = models.DateField(db_column='lastEditedBy')  # Field name made lowercase.
-
+	
 	class Meta:
 		managed = False
 		db_table = 'housing'
@@ -241,9 +238,9 @@ class Propertytype(models.Model):
 #This class contains the attributes for Request Table to be added to the connected MySQL Database
 class Request(models.Model):
 	requestid = models.AutoField(db_column='requestID', primary_key=True)  # Field name made lowercase.
-	reqtype = models.IntegerField(db_column='type')
+	reqtype = models.IntegerField(db_column='type', choices = REQUEST_TYPE_CHOICES)
 	message = models.CharField(db_column='message', max_length=500)
-	status = models.IntegerField(db_column='status')
+	status = models.IntegerField(db_column='status', choices = REQUEST_STATUS_CHOICES)
 	datesent = models.DateField(db_column='dateSent')  # Field name made lowercase.
 	sender = models.CharField(db_column='sender', max_length=50)
 

@@ -103,8 +103,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               Are you sure want to delete this record?
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btnY">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -173,7 +175,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="name" value={{record.housingname}}>
+                              {{form.housingname}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -181,14 +183,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">area</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="area">
-                                   {% if recordExist %}
-                                   <option selected value={{record.area.areaid}}>{{record.area.areaname}}</option>
-                                   {% endif %}
-                                   {% for area in areaChoices %}
-                                   <option value={{ area.areaid }}>{{area.areaname}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.area}}
                          </div>
                     </div>
                     <div class="row justify-content-center form-group">
@@ -196,7 +191,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >address</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="address" value={{record.address}}>
+                              {{form.address}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -204,14 +199,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">propertytype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="propertytype">
-                                   {% if recordExist %}
-                                   <option selected value={{record.propertytype.propertytypeid}}>{{record.propertytype.propertytypename}}</option>
-                                   {% endif %}
-                                   {% for type in propertytypeChoices %}
-                                   <option value={{ type.propertytypeid }}>{{type.propertytypename}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.propertytype}}
                          </div>
                     </div>  
                     <div class="row justify-content-center form-group">
@@ -219,14 +207,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">housetype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="housetype">
-                                   {% if recordExist %}
-                                   <option selected value={{record.housetype.housetypeid}}>{{record.housetype.housetypename}}</option>
-                                   {% endif %}
-                                   {% for type in housetypeChoices %}
-                                   <option value={{ type.housetypeid }}>{{type.housetypename}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.housetype}}
                          </div>
                     </div>  
                     <div class="row justify-content-center form-group">
@@ -234,27 +215,29 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >mapHTML</label>
                          </div>
                          <div class="col-7">
-                              <textarea class="form-control" rows="3" value="{{record.maphtml}}" name="maphtml"></textarea>
+                              {{form.maphtml}}
                          </div>
                     </div> 
-
+                    
                     <!--separates the title and table-->
                     <div class="separator"></div> 
 
                     <div class="row justify-content-end form-group">
                          <div class="col-auto align-self-end">
-                              <button type="button" class="btn btnN">Cancel</button>
+                              <a type="button" class="btn btnN" href="/adminpage/Housing">Cancel</a>
                          </div>
                          {% if recordExist %}
                          <div class="col-auto align-self-end">
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
+                         {% if not recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save and add another</button>
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
+                         {% endif %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save</button>
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>
                </form>

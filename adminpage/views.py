@@ -11,7 +11,7 @@ from django.urls import reverse
 
 from .choices import *
 from .forms import *
-from .models import *
+from mainpage.models import *
 
 # Create your views here.
 
@@ -35,49 +35,84 @@ def tablePage(request, table):
 	# recordPK is a list of the primary keys 
 	# recordName is a list of names that represent the records
     # records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	if table=="Housing":
+		recordPK = Housing.objects.values_list('housingid', flat=True).order_by('housingid')
+		recordName = Housing.objects.values_list('housingname', flat=True).order_by('housingid')		
+	elif table=="Additionalinfo":
+		recordPK = Additionalinfo.objects.values_list('additionalinfoid', flat=True).order_by('additionalinfoid')
+		recordName = Additionalinfo.objects.values_list('additionalinfoname', flat=True).order_by('additionalinfoid')
+
+	records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'tableName' : table,
-		# 'records' : records,           
+		'records' : records,           
 	}
 
 	return render(request, 'adminpage/tablePage.html', content)
 
 def addAdditionalInfo(request):
 
+	if request.method == "POST":
+		form = addAdditionalinfoForm(request.POST)
+
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addAdditionalInfo', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
+			
+	form = addAdditionalinfoForm()
+	#print(form)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'infoChoices' : INFOTYPE_CHOICES,
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
 def editAdditionalInfo(request, id):
 
+	record = Additionalinfo.objects.get(additionalinfoid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
+	if request.method == "POST":
+		form = addAdditionalinfoForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addAdditionalInfo', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
+			
+	form = addAdditionalinfoForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'infoChoices' : INFOTYPE_CHOICES,
 		'recordExist' : True,
 		# 'additionalinfotype' : amenity, facility or rule
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 				#Ito yung record na result ng query sa db
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
 def addArea(request):
-	if request.method == "POST" :
-		addAreaForm1 = addAreaForm(request.POST)
-		print(addAreaForm1.errors)
-		if addAreaForm1.is_valid(): 
-			print("valid")
 
-	addAreaForm1 = addAreaForm()
+	form = addAreaForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordArea.html', content)
@@ -94,10 +129,13 @@ def editArea(request, id):
 
 def addContact(request):
 
+	form = addContactForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'ownerChoices' :  query of all owners in Owner table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordContact.html', content)
@@ -115,21 +153,27 @@ def editContact(request, id):
 
 def editFeedback(request, id):
 
+	form = addFeedbackForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'statusChoices' :  FEEDBACK_STATUS_CHOICES,
 		# 'status' : pending, approved or not approved
 		'recordExist' : True,
 		# 'record' : record, 				Ito yung record na result ng query sa db
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
 def addHousetype(request):
 
+	form = addHousetypeForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousetype.html', content)
@@ -145,35 +189,62 @@ def editHousetype(request, id):
 	return render(request, 'adminpage/recordHousetype.html', content)
 
 def addHousing(request):
+	
+	if request.method == "POST":
+		form = addHousingForm(request.POST)
+
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousing', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+			
+	form = addHousingForm()
+	#print(form)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'areaChoices' :  query of all records in Area table 
-		#'propertytypeChoices' :  query of all records in propertytype table 
-		#'housetypeChoices' :  query of all records in housetype table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
 def editHousing(request, id):
+	record = Housing.objects.get(housingid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+	if request.method == "POST":
+		form = addHousingForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousing', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+			
+	form = addHousingForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'areaChoices' :  query of all records in Area table 
-		#'propertytypeChoices' :  query of all records in propertytype table 
-		#'housetypeChoices' :  query of all records in housetype table 
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 				#Ito yung record na result ng query sa db
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
 def addPropertytype(request):
 
+	form = addPropertytypeForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
@@ -190,6 +261,8 @@ def editPropertytype(request, id):
 
 def editRequest(request, id):
 
+	form = addRequestForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'typeChoices' : REQUEST_TYPE_CHOICES,
@@ -198,17 +271,21 @@ def editRequest(request, id):
 		# 'reqtype' : add, update or delete
 		# 'status' : NOT YET EVALUATED, CONTENT COMPLETE, CONTENT CORRECT or REQUEST DONE
 		# 'record' : record, 				Ito yung record na result ng query sa db
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordRequest.html', content)
 
 def addHousingAdditionalInfo(request):
 
+	form = addHousingAddtnlinfoForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'infoChoices' :    query of all records in additionalinfo table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
@@ -227,11 +304,14 @@ def editHousingAdditionalInfo(request, id):
 
 def addHousingOwner(request):
 
+	form = addHousingOwnerForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'ownerChoices' :    query of all records in Owner table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
@@ -250,11 +330,14 @@ def editHousingOwner(request, id):
 
 def addHousingRequest(request):
 
+	form = addHousingRequestForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		#'requestChoices' :    query of all records in Request table 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
@@ -273,10 +356,13 @@ def editHousingRequest(request, id):
 
 def addPicture(request):
 
+	form = addPictureForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordPicture.html', content)
@@ -294,10 +380,13 @@ def editPicture(request, id):
 
 def addRoomCost(request):
 
+	form = addRoomCostForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		#'housingChoices' :    query of all records in housing table 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
@@ -315,9 +404,12 @@ def editRoomCost(request, id):
 
 def addOwner(request):
 
+	form = addOwnerForm()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES, 
 		'recordExist' : False,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordOwner.html', content)

@@ -102,8 +102,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               Are you sure want to delete this record?
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btnY">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -170,7 +172,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="name" value={{record.additionalinfoname}}>
+                              {{form.additionalinfoname}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -178,14 +180,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">infotype</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="infotype">
-                                   {% if recordExist %}
-                                   <option selected value={{record.additionalinfotype}}>{{additionalinfotype}}</option>
-                                   {% endif %}
-                                   {% for n, info in infoChoices %}
-                                   <option value={{ n }}>{{info}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.additionalinfotype}}
                          </div>
                     </div> 
 
@@ -194,18 +189,20 @@ This is a course requirement for CS 192 Software Engineering II under the superv
 
                     <div class="row justify-content-end form-group">
                          <div class="col-auto align-self-end">
-                              <button type="button" class="btn btnN">Cancel</button>
+                              <a type="button" class="btn btnN" href="/adminpage/Additionalinfo">Cancel</a>
                          </div>
                          {% if recordExist %}
                          <div class="col-auto align-self-end">
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
+                         {% if not recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save and add another</button>
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
+                         {% endif %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save</button>
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>
                </form>
