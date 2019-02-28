@@ -103,8 +103,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               Are you sure want to delete this record?
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btnY">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -172,7 +174,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="uname" value={{record.ownername}} required="true">
+                              {{form.ownername}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -180,7 +182,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >first name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="fname" value={{record.firstname}} required="true">
+                              {{form.firstname}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -188,7 +190,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >last name</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="lname" value={{record.lastname}} required="true">
+                              {{form.lastname}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -196,7 +198,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >email</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="email" value={{record.email}}>
+                              {{form.email}}
                          </div>
                     </div> 
 
@@ -212,11 +214,13 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
+                         {% if not recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save and add another</button>
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
+                         {% endif %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save</button>
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>
                </form>

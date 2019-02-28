@@ -103,8 +103,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               Are you sure want to delete this record?
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btnY">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -172,7 +174,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >filename</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="file" value={{record.filename}} required="true">
+                              {{form.filename}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -180,14 +182,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">housing</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="housingid" required="true">
-                                   {% if recordExist %}
-                                   <option selected value={{record.housingid.housingid}}>{{record.housingid.housingname}}</option>
-                                   {% endif %}
-                                   {% for housing in housingChoices %}
-                                   <option value={{ housing.housingid }}>{{housing.housingname}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.housingid}}
                          </div>
                     </div>  
 
@@ -203,11 +198,13 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
+                         {% if not recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save and add another</button>
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
+                         {% endif %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save</button>
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>
                </form>

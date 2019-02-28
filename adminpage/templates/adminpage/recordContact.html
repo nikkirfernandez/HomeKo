@@ -103,8 +103,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               Are you sure want to delete this record?
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                              <button type="submit" class="btn btnY">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -173,7 +175,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName" >contact no.</label>
                          </div>
                          <div class="col-7">
-                              <input type="text" class="form-control" name="contactno" value={{record.contactno}} required="true">
+                              {{form.contactno}}
                          </div>
                     </div> 
                     <div class="row justify-content-center form-group">
@@ -181,14 +183,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <label class="col-form-label fieldName">owner</label>
                          </div>
                          <div class="col-7">
-                              <select class="form-control" name="ownerid" required="true">
-                                   {% if recordExist %}
-                                   <option selected value={{record.ownerid.ownerid}}>{{record.ownerid.ownername}}</option>
-                                   {% endif %}
-                                   {% for owner in ownerChoices %}
-                                   <option value={{ owner.ownerid }}>{{owner.ownername}}</option>
-                                   {% endfor %}
-                              </select>
+                              {{form.ownerid}}
                          </div>
                     </div>  
 
@@ -204,11 +199,13 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
+                         {% if not recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save and add another</button>
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
+                         {% endif %}
                          <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY">Save</button>
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>
                </form>

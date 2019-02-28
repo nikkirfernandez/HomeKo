@@ -7,68 +7,178 @@
 
 from django import forms
 from .choices import *
+from mainpage.models import *
 
 class AdminLogin(forms.Form):
      uname = forms.CharField(max_length=50, required=True)
      pw = forms.CharField(max_length=50, required=True)
 
-class addAdditionalinfoForm(forms.Form):
-     name = forms.CharField(max_length=70, required=True)
-     infotype = forms.ChoiceField(choices = INFOTYPE_CHOICES, widget=forms.Select(), required=True)
+class addAdditionalinfoForm(forms.ModelForm):
+    
+     class Meta:
+          model = Additionalinfo
+          fields = ['additionalinfoname', 'additionalinfotype']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addAreaForm(forms.Form):
-     name = forms.CharField(max_length=30, required=True)
+class addAreaForm(forms.ModelForm):
+
+     class Meta:
+          model = Area
+          fields = ['areaname']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 		
-class addContactForm(forms.Form):
-     contactno = forms.CharField(max_length=1, required=True)
-     ownerid = forms.ChoiceField(widget=forms.Select(), required=True)
+class addContactForm(forms.ModelForm):
 
-class addFeedbackForm(forms.Form):
-     status = forms.ChoiceField(choices = FEEDBACK_STATUS_CHOICES, widget=forms.Select(), required=True)
+     class Meta:
+          model = Contact
+          fields = ['contactno', 'ownerid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addHousetypeForm(forms.Form):
-     name = forms.CharField(max_length=20, required=True)
+class addFeedbackForm(forms.ModelForm):
+  
+     class Meta:
+          model = Feedback
+          fields = ['status']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addHousingAddtnlinfoForm(forms.Form):
-     addtnlinfoid = forms.ChoiceField(widget=forms.Select(), required=True)
-     description = forms.CharField(max_length=300, required=False)
-     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
+class addHousetypeForm(forms.ModelForm):
 
-class addHousingOwnerForm(forms.Form):
-     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
-     ownerid = forms.ChoiceField(widget=forms.Select(), required=True)
+     class Meta:
+          model = Housetype
+          fields = ['housetypename']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addHousingRequestForm(forms.Form):
-     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
-     requestid = forms.ChoiceField(widget=forms.Select(), required=True)
+class addHousingAddtnlinfoForm(forms.ModelForm):
+     description = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), max_length=300, required=False, )
+     class Meta:
+          model = HousingAdditionalInfo
+          fields = ['additionalinfoid', 'description', 'housingid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addHousingForm(forms.Form):
-     name = forms.CharField(max_length=50, required=True)
-     area = forms.ChoiceField(widget=forms.Select(), required=True)
-     address = forms.CharField(max_length=80, required=True)
-     propertytype = forms.ChoiceField(widget=forms.Select(), required=True)
-     housetype = forms.ChoiceField(widget=forms.Select(), required=True)
-     maphtml = forms.CharField(max_length=500, required=False)
+class addHousingOwnerForm(forms.ModelForm):
 
-class addOwnerForm(forms.Form):
-     uname = forms.CharField(max_length=70, required=True)
-     fName = forms.CharField(max_length=40, required=True)
-     lName = forms.CharField(max_length=40, required=True)
-     email = forms.CharField(max_length=60, required=False)
+     class Meta:
+          model = HousingOwner
+          fields = ['housingid', 'ownerid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addPictureForm(forms.Form):
-     file = forms.CharField(max_length=30, required=True)
-     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
+class addHousingRequestForm(forms.ModelForm):
 
-class addPropertytypeForm(forms.Form):
-     name = forms.CharField(max_length=20, required=True)
+     class Meta:
+          model = HousingRequest
+          fields = ['housingid', 'requestid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addRequestForm(forms.Form):
-     reqtype = forms.ChoiceField(choices = REQUEST_TYPE_CHOICES, widget=forms.Select(), required=True)
-     status = forms.ChoiceField(choices = REQUEST_STATUS_CHOICES, widget=forms.Select(), required=True)
+class addHousingForm(forms.ModelForm):
+     maphtml = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), max_length=500, required=False)
+     class Meta:
+          model = Housing
+          fields = ['housingname', 'area', 'address', 'propertytype', 'housetype', 'maphtml']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
-class addRoomCostForm(forms.Form):
-     name = forms.CharField(max_length=100, required=True)
-     cost = forms.FloatField(required=True)
-     housingid = forms.ChoiceField(widget=forms.Select(), required=True)
+class addOwnerForm(forms.ModelForm):
+
+     class Meta:
+          model = Owner
+          fields = ['ownername', 'firstname', 'lastname', 'email']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
+
+class addPictureForm(forms.ModelForm):
+
+     class Meta:
+          model = Picture
+          fields = ['filename', 'housingid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
+
+
+class addPropertytypeForm(forms.ModelForm):
+
+     class Meta:
+          model = Propertytype
+          fields = ['propertytypename']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
+
+class addRequestForm(forms.ModelForm):
+
+     class Meta:
+          model = Request
+          fields = ['reqtype', 'status']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
+
+class addRoomCostForm(forms.ModelForm):
+
+     class Meta:
+          model = RoomCost
+          fields = ['roomname', 'cost', 'housingid']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 		
