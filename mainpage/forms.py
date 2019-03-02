@@ -6,6 +6,7 @@
 
 from django import forms
 from .choices import *
+from .models import *
 
 
 class SearchHousing(forms.Form):
@@ -36,3 +37,14 @@ class SignUp(forms.Form):
      lname = forms.CharField(max_length=40, required=True)
      fname = forms.CharField(max_length=40, required=True)
      contact = forms.CharField(max_length=70, required=True)  
+
+class AddComment(forms.ModelForm):
+     class Meta:
+          model = Feedback
+          fields = ['comment']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })

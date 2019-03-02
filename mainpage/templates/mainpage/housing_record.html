@@ -279,8 +279,10 @@ CODE HISTORY
                               Your comment will be verified by the administrator before it will be posted.
                          </div>
                          <div class="modal-footer">
-                              <button type="button" class="btn" data-dismiss="modal">Cancel</button>
-                              <button type="button" class="btn">OK</button>
+                              <form method='GET' action='#'>
+                                   <button type="button" class="btn btnN" data-dismiss="modal">Cancel posting</button>
+                                   <button type="submit" class="btn btnY" name="_delete">OK</button>
+                              </form>
                          </div>
                     </div>
                </div>
@@ -507,7 +509,7 @@ CODE HISTORY
                     </div>
                </div>
                {% endfor %}
-               <form onsubmit="openModal()" id="myForm">
+               <form method="POST" onsubmit="openModal()" id="myForm">
                     <div class="row justify-content-center">          
                          <div class="col-7 comment_new pt-4">
                               <textarea class="form-control" id="requestContent" rows="1" placeholder="Add comment" required="true"></textarea>
