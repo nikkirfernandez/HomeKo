@@ -129,4 +129,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     STATIC_PATH,
     os.path.join(BASE_DIR,'adminpage/static'),
+    os.path.join(BASE_DIR,'mainpage/static'),
 )

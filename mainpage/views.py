@@ -10,6 +10,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+import datetime
 
 from .forms import *
 from .choices import *
@@ -276,11 +277,25 @@ def enduserRecord(request, housingid):
      rules = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=3)
      comments = Feedback.objects.filter(housingid=housingid, status=2)
 
+     searchForm = SearchHousing()
+     commentForm = AddComment()
+     commentFlag = 0
+          
      # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
-
-          if searchForm.is_valid():     
+          commentForm = AddComment(request.POST)
+          print("post")
+          if commentForm.is_valid():
+               if commentForm.is_valid():
+                    print("form valid")
+                    post = commentForm.save(commit=False)
+                    post.housingid = Housing.objects.get(housingid=housingid)
+                    post.status = 1
+                    post.dateposted = datetime.date.today()   
+                    post.save()
+                    return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+          elif searchForm.is_valid():     
                filtersSet1={}
                filtersSet2=[]     
                
@@ -358,9 +373,14 @@ def enduserRecord(request, housingid):
                request.session['searchResult'] = results3
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
-     
-     searchForm = SearchHousing()
-
+          """
+          if '_comment' in request.GET and commentFlag==1:
+               post = commentForm.save(commit=False)
+               post.housingid = housingid
+               post.status = 1
+               post.dateposted = datetime.date.today()   
+               post.save()
+"""
      content = {
           'housing' : housing,
           'ownername' : ownerName,
@@ -376,6 +396,7 @@ def enduserRecord(request, housingid):
           'amenityChoices' : AMENITY_CHOICES,
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
+          'commentForm' : commentForm,
      }
      return render(request, 'mainpage/housing_record.html', content)
 
