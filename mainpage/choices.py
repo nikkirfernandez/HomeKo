@@ -72,6 +72,7 @@ REQUEST_TYPE_CHOICES = (
      (1, ("Add")),     # ADD
      (2, ("Update")),     # UPDATE
      (3, ("Delete")),     # DELETE
+     (4, ("Report Comment")),
 )
 
 REQUEST_STATUS_CHOICES = (

@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db.models.functions import Concat
+from django.contrib.auth import authenticate, login
 
 from .choices import *
 from .forms import *
@@ -18,8 +19,21 @@ from mainpage.models import *
 
 def login(request):
 
+	if request.method == "POST":
+		form = AdminLogin(request.POST)
+		if form.is_valid():
+			uname = request.POST['uname']
+			pw = request.POST['pw']
+			user = authenticate(request, username=uname, password=pw)
+			if user is not None:
+				return HttpResponseRedirect(reverse('home'))
+			else:
+				return HttpResponseRedirect(reverse('login'))
+	form = AdminLogin()
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/login.html', content)
@@ -50,9 +64,17 @@ def tablePage(request, table):
 		recordPK = Contact.objects.values_list('contactid', flat=True).order_by('contactid')
 		recordName = Contact.objects.values_list('contactno', flat=True).order_by('contactid')
 	elif table == "Feedback":
-		######## EDIT THIS ######## RECORDNAME: HOUSINGNAME AND FIRST 5 WORDS OF COMMENT 
-		recordPK = Feedback.objects.values_list('feedbackid', flat=True).order_by('feedbackid')
-		recordName = Feedback.objects.values_list('status', flat=True).order_by('feedbackid')
+		recordPending = Feedback.objects.filter(status=1).order_by('feedbackid')
+		recordApproved = Feedback.objects.filter(status=2).order_by('feedbackid')
+		recordNotApproved = Feedback.objects.filter(status=3).order_by('feedbackid')
+		content = {
+			'tableChoices' : TABLES_CHOICES,
+			'tableName' : table,     
+			'pending' : recordPending,
+			'approved' : recordApproved,
+			'notapproved' : recordNotApproved,    
+		}
+		return render(request, 'adminpage/feedbackTabs.html', content)
 	elif table == "Housetype":
 		recordPK = Housetype.objects.values_list('housetypeid', flat=True).order_by('housetypeid')
 		recordName = Housetype.objects.values_list('housetypename', flat=True).order_by('housetypeid')
@@ -63,6 +85,19 @@ def tablePage(request, table):
 		######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST 
 		recordPK = Request.objects.values_list('requestid', flat=True).order_by('requestid')
 		recordName = Request.objects.values_list('reqtype', flat=True).order_by('requestid')
+	
+		recordPending = Request.objects.filter(status=1).order_by('requestid')
+		recordApproved = Request.objects.filter(status=2).order_by('requestid')
+		recordNotApproved = Request.objects.filter(status=3).order_by('requestid')
+
+		content = {
+			'tableChoices' : TABLES_CHOICES,
+			'tableName' : table,     
+			'pending' : recordPending,
+			'approved' : recordApproved,
+			'notapproved' : recordNotApproved,    
+		}
+		return render(request, 'adminpage/requestTabs.html', content)
 	elif table == "HousingRequest":
 		recordPK = HousingRequest.objects.values_list('housingrequestid', flat=True).order_by('housingrequestid')
 		recordName = HousingRequest.objects.values_list('housingid__housingname', 'requestid__reqtype').order_by('housingrequestid')

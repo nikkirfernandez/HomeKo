@@ -279,22 +279,32 @@ def enduserRecord(request, housingid):
 
      searchForm = SearchHousing()
      commentForm = AddComment()
+     reportForm = ReportComment()
      commentFlag = 0
           
      # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
           commentForm = AddComment(request.POST)
+          reportForm = ReportComment(request.POST)
           print("post")
           if commentForm.is_valid():
-               if commentForm.is_valid():
-                    print("form valid")
-                    post = commentForm.save(commit=False)
-                    post.housingid = Housing.objects.get(housingid=housingid)
-                    post.status = 1
-                    post.dateposted = datetime.date.today()   
-                    post.save()
-                    return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+               print("form valid")
+               post = commentForm.save(commit=False)
+               post.housingid = Housing.objects.get(housingid=housingid)
+               post.status = 1
+               post.dateposted = datetime.date.today()   
+               post.save()
+               return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+          elif reportForm.is_valid():
+               post = reportForm.save(commit=False)
+               post.reqtype=4
+               post.status = 1
+               post.datesent = datetime.date.today() 
+               post.save()  
+
+               HousingRequest.objects.create(housingid=Housing.objects.get(housingid=housingid), requestid=Request.objects.get(requestid=post.requestid))
+               return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
           elif searchForm.is_valid():     
                filtersSet1={}
                filtersSet2=[]     
@@ -397,6 +407,7 @@ def enduserRecord(request, housingid):
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
           'commentForm' : commentForm,
+          'reportCommentForm' : reportForm,
      }
      return render(request, 'mainpage/housing_record.html', content)
 

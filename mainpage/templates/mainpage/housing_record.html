@@ -96,7 +96,7 @@ CODE HISTORY
                     margin: auto;
                }
 
-               .comment_date {
+               .comment_report {
                     border-style: solid;
                     border-width: 0 0 1px 0;
                     border-color: #e1e1e1;
@@ -266,7 +266,52 @@ CODE HISTORY
           </div>
           <!--search modal end-->
 
-          <!-- Modal -->
+          <!--report comment modal start-->
+          <div class="modal fade" id="commentReport" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                         <form method="post">
+                         {% csrf_token %}
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Report Comment</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="price_modal" class="col-form-label">Email</label>
+                                        </div>
+                                        <div class="col-8">
+                                             {{reportCommentForm.sender}}
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="price_modal" class="col-form-label">Message</label>
+                                        </div>
+                                        <div class="col-8">
+                                             {{reportCommentForm.message}}
+                                        </div>
+                                   </div>
+                                   <div class="form-group row">
+                                        <div class="col">
+                                             *Do not alter or remove comment id.
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btnN" data-dismiss="modal"">Cancel</button>
+                                   <button type="submit" class="btn btnN">Submit</button>
+                              </div>
+                         </form>
+                    </div>
+               </div>
+          </div>
+          <!--report comment modal end-->
+
+          <!-- confirm comment modal start -->
           
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
@@ -287,6 +332,8 @@ CODE HISTORY
                     </div>
                </div>
           </div>
+
+          <!-- confirm comment modal end -->
 
           <!--navbar-->
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
@@ -508,7 +555,22 @@ CODE HISTORY
                          {{comment.dateposted}}
                     </div>
                </div>
+               <div class="row justify-content-center">
+                    <div class="col-8 comment_report pb-2">
+                         <a href="#" id="{{comment.feedbackid}}" name={{comment.feedbackid}}>Report</a>
+                    </div>
+               </div>
+               <script>
+                    $('#{{comment.feedbackid}}').on('click', function(e) {
+                          
+                         $('textarea#id_message').val('comment id : ' + $('#{{comment.feedbackid}}').attr('name') + '\n');
+                         $('#commentReport').modal('show');
+                         e.preventDefault();
+                    });   
+               </script>
                {% endfor %}
+
+
                <form method="post" id="myForm">
                     {% csrf_token %}
                     <div class="row justify-content-center">          

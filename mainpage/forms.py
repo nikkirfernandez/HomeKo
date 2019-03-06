@@ -39,6 +39,7 @@ class SignUp(forms.Form):
      contact = forms.CharField(max_length=70, required=True)  
 
 class AddComment(forms.ModelForm):
+     comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), max_length=500, required=True, )
      class Meta:
           model = Feedback
           fields = ['comment']
@@ -47,4 +48,19 @@ class AddComment(forms.ModelForm):
           for field in iter(self.fields):
                self.fields[field].widget.attrs.update({
                     'class': 'form-control'
+               })
+
+class ReportComment(forms.ModelForm):
+     message = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), max_length=500, required=True, )
+     class Meta:
+          model = Request
+          fields = ['message', 'sender']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
+          self.fields['message'].widget.attrs.update({
+                    'name': 'reportMessage'
                })
