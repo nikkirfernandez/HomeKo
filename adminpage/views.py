@@ -10,6 +10,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.db.models.functions import Concat
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 from .choices import *
 from .forms import *
@@ -17,8 +19,8 @@ from mainpage.models import *
 
 # Create your views here.
 
-def login(request):
-
+def adminlogin(request):
+	incorrect = False
 	if request.method == "POST":
 		form = AdminLogin(request.POST)
 		if form.is_valid():
@@ -26,18 +28,26 @@ def login(request):
 			pw = request.POST['pw']
 			user = authenticate(request, username=uname, password=pw)
 			if user is not None:
+				login(request, user)
 				return HttpResponseRedirect(reverse('home'))
 			else:
-				return HttpResponseRedirect(reverse('login'))
+				incorrect = True
 	form = AdminLogin()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'form' : form,
+		'incorrect' : incorrect,
 	}
 
 	return render(request, 'adminpage/login.html', content)
 
+def adminlogout(request):
+	logout(request)
+	
+	return HttpResponseRedirect(reverse('adminlogin'))
+
+@login_required(login_url='/adminpage/login/')
 def home(request):
 
 	content = {
@@ -46,6 +56,7 @@ def home(request):
 
 	return render(request, 'adminpage/adminHome.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def tablePage(request, table):
 	# recordPK is a list of the primary keys 
 	# recordName is a list of names that represent the records
@@ -127,6 +138,7 @@ def tablePage(request, table):
 
 	return render(request, 'adminpage/tablePage.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addAdditionalInfo(request):
 
 	if request.method == "POST":
@@ -151,6 +163,7 @@ def addAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editAdditionalInfo(request, id):
 
 	record = Additionalinfo.objects.get(additionalinfoid=id)
@@ -180,6 +193,7 @@ def editAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addArea(request):
 
 	form = addAreaForm()
@@ -192,6 +206,7 @@ def addArea(request):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editArea(request, id):
 
 	content = {
@@ -202,6 +217,7 @@ def editArea(request, id):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addContact(request):
 
 	form = addContactForm()
@@ -215,6 +231,7 @@ def addContact(request):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editContact(request, id):
 
 	content = {
@@ -226,6 +243,7 @@ def editContact(request, id):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editFeedback(request, id):
 
 	form = addFeedbackForm()
@@ -241,6 +259,7 @@ def editFeedback(request, id):
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousetype(request):
 
 	form = addHousetypeForm()
@@ -253,6 +272,7 @@ def addHousetype(request):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousetype(request, id):
 
 	content = {
@@ -263,6 +283,7 @@ def editHousetype(request, id):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousing(request):
 	
 	if request.method == "POST":
@@ -286,6 +307,7 @@ def addHousing(request):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousing(request, id):
 	record = Housing.objects.get(housingid=id)
 	if request.method=="GET":
@@ -312,6 +334,7 @@ def editHousing(request, id):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addPropertytype(request):
 
 	form = addPropertytypeForm()
@@ -324,6 +347,7 @@ def addPropertytype(request):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editPropertytype(request, id):
 
 	content = {
@@ -334,6 +358,7 @@ def editPropertytype(request, id):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editRequest(request, id):
 
 	form = addRequestForm()
@@ -351,6 +376,7 @@ def editRequest(request, id):
 
 	return render(request, 'adminpage/recordRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingAdditionalInfo(request):
 
 	form = addHousingAddtnlinfoForm()
@@ -365,6 +391,7 @@ def addHousingAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingAdditionalInfo(request, id):
 
 	content = {
@@ -377,6 +404,7 @@ def editHousingAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingOwner(request):
 
 	form = addHousingOwnerForm()
@@ -391,6 +419,7 @@ def addHousingOwner(request):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingOwner(request, id):
 
 	content = {
@@ -403,6 +432,7 @@ def editHousingOwner(request, id):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingRequest(request):
 
 	form = addHousingRequestForm()
@@ -417,6 +447,7 @@ def addHousingRequest(request):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingRequest(request, id):
 
 	content = {
@@ -429,6 +460,7 @@ def editHousingRequest(request, id):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addPicture(request):
 
 	form = addPictureForm()
@@ -442,6 +474,7 @@ def addPicture(request):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editPicture(request, id):
 
 	content = {
@@ -453,6 +486,7 @@ def editPicture(request, id):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addRoomCost(request):
 
 	form = addRoomCostForm()
@@ -466,6 +500,7 @@ def addRoomCost(request):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 
 	content = {
@@ -477,6 +512,7 @@ def editRoomCost(request, id):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addOwner(request):
 
 	form = addOwnerForm()
@@ -489,6 +525,7 @@ def addOwner(request):
 
 	return render(request, 'adminpage/recordOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
 
 	content = {

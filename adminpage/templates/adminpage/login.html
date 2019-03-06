@@ -132,6 +132,14 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <div class="form-group">
                                    <label for="ownerPW" class="formLabel">Password </label>
                                    <input type="password" class="form-control" id="adminPW" name="pw" placeholder="Password" required="true">
+                                   {% if incorrect %}
+                                   <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                        Incorrect username and/or password!
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                        </button>
+                                   </div>
+                                   {% endif %}
                               </div>
 
                               <!-- submit button -->

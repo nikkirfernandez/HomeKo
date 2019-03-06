@@ -131,3 +131,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR,'adminpage/static'),
     os.path.join(BASE_DIR,'mainpage/static'),
 )
+
+# my_project/settings.py
+LOGIN_REDIRECT_URL = '/adminpage/home'
