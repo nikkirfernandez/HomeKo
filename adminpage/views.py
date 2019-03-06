@@ -32,22 +32,74 @@ def home(request):
 	return render(request, 'adminpage/adminHome.html', content)
 
 def tablePage(request, table):
-	# recordPK is a list of the primary keys
-	# recordName is a list of names that represent the records
-    # records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	if table=="Housing":
-		recordPK = Housing.objects.values_list('housingid', flat=True).order_by('housingid')
-		recordName = Housing.objects.values_list('housingname', flat=True).order_by('housingid')		
-	elif table=="Additionalinfo":
-		recordPK = Additionalinfo.objects.values_list('additionalinfoid', flat=True).order_by('additionalinfoid')
-		recordName = Additionalinfo.objects.values_list('additionalinfoname', flat=True).order_by('additionalinfoid')
 
-	records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	# TODO hindi nakasort kasi hindi integer yung ids
+	if table == "Area":
+		recordPK = Area.objects.values_list('areaid', flat=True).order_by('areaid')
+		recordName = Area.objects.values_list('areaname')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Housing":
+		recordPK = Housing.objects.values_list('housingid')
+		recordName = Housing.objects.values_list('housingname', flat=True).order_by('housingid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Additionalinfo":
+		recordPK = Additionalinfo.objects.values_list('additionalinfoid')
+		recordName = Additionalinfo.objects.values_list('additionalinfoname', flat=True).order_by('additionalinfoid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		# TODO add owner table on Contact UI
+	elif table == "Contact":
+		recordPK = Contact.objects.values_list('contactid')
+		recordName = Contact.objects.values_list('contactno', flat=True).order_by('contactid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		# TODO the one being outputted is the integer value of the status field in Feedback
+	elif table == "Feedback":
+		recordPK = Feedback.objects.values_list('feedbackid')
+		recordName = Feedback.objects.values_list('status', flat=True).order_by('feedbackid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Housetype":
+		recordPK = Housetype.objects.values_list('housetypeid')
+		recordName = Housetype.objects.values_list('housetypename', flat=True).order_by('housetypeid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "HousingAdditionalinfo":
+		recordPK = HousingAdditionalInfo.objects.values_list('housingadditionalinfoid')
+		recordName = HousingAdditionalInfo.objects.values_list('description', flat=True).order_by('housingadditionalinfoid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+
+	# TODO The ones being outputted is the names of the housing certain Housing request is paired to.
+	elif table == "HousingRequest":
+		recordPK = HousingRequest.objects.values_list('housingrequestid')
+		recordName = HousingRequest.objects.values_list('housingid', flat=True).order_by('housingrequestid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "HousingRequest":
+		recordPK = HousingRequest.objects.values_list('housingrequestid')
+		recordName = HousingRequest.objects.values_list('housingid', flat=True).order_by('housingrequestid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Owner":
+		recordPK = Owner.objects.values_list('ownerid')
+		recordName = Owner.objects.values_list('ownername', flat=True).order_by('ownerid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Picture":
+		recordPK = Picture.objects.values_list('pictureid')
+		recordName = Picture.objects.values_list('filename', flat=True).order_by('pictureid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "RoomCost":
+		recordPK = RoomCost.objects.values_list('roomid')
+		recordName = RoomCost.objects.values_list('roomname', flat=True).order_by('roomid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+	elif table == "Propertytype":
+		recordPK = Propertytype.objects.values_list('propertytypeid')
+		recordName = Propertytype.objects.values_list('propertytypename', flat=True).order_by('propertytypeid')
+		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+
+	print(recordPK)
+	print(recordName)
+
+	# records = zip(recordPK, recordName)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'tableName' : table,
-		'records' : records,           
+		'records' : records,
 	}
 
 	return render(request, 'adminpage/tablePage.html', content)
