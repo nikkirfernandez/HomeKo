@@ -10,6 +10,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+import datetime
 
 from .forms import *
 from .choices import *
@@ -276,11 +277,35 @@ def enduserRecord(request, housingid):
      rules = HousingAdditionalInfo.objects.filter(housingid=housingid, additionalinfoid__additionalinfotype=3)
      comments = Feedback.objects.filter(housingid=housingid, status=2)
 
+     searchForm = SearchHousing()
+     commentForm = AddComment()
+     reportForm = ReportComment()
+     commentFlag = 0
+          
      # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
+          commentForm = AddComment(request.POST)
+          reportForm = ReportComment(request.POST)
+          print("post")
+          if commentForm.is_valid():
+               print("form valid")
+               post = commentForm.save(commit=False)
+               post.housingid = Housing.objects.get(housingid=housingid)
+               post.status = 1
+               post.dateposted = datetime.date.today()   
+               post.save()
+               return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+          elif reportForm.is_valid():
+               post = reportForm.save(commit=False)
+               post.reqtype=4
+               post.status = 1
+               post.datesent = datetime.date.today() 
+               post.save()  
 
-          if searchForm.is_valid():     
+               HousingRequest.objects.create(housingid=Housing.objects.get(housingid=housingid), requestid=Request.objects.get(requestid=post.requestid))
+               return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+          elif searchForm.is_valid():     
                filtersSet1={}
                filtersSet2=[]     
                
@@ -358,9 +383,14 @@ def enduserRecord(request, housingid):
                request.session['searchResult'] = results3
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
-     
-     searchForm = SearchHousing()
-
+          """
+          if '_comment' in request.GET and commentFlag==1:
+               post = commentForm.save(commit=False)
+               post.housingid = housingid
+               post.status = 1
+               post.dateposted = datetime.date.today()   
+               post.save()
+"""
      content = {
           'housing' : housing,
           'ownername' : ownerName,
@@ -376,6 +406,8 @@ def enduserRecord(request, housingid):
           'amenityChoices' : AMENITY_CHOICES,
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
+          'commentForm' : commentForm,
+          'reportCommentForm' : reportForm,
      }
      return render(request, 'mainpage/housing_record.html', content)
 

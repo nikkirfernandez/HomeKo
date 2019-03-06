@@ -138,29 +138,82 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                          {{tableName}}  
                     </div>
                     <div class="col-2">
-                         <a role="button" href="/adminpage/{{tableName}}/add" class="btn">Add record</a>
+                        
                     </div>
                </div>   
 
                <!--separates the title and table-->
                <div class="separator"></div>
 
-               <div class="row form_login justify-content-center">
-                    <div class="col-9 table-responsive">
-                         <table class="table">
-                              <thead>
-                                   <th>PK</th>
-                                   <th>Name</th>
-                              </thead>
-                              <tbody>
-                                   {% for record in records %}
-                                   <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.item1}}">
-                                        <td>{{record.item1}}</td>
-                                        <td>{{record.item2}}</td>
-                                   </tr>
-                                   {% endfor %}
-                              </tbody>
-                         </table>
+               <div class="row justify-content-center">
+                    <div class="col-9">
+                         <ul class="nav nav-tabs" id="myTab" role="tablist">
+                              <li class="nav-item">
+                                   <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pending</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Approved</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Not Approved</a>
+                              </li>
+                         </ul>
+                         <div class="tab-content" id="myTabContent">
+                              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                   <div class="table-responsive">
+                                        <table class="table">
+                                             <thead>
+                                                  <th>PK</th>
+                                                  <th>Name</th>
+                                             </thead>
+                                             <tbody>
+                                                  {% for record in pending %}
+                                                  <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.feedbackid}}">
+                                                       <td>{{record.feedbackid}}</td>
+                                                       <td>{{record.comment|truncatewords:10}}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                             </tbody>
+                                        </table>
+                                   </div>
+                              </div>
+                              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                   <div class="table-responsive">
+                                        <table class="table">
+                                             <thead>
+                                                  <th>PK</th>
+                                                  <th>Name</th>
+                                             </thead>
+                                             <tbody>
+                                                  {% for record in approved %}
+                                                  <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.feedbackid}}">
+                                                       <td>{{record.feedbackid}}</td>
+                                                       <td>{{record.comment|truncatewords:10}}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                             </tbody>
+                                        </table>
+                                   </div>
+                              </div>
+                              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                   <div class="table-responsive">
+                                        <table class="table">
+                                             <thead>
+                                                  <th>PK</th>
+                                                  <th>Name</th>
+                                             </thead>
+                                             <tbody>
+                                                  {% for record in notapproved %}
+                                                  <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.feedbackid}}">
+                                                       <td>{{record.feedbackid}}</td>
+                                                       <td>{{record.comment|truncatewords:10}}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                             </tbody>
+                                        </table>
+                                   </div>
+                              </div>
+                         </div>
                     </div>
                </div>
           </div>
