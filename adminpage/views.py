@@ -5,6 +5,8 @@
 
 # File creation date: Feb. 19, 2019
 
+import time
+
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -12,6 +14,7 @@ from django.db.models.functions import Concat
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .choices import *
 from .forms import *
@@ -93,20 +96,16 @@ def tablePage(request, table):
 		recordPK = HousingAdditionalInfo.objects.values_list('housingadditionalinfoid', flat=True).order_by('housingadditionalinfoid')
 		recordName = HousingAdditionalInfo.objects.values_list('housingid__housingname', 'additionalinfoid__additionalinfoname').order_by('housingadditionalinfoid')
 	elif table == "Request":
-		######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST 
-		recordPK = Request.objects.values_list('requestid', flat=True).order_by('requestid')
-		recordName = Request.objects.values_list('reqtype', flat=True).order_by('requestid')
-	
 		recordPending = Request.objects.filter(status=1).order_by('requestid')
-		recordApproved = Request.objects.filter(status=2).order_by('requestid')
-		recordNotApproved = Request.objects.filter(status=3).order_by('requestid')
+		recordProgress = Request.objects.filter(status=2).order_by('requestid')
+		recordDone = Request.objects.filter(status=3).order_by('requestid')
 
 		content = {
 			'tableChoices' : TABLES_CHOICES,
 			'tableName' : table,     
 			'pending' : recordPending,
-			'approved' : recordApproved,
-			'notapproved' : recordNotApproved,    
+			'progress' : recordProgress,
+			'done' : recordDone,    
 		}
 		return render(request, 'adminpage/requestTabs.html', content)
 	elif table == "HousingRequest":
@@ -389,11 +388,28 @@ def addHousing(request):
 
 @login_required(login_url='/adminpage/login/')
 def editHousing(request, id):
-	record = Housing.objects.get(housingid=id)
+	error = False
+	try:
+		record = Housing.objects.get(housingid=id)
+	except Exception:
+		record = None
+
 	if request.method=="GET":
 		if '_delete' in request.GET:
-			record.delete()
-			return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+			if record!=None:
+				record.delete()
+				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+			else:
+				error = True
+				content = {
+					'tableChoices' : TABLES_CHOICES,
+					'recordExist' : True,
+					'record' : record, 				#Ito yung record na result ng query sa db
+					'form' : addHousingForm(),
+					'error' : error,
+				}
+				return render(request, 'adminpage/recordHousing.html', content)
+
 	if request.method == "POST":
 		form = addHousingForm(request.POST, instance=record)
 		if form.is_valid():
@@ -410,6 +426,7 @@ def editHousing(request, id):
 		'recordExist' : True,
 		'record' : record, 				#Ito yung record na result ng query sa db
 		'form' : form,
+		'error' : error,
 	}
 
 	return render(request, 'adminpage/recordHousing.html', content)
@@ -495,7 +512,7 @@ def addHousingAdditionalInfo(request):
 		if form.is_valid():
 			post = form.save()
 			if '_addAnother' in request.POST:
-				return HttpResponseRedirect(reverse('addHousingAddtionalinfo', args=()))
+				return HttpResponseRedirect(reverse('addHousingAdditionalInfo', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
 	form = addHousingAddtnlinfoForm()
@@ -521,7 +538,7 @@ def editHousingAdditionalInfo(request, id):
 		if form.is_valid():
 			post = form.save()
 			if '_addAnother' in request.POST:
-				return HttpResponseRedirect(reverse('addHousingAddtionalinfo', args=()))
+				return HttpResponseRedirect(reverse('addHousingAdditionalInfo', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
 	form = addHousingAddtnlinfoForm(instance=record)

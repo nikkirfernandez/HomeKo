@@ -76,10 +76,9 @@ REQUEST_TYPE_CHOICES = (
 )
 
 REQUEST_STATUS_CHOICES = (
-     (1, ("Not yet evaluated")),     # NOT YET EVALUATED
-     (2, ("Content complete")),     # CONTENT COMPLETE
-     (3, ("Content correct")),     # CONTENT CORRECT
-     (4, ("Request done")),     # REQUEST DONE
+     (1, ("Pending")),     # NOT YET EVALUATED
+     (2, ("In progress")),     # collecting info from owner
+     (3, ("Done")),     # request executed
 )
 
 TABLES_CHOICES = (
