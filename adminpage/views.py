@@ -94,7 +94,7 @@ def tablePage(request, table):
 		recordPK = HousingAdditionalInfo.objects.values_list('housingadditionalinfoid', flat=True).order_by('housingadditionalinfoid')
 		recordName = HousingAdditionalInfo.objects.values_list('housingid__housingname', 'additionalinfoid__additionalinfoname').order_by('housingadditionalinfoid')
 	elif table == "Request":
-		######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST 
+		#TODO ######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST
 		recordPK = Request.objects.values_list('requestid', flat=True).order_by('requestid')
 		recordName = Request.objects.values_list('reqtype', flat=True).order_by('requestid')
 	
@@ -315,8 +315,8 @@ def editFeedback(request, id):
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
-@login_required(login_url='/adminpage/login/')
-def addHousetype(request):
+# @login_required(login_url='/adminpage/login/')
+# def addHousetype(request):
 
 def editFeedback(request, id):
 	feedbackEntry = Housetype.objects.get(pk=id)
