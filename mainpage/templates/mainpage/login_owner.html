@@ -268,9 +268,15 @@ CODE HISTORY
           <!--navbar-->
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
                <div class="container">
-                    <a class="navbar-brand" href="/">
-                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="45" height="45" alt=""> HomeKo
+                    {% if user.is_authenticated %}
+                    <a class="navbar-brand" href="/adminpage/home">
+                         <img src="{% static 'adminpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Admin     
                     </a>  
+                    {% else %}
+                    <a class="navbar-brand" href="/">
+                         <img src="{% static "mainpage/homeko_logo.svg" %}" width="45" height="45" alt=""> HomeKo                         
+                    </a>  
+                    {% endif %}
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                     </button>

@@ -8,6 +8,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.db.models.functions import Concat
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 from .choices import *
 from .forms import *
@@ -15,14 +19,35 @@ from mainpage.models import *
 
 # Create your views here.
 
-def login(request):
+def adminlogin(request):
+	incorrect = False
+	if request.method == "POST":
+		form = AdminLogin(request.POST)
+		if form.is_valid():
+			uname = request.POST['uname']
+			pw = request.POST['pw']
+			user = authenticate(request, username=uname, password=pw)
+			if user is not None:
+				login(request, user)
+				return HttpResponseRedirect(reverse('home'))
+			else:
+				incorrect = True
+	form = AdminLogin()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
+		'form' : form,
+		'incorrect' : incorrect,
 	}
 
 	return render(request, 'adminpage/login.html', content)
 
+def adminlogout(request):
+	logout(request)
+	
+	return HttpResponseRedirect(reverse('adminlogin'))
+
+@login_required(login_url='/adminpage/login/')
 def home(request):
 
 	content = {
@@ -31,73 +56,78 @@ def home(request):
 
 	return render(request, 'adminpage/adminHome.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def tablePage(request, table):
 
-	# TODO hindi nakasort kasi hindi integer yung ids
+	# recordPK is a list of the primary keys 
+	# recordName is a list of names that represent the records
+    # records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+
 	if table == "Area":
 		recordPK = Area.objects.values_list('areaid', flat=True).order_by('areaid')
 		recordName = Area.objects.values_list('areaname', flat=True).order_by('areaid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	elif table == "Housing":
+	elif table=="Housing":
 		recordPK = Housing.objects.values_list('housingid', flat=True).order_by('housingid')
-		recordName = Housing.objects.values_list('housingname', flat=True).order_by('housingid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	elif table == "Additionalinfo":
+		recordName = Housing.objects.values_list('housingname', flat=True).order_by('housingid')		
+	elif table=="Additionalinfo":
 		recordPK = Additionalinfo.objects.values_list('additionalinfoid', flat=True).order_by('additionalinfoid')
 		recordName = Additionalinfo.objects.values_list('additionalinfoname', flat=True).order_by('additionalinfoid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-		# TODO add owner table on Contact UI
 	elif table == "Contact":
-		recordPK = Contact.objects.values_list('ownerid', flat=True).order_by('contactid')
+		recordPK = Contact.objects.values_list('contactid', flat=True).order_by('contactid')
 		recordName = Contact.objects.values_list('contactno', flat=True).order_by('contactid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-		# TODO the one being outputted is the integer value of the status field in Feedback
 	elif table == "Feedback":
-		recordPK = Feedback.objects.values_list('feedbackid', flat=True).order_by('feedbackid')
-		recordName = Feedback.objects.values_list('status', flat=True).order_by('feedbackid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		recordPending = Feedback.objects.filter(status=1).order_by('feedbackid')
+		recordApproved = Feedback.objects.filter(status=2).order_by('feedbackid')
+		recordNotApproved = Feedback.objects.filter(status=3).order_by('feedbackid')
+		content = {
+			'tableChoices' : TABLES_CHOICES,
+			'tableName' : table,     
+			'pending' : recordPending,
+			'approved' : recordApproved,
+			'notapproved' : recordNotApproved,    
+		}
+		return render(request, 'adminpage/feedbackTabs.html', content)
 	elif table == "Housetype":
 		recordPK = Housetype.objects.values_list('housetypeid', flat=True).order_by('housetypeid')
 		recordName = Housetype.objects.values_list('housetypename', flat=True).order_by('housetypeid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	elif table == "HousingAdditionalInfo":
+	elif table == "HousingAdditionalinfo":
 		recordPK = HousingAdditionalInfo.objects.values_list('housingadditionalinfoid', flat=True).order_by('housingadditionalinfoid')
-		recordName = HousingAdditionalInfo.objects.values_list('description', flat=True).order_by('housingadditionalinfoid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		recordName = HousingAdditionalInfo.objects.values_list('housingid__housingname', 'additionalinfoid__additionalinfoname').order_by('housingadditionalinfoid')
+	elif table == "Request":
+		######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST 
+		recordPK = Request.objects.values_list('requestid', flat=True).order_by('requestid')
+		recordName = Request.objects.values_list('reqtype', flat=True).order_by('requestid')
+	
+		recordPending = Request.objects.filter(status=1).order_by('requestid')
+		recordApproved = Request.objects.filter(status=2).order_by('requestid')
+		recordNotApproved = Request.objects.filter(status=3).order_by('requestid')
 
-	# TODO The ones being outputted is the names of the housing certain Housing request is paired to.
+		content = {
+			'tableChoices' : TABLES_CHOICES,
+			'tableName' : table,     
+			'pending' : recordPending,
+			'approved' : recordApproved,
+			'notapproved' : recordNotApproved,    
+		}
+		return render(request, 'adminpage/requestTabs.html', content)
 	elif table == "HousingRequest":
 		recordPK = HousingRequest.objects.values_list('housingrequestid', flat=True).order_by('housingrequestid')
-		recordName = HousingRequest.objects.values_list('housingid', flat=True).order_by('housingrequestid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	# elif table == "HousingRequest":
-	# 	recordPK = HousingRequest.objects.values_list('housingrequestid', flat=True).order_by('housingrequestid')
-	# 	recordName = HousingRequest.objects.values_list('housingid', flat=True).order_by('housingrequestid')
-	# 	records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		recordName = HousingRequest.objects.values_list('housingid__housingname', 'requestid__reqtype').order_by('housingrequestid')
 	elif table == "Owner":
 		recordPK = Owner.objects.values_list('ownerid', flat=True).order_by('ownerid')
 		recordName = Owner.objects.values_list('ownername', flat=True).order_by('ownerid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	elif table == "Picture":
-		recordPK = Picture.objects.values_list('pictureid')
+	elif table == "HousingOwner":
+		recordPK = HousingOwner.objects.values_list('housingownerid', flat=True).order_by('housingownerid')
+		recordName = HousingOwner.objects.values_list('ownerid__ownername', 'housingid__housingname').order_by('housingownerid')
+	elif table == "Picture": 
+		recordPK = Picture.objects.values_list('pictureid', flat=True).order_by('pictureid')
 		recordName = Picture.objects.values_list('filename', flat=True).order_by('pictureid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
 	elif table == "RoomCost":
-		recordPK = RoomCost.objects.values_list('roomid', flat=True)
-		recordName = RoomCost.objects.values_list('roomname', flat=True).order_by('roomid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
+		recordPK = RoomCost.objects.values_list('roomid', flat=True).order_by('roomid')
+		recordName = RoomCost.objects.values_list('housingid__housingname', 'roomname').order_by('roomid')
 	elif table == "Propertytype":
 		recordPK = Propertytype.objects.values_list('propertytypeid', flat=True).order_by('propertytypeid')
 		recordName = Propertytype.objects.values_list('propertytypename', flat=True).order_by('propertytypeid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	elif table == "HousingOwner":
-		recordPK = HousingOwner.objects.values_list('housingownerid', flat=True).order_by('housingownerid')
-		recordName = HousingOwner.objects.values_list('ownerid', flat=True).order_by('housingownerid')
-		records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
-	# print(recordPK)
-	# print(recordName)
-
-	# records = zip(recordPK, recordName)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
@@ -107,6 +137,7 @@ def tablePage(request, table):
 
 	return render(request, 'adminpage/tablePage.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addAdditionalInfo(request):
 
 	if request.method == "POST":
@@ -131,6 +162,7 @@ def addAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editAdditionalInfo(request, id):
 
 	record = Additionalinfo.objects.get(additionalinfoid=id)
@@ -160,6 +192,7 @@ def editAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addArea(request):
 	form = addAreaForm(request.POST)
 
@@ -182,6 +215,7 @@ def addArea(request):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editArea(request, id):
 
 	# print(areaEntry)
@@ -208,6 +242,7 @@ def editArea(request, id):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addContact(request):
 
 	form = addContactForm(request.POST)
@@ -229,6 +264,7 @@ def addContact(request):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editContact(request, id):
 
 	contactEntry = Contact.objects.get(pk=id)
@@ -255,7 +291,8 @@ def editContact(request, id):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
-def addFeedback(request):
+@login_required(login_url='/adminpage/login/')
+def editFeedback(request, id):
 
 	form = addFeedbackForm(request.POST)
 	print("ff")
@@ -278,6 +315,8 @@ def addFeedback(request):
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
+@login_required(login_url='/adminpage/login/')
+def addHousetype(request):
 
 def editFeedback(request, id):
 	feedbackEntry = Housetype.objects.get(pk=id)
@@ -325,6 +364,7 @@ def addHousetype(request):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousetype(request, id):
 
 	HousetypeEntry = Housetype.objects.get(pk=id)
@@ -349,6 +389,7 @@ def editHousetype(request, id):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousing(request):
 
 	if request.method == "POST":
@@ -372,6 +413,7 @@ def addHousing(request):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousing(request, id):
 	record = Housing.objects.get(housingid=id)
 	if request.method=="GET":
@@ -421,6 +463,7 @@ def editHousing(request, id):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addPropertytype(request):
 
 	form = addPropertytypeForm(request.POST)
@@ -441,6 +484,7 @@ def addPropertytype(request):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editPropertytype(request, id):
 
 	dbEntry = Propertytype.objects.get(pk=id)
@@ -466,6 +510,7 @@ def editPropertytype(request, id):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editRequest(request, id):
 
 	form = addRequestForm()
@@ -483,6 +528,7 @@ def editRequest(request, id):
 
 	return render(request, 'adminpage/recordRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingAdditionalInfo(request):
 	form = addHousingAddtionalinfoForm(request.POST)
 	if request.method == 'POST':
@@ -504,6 +550,7 @@ def addHousingAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingAdditionalInfo(request, id):
 	dbEntry = HousingAdditionalInfo.objects.get(pk=id)
 	form = addHousingAddtnlinfoForm(request.POST, instance=dbEntry)
@@ -531,6 +578,7 @@ def editHousingAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingOwner(request):
 	form = addHousingOwnerForm(request.POST)
 	if request.method == 'POST':
@@ -551,6 +599,7 @@ def addHousingOwner(request):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingOwner(request, id):
 	dbEntry = HousingOwner.objects.get(pk=id)
 	form = addHousingOwnerForm(request.POST, instance=dbEntry)
@@ -578,6 +627,7 @@ def editHousingOwner(request, id):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addHousingRequest(request):
 
 	form = addHousingRequestForm(request.POST)
@@ -600,6 +650,7 @@ def addHousingRequest(request):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editHousingRequest(request, id):
 	dbEntry = HousingRequest.objects.get(pk=id)
 	form = addHousingRequestForm(request.POST, instance=dbEntry)
@@ -625,6 +676,7 @@ def editHousingRequest(request, id):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addPicture(request):
 
 	form = addPictureForm()
@@ -638,6 +690,7 @@ def addPicture(request):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editPicture(request, id):
 
 	content = {
@@ -649,6 +702,7 @@ def editPicture(request, id):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addRoomCost(request):
 	form = addRoomCostForm(request.POST)
 	if request.method == 'POST':
@@ -668,6 +722,7 @@ def addRoomCost(request):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 	dbEntry = RoomCost.objects.get(pk=id)
 	form = addRoomCostForm(request.POST, instance=dbEntry)
@@ -692,6 +747,7 @@ def editRoomCost(request, id):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def addOwner(request):
 	form = addOwnerForm(request.POST)
 	if request.method == 'POST':
@@ -710,6 +766,7 @@ def addOwner(request):
 
 	return render(request, 'adminpage/recordOwner.html', content)
 
+@login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
 	dbEntry = Owner.objects.get(pk=id)
 	form = addOwnerForm(request.POST, instance=dbEntry)
