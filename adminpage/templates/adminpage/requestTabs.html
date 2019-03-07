@@ -152,10 +152,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pending</a>
                               </li>
                               <li class="nav-item">
-                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Approved</a>
+                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">In Progress</a>
                               </li>
                               <li class="nav-item">
-                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Not Approved</a>
+                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Done</a>
                               </li>
                          </ul>
                          <div class="tab-content" id="myTabContent">
@@ -185,7 +185,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                                   <th>Name</th>
                                              </thead>
                                              <tbody>
-                                                  {% for record in approved %}
+                                                  {% for record in progress %}
                                                   <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.requestid}}">
                                                        <td>{{record.requestid}}</td>
                                                        <td>{{record.get_reqtype_display}}: {{record.message|truncatewords:10}}</td>
@@ -203,7 +203,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                                   <th>Name</th>
                                              </thead>
                                              <tbody>
-                                                  {% for record in notapproved %}
+                                                  {% for record in done %}
                                                   <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.requestid}}">
                                                        <td>{{record.requestid}}</td>
                                                        <td>{{record.get_reqtype_display}}: {{record.message|truncatewords:10}}</td>
