@@ -19,7 +19,7 @@ class Additionalinfo(models.Model):
         db_table = 'additionalinfo'
     # For Readability
     def __str__(self):
-        return "%s - %s" % (self.additionalinfoname, self.additionalinfotype)
+        return self.additionalinfoname
 
 # This class contains the table for Areas designated to each housing entry in the database
 class Area(models.Model):
@@ -249,7 +249,7 @@ class Request(models.Model):
 		db_table = 'request'
 
 	def __str__(self):
-		return "%s - %s" % (self.sender, self.requestid)
+		return "%s - %s" % (self.reqtype, self.message[0:20])
 
 #This class contains the attributes for HousingAdditionalInfo Table to be added to the connected MySQL Database
 class HousingAdditionalInfo(models.Model):

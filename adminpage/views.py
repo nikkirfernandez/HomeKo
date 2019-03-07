@@ -93,11 +93,7 @@ def tablePage(request, table):
 	elif table == "HousingAdditionalinfo":
 		recordPK = HousingAdditionalInfo.objects.values_list('housingadditionalinfoid', flat=True).order_by('housingadditionalinfoid')
 		recordName = HousingAdditionalInfo.objects.values_list('housingid__housingname', 'additionalinfoid__additionalinfoname').order_by('housingadditionalinfoid')
-	elif table == "Request":
-		#TODO ######## EDIT THIS ######## RECORDNAME: REQTYPE AND FIRST 5 WORDS OF REQUEST
-		recordPK = Request.objects.values_list('requestid', flat=True).order_by('requestid')
-		recordName = Request.objects.values_list('reqtype', flat=True).order_by('requestid')
-	
+	elif table == "Request":	
 		recordPending = Request.objects.filter(status=1).order_by('requestid')
 		recordApproved = Request.objects.filter(status=2).order_by('requestid')
 		recordNotApproved = Request.objects.filter(status=3).order_by('requestid')
@@ -128,6 +124,8 @@ def tablePage(request, table):
 	elif table == "Propertytype":
 		recordPK = Propertytype.objects.values_list('propertytypeid', flat=True).order_by('propertytypeid')
 		recordName = Propertytype.objects.values_list('propertytypename', flat=True).order_by('propertytypeid')
+
+	records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
@@ -185,7 +183,6 @@ def editAdditionalInfo(request, id):
 		'tableChoices' : TABLES_CHOICES,
 		'infoChoices' : INFOTYPE_CHOICES,
 		'recordExist' : True,
-		# 'additionalinfotype' : amenity, facility or rule
 		'record' : record, 				#Ito yung record na result ng query sa db
 		'form' : form,
 	}
@@ -194,18 +191,16 @@ def editAdditionalInfo(request, id):
 
 @login_required(login_url='/adminpage/login/')
 def addArea(request):
-	form = addAreaForm(request.POST)
 
-	if request.method == 'POST':
-
+	if request.method == "POST":
+		form = addAreaForm(request.POST)
 		if form.is_valid():
-			newArea = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addArea', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
-
-
+	form = addAreaForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
@@ -218,26 +213,26 @@ def addArea(request):
 @login_required(login_url='/adminpage/login/')
 def editArea(request, id):
 
-	# print(areaEntry)
-	areaEntry = Area.objects.get(pk=id)
-	form = addAreaForm(request.POST, instance=areaEntry)
+	record = Area.objects.get(areaid=id)
 	if request.method=="GET":
 		if '_delete' in request.GET:
-			areaEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addAreaForm(request.POST, instance=record)
 		if form.is_valid():
-			newArea = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addArea', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
+	form = addAreaForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		'form' : form
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 				
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordArea.html', content)
@@ -245,19 +240,18 @@ def editArea(request, id):
 @login_required(login_url='/adminpage/login/')
 def addContact(request):
 
-	form = addContactForm(request.POST)
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addContactForm(request.POST)
 		if form.is_valid():
-			newArea = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addContact', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
-
+	form = addContactForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'ownerChoices' :  query of all owners in Owner table
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -267,26 +261,26 @@ def addContact(request):
 @login_required(login_url='/adminpage/login/')
 def editContact(request, id):
 
-	contactEntry = Contact.objects.get(pk=id)
-	form = addContactForm(request.POST, instance=contactEntry)
-	if request.method == "GET":
+	record = Contact.objects.get(contactid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			contactEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addContactForm(request.POST, instance=record)
 		if form.is_valid():
-			newContact = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addContact', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
+	form = addContactForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'ownerChoices' :  query of all owners in Owner table
 		'recordExist' : True,
-		'form' : form
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 				
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordContact.html', content)
@@ -294,58 +288,29 @@ def editContact(request, id):
 @login_required(login_url='/adminpage/login/')
 def editFeedback(request, id):
 
-	form = addFeedbackForm(request.POST)
-	print("ff")
-	if request.method == 'POST':
+	record = Feedback.objects.get(feedbackid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
+	if request.method == "POST":
+		form = addFeedbackForm(request.POST, instance=record)
 		if form.is_valid():
-			print('sfg')
-			newFeedback = form.save()
-			if '_addAnother' in request.POST:
-				return HttpResponseRedirect(reverse('addFeedback', args=()))
-			elif '_save' in request.POST:
+			post = form.save()
+			if '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
-
+	form = addFeedbackForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'ownerChoices' :  query of all owners in Owner table
-		'recordExist' : False,
+		'recordExist' : True,
+		'record' : record, 			
 		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
-# @login_required(login_url='/adminpage/login/')
-# def addHousetype(request):
-
-def editFeedback(request, id):
-	feedbackEntry = Housetype.objects.get(pk=id)
-	form = addFeedbackForm(request.POST, instance=feedbackEntry)
-	if request.method == "GET":
-		print("delete")
-		if '_delete' in request.GET:
-			feedbackEntry.delete()
-			return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
-	if request.method == 'POST':
-		if form.is_valid():
-			newFeedback = form.save()
-			if '_addAnother' in request.POST:
-				return HttpResponseRedirect(reverse('addFeedback', args=()))
-			elif '_save' in request.POST:
-				return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
-
-
-	content = {
-			'tableChoices' : TABLES_CHOICES,
-			'statusChoices' :  FEEDBACK_STATUS_CHOICES,
-			# 'status' : pending, approved or not approved
-			'recordExist' : True,
-			# 'record' : record, 				Ito yung record na result ng query sa db
-			'form' : form,
-		}
-
-	return render(request, 'adminpage/recordFeedback.html', content)
-
+@login_required(login_url='/adminpage/login/')
 def addHousetype(request):
 
 	form = addHousetypeForm(request.POST)
@@ -367,24 +332,26 @@ def addHousetype(request):
 @login_required(login_url='/adminpage/login/')
 def editHousetype(request, id):
 
-	HousetypeEntry = Housetype.objects.get(pk=id)
-	form = addHousetypeForm(request.POST, instance=HousetypeEntry)
-	if request.method == "GET":
+	record = Housetype.objects.get(housetypeid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			HousetypeEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("Housetype",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addHousetypeForm(request.POST, instance=record)
 		if form.is_valid():
-			newHousetype = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousetype', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Housetype",)))
+	form = addHousetypeForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record, 	
+		'form' : form,			
 	}
 
 	return render(request, 'adminpage/recordHousetype.html', content)
@@ -430,34 +397,11 @@ def editHousing(request, id):
 				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
 
 	form = addHousingForm(instance=record)
-	#
-	# idVal = int(id[1])
-	# print(idVal)
-	# housing = Housing.objects.get(pk=idVal)
-	# # form = addHousingForm(instance=housing)
-	# areaChoices = Area.objects.all()
-	# propertytypeChoices = Propertytype.objects.all()
-	# housetypeChoices = Housetype.objects.all()
-	#
-	# if request.method == "POST":
-	# 	# houseModel = addHousingForm(request.POST, instance=housing)
-	# 	houseName = request.POST['name']
-	# 	houseArea = request.POST['area']
-	# 	areaVal = Area.objects.filter(areaid=houseArea).first()
-	# 	houseAddress = request.POST['address']
-	# 	housepType = request.POST['propertytype']
-	# 	pTypeVal = Propertytype.objects.filter(propertytypeid=housepType).first()
-	# 	houseType = request.POST['housetype']
-	# 	houseTypeVal = Housetype.objects.filter(housetypeid=houseType).first()
-	#
-	# 	houseModel = Housing(housingname=houseName, area=areaVal, address=houseAddress, propertytype=pTypeVal,
-	# 					 housetype=houseTypeVal, createdby="dummyuser", lastediteddate="dummyuser")
-	# 	houseModel.save()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		'record' : record, 				#Ito yung record na result ng query sa db
+		'record' : record, 			
 		'form' : form,
 	}
 
@@ -466,15 +410,15 @@ def editHousing(request, id):
 @login_required(login_url='/adminpage/login/')
 def addPropertytype(request):
 
-	form = addPropertytypeForm(request.POST)
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addPropertytypeForm(request.POST)
 		if form.is_valid():
-			newProperty = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addPropertytype', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Propertytype",)))
-
+	form = addPropertytypeForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
@@ -487,25 +431,26 @@ def addPropertytype(request):
 @login_required(login_url='/adminpage/login/')
 def editPropertytype(request, id):
 
-	dbEntry = Propertytype.objects.get(pk=id)
-	form = addPropertytypeForm(request.POST, instance=dbEntry)
-	if request.method == "GET":
+	record = Propertytype.objects.get(propertytypeid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			dbEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("Propertytype",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addPropertytypeForm(request.POST, instance=record)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addPropertytype', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Propertytype",)))
+	form = addPropertytypeForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		'form' : form
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
@@ -513,16 +458,23 @@ def editPropertytype(request, id):
 @login_required(login_url='/adminpage/login/')
 def editRequest(request, id):
 
-	form = addRequestForm()
+	record = Request.objects.get(requestid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
+	if request.method == "POST":
+		form = addRequestForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
+	form = addRequestForm(instance=record)
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		'typeChoices' : REQUEST_TYPE_CHOICES,
-		'statusChoices' : REQUEST_STATUS_CHOICES,
 		'recordExist' : True,
-		# 'reqtype' : add, update or delete
-		# 'status' : NOT YET EVALUATED, CONTENT COMPLETE, CONTENT CORRECT or REQUEST DONE
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 		
 		'form' : form,
 	}
 
@@ -530,20 +482,19 @@ def editRequest(request, id):
 
 @login_required(login_url='/adminpage/login/')
 def addHousingAdditionalInfo(request):
-	form = addHousingAddtionalinfoForm(request.POST)
-	if request.method == 'POST':
+
+	if request.method == "POST":
+		form = addHousingAddtnlinfoForm(request.POST)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousingAddtionalinfo', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
-
+	form = addHousingAddtnlinfoForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'infoChoices' :    query of all records in additionalinfo table
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -567,32 +518,45 @@ def editHousingAdditionalInfo(request, id):
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalInfo",)))
 
 
+	record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
+	if request.method == "POST":
+		form = addHousingAddtnlinfoForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousingAddtionalinfo', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
+	form = addHousingAddtnlinfoForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'infoChoices' :    query of all records in additionalinfo table
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record,
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
 @login_required(login_url='/adminpage/login/')
 def addHousingOwner(request):
-	form = addHousingOwnerForm(request.POST)
-	if request.method == 'POST':
+
+	if request.method == "POST":
+		form = addHousingOwnerForm(request.POST)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousingOwner', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
+	form = addHousingOwnerForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'ownerChoices' :    query of all records in Owner table
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -616,13 +580,26 @@ def editHousingOwner(request, id):
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
 
 
+	record = HousingOwner.objects.get(housingownerid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
+	if request.method == "POST":
+		form = addHousingOwnerForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousingOwner', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
+	form = addHousingOwnerForm(instance=record)
+
 	content = {
-		'tableChoices' : TABLES_CHOICES,
-		#'ownerChoices' :    query of all records in Owner table
-		#'housingChoices' :    query of all records in housing table
+		'tableChoices' : TABLES_CHOICES, 
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record, 	
+		'form' : form,			
 	}
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
@@ -630,20 +607,18 @@ def editHousingOwner(request, id):
 @login_required(login_url='/adminpage/login/')
 def addHousingRequest(request):
 
-	form = addHousingRequestForm(request.POST)
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addHousingRequestForm(request.POST)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousingRequest', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingRequest",)))
-
+	form = addHousingRequestForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'requestChoices' :    query of all records in Request table
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -652,26 +627,27 @@ def addHousingRequest(request):
 
 @login_required(login_url='/adminpage/login/')
 def editHousingRequest(request, id):
-	dbEntry = HousingRequest.objects.get(pk=id)
-	form = addHousingRequestForm(request.POST, instance=dbEntry)
-	if request.method == "GET":
+
+	record = HousingRequest.objects.get(housingrequestid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			dbEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("HousingRequest",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addHousingRequestForm(request.POST, instance=record)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousingRequest', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingRequest",)))
+	form = addHousingRequestForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'requestChoices' :    query of all records in Request table
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record,
+		'form' : form, 	
 	}
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
@@ -679,11 +655,18 @@ def editHousingRequest(request, id):
 @login_required(login_url='/adminpage/login/')
 def addPicture(request):
 
+	if request.method == "POST":
+		form = addPictureForm(request.POST)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addPicture', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Picture",)))
 	form = addPictureForm()
 
 	content = {
-		'tableChoices' : TABLES_CHOICES,
-		#'housingChoices' :    query of all records in housing table
+		'tableChoices' : TABLES_CHOICES, 
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -693,29 +676,45 @@ def addPicture(request):
 @login_required(login_url='/adminpage/login/')
 def editPicture(request, id):
 
+	record = Picture.objects.get(pictureid=id)
+	if request.method=="GET":
+		if '_delete' in request.GET:
+			record.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("Picture",)))
+	if request.method == "POST":
+		form = addPictureForm(request.POST, instance=record)
+		if form.is_valid():
+			post = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addPicture', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("Picture",)))
+	form = addPictureForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
+		'record' : record, 
+		'form' : form,	
 	}
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
 @login_required(login_url='/adminpage/login/')
 def addRoomCost(request):
-	form = addRoomCostForm(request.POST)
-	if request.method == 'POST':
+
+	if request.method == "POST":
+		form = addRoomCostForm(request.POST)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addRoomCost', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
+	form = addRoomCostForm()
 
 	content = {
-		'tableChoices' : TABLES_CHOICES,
-		#'housingChoices' :    query of all records in housing table
+		'tableChoices' : TABLES_CHOICES, 
 		'recordExist' : False,
 		'form' : form,
 	}
@@ -724,39 +723,43 @@ def addRoomCost(request):
 
 @login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
-	dbEntry = RoomCost.objects.get(pk=id)
-	form = addRoomCostForm(request.POST, instance=dbEntry)
-	if request.method == "GET":
+
+	record = RoomCost.objects.get(roomid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			dbEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addRoomCostForm(request.POST, instance=record)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addRoomCost', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
+	form = addRoomCostForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
-		#'housingChoices' :    query of all records in housing table
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record, 
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
 @login_required(login_url='/adminpage/login/')
 def addOwner(request):
-	form = addOwnerForm(request.POST)
-	if request.method == 'POST':
+
+	if request.method == "POST":
+		form = addOwnerForm(request.POST)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addOwner', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Owner",)))
+	form = addOwnerForm()
 
 	content = {
 		'tableChoices' : TABLES_CHOICES,
@@ -768,24 +771,27 @@ def addOwner(request):
 
 @login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
-	dbEntry = Owner.objects.get(pk=id)
-	form = addOwnerForm(request.POST, instance=dbEntry)
-	if request.method == "GET":
+
+	record = Owner.objects.get(ownerid=id)
+	if request.method=="GET":
 		if '_delete' in request.GET:
-			dbEntry.delete()
+			record.delete()
 			return HttpResponseRedirect(reverse('tablePage', args=("Owner",)))
-	if request.method == 'POST':
+	if request.method == "POST":
+		form = addOwnerForm(request.POST, instance=record)
 		if form.is_valid():
-			newForm = form.save()
+			post = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addOwner', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Owner",)))
+	form = addOwnerForm(instance=record)
+
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		# 'record' : record, 				Ito yung record na result ng query sa db
-		'form' : form
+		'record' : record, 
+		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordOwner.html', content)
