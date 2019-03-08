@@ -4,6 +4,8 @@
 # Sontillano		# Feb 13, 2019		# created initial functions
 # Kasilag     		# Feb 19, 2019		# addHousing, editHousing function definitions
 # Sontillano		# Mar 3, 2019		# changed the code for addHousing and editHousing
+# Fernandez		# Mar 6, 2019		# added log in for admin
+# Sontillano		# Mar 7, 2019		# modified log in
 # Kasilag			# Mar 7, 2019		# added definition for other functions
 
 # File creation date: Feb. 13, 2019
