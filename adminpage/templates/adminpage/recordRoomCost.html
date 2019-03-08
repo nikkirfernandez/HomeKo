@@ -143,6 +143,15 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           </nav>
           <!--navbar end-->
 
+          {% if error %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+               <strong>Record does not exist!</strong>
+               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+               </button>
+          </div>
+          {% endif %}
+
           <!-- separator of navbar and actual page content -->
           <div class="top_content_separator"></div>
 
