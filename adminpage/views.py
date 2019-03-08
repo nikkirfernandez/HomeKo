@@ -667,6 +667,11 @@ def editHousingAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+# Method name: addHousingOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in HousingOwner table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordHousingOwner.html
 @login_required(login_url='/adminpage/login/')
 def addHousingOwner(request):
 
@@ -688,6 +693,11 @@ def addHousingOwner(request):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+# Method name: editHousingOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in HousingOwner table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordHousingOwner.html
 @login_required(login_url='/adminpage/login/')
 def editHousingOwner(request, id):
 
@@ -715,6 +725,11 @@ def editHousingOwner(request, id):
 
 	return render(request, 'adminpage/recordHousingOwner.html', content)
 
+# Method name: addHousingRequest
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in HousingRequest table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordHousingRequest.html
 @login_required(login_url='/adminpage/login/')
 def addHousingRequest(request):
 
@@ -736,6 +751,11 @@ def addHousingRequest(request):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+# Method name: editHousingRequest
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in HousingRequest table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordHousingRequest.html
 @login_required(login_url='/adminpage/login/')
 def editHousingRequest(request, id):
 
@@ -763,6 +783,11 @@ def editHousingRequest(request, id):
 
 	return render(request, 'adminpage/recordHousingRequest.html', content)
 
+# Method name: addPicture
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Picture table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordPicture.html
 @login_required(login_url='/adminpage/login/')
 def addPicture(request):
 
@@ -784,6 +809,11 @@ def addPicture(request):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+# Method name: editPicture
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Picture table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordPicture.html
 @login_required(login_url='/adminpage/login/')
 def editPicture(request, id):
 
