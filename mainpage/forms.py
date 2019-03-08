@@ -1,6 +1,7 @@
 # License: MIT License
 # CODE HISTORY #
 # Sontillano     # Feb 5, 2019     # added SearchHousing, AddRequest, SignUp
+# Sontillano     # Mar 6, 2019     # added ReportComment
 
 # File creation date: Feb. 5, 2019
 

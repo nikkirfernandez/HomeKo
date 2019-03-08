@@ -3,6 +3,8 @@
 # CODE HISTORY #
 # Sontillano     # Feb 5, 2019     # added enduserHome, enduserSearchResult, enduserRecord, enduserRequest, ownerLogin
 # Sontillano     # Feb 6, 2019     # fixed enduserHome, enduserSearchResult, enduserRecord 
+# Sontillano     # Mar 5, 2019     # added comment verification
+# Sontillano     # Mar 6, 2019     # added comment report functionality
 
 # File creation date: Feb. 1, 2019
 
