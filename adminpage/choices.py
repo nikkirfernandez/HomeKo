@@ -2,6 +2,7 @@
 
 # CODE HISTORY #
 # Sontillano     # Feb 11, 2019     # added INFOTYPE_CHOICES, FEEDBACK_STATUS_CHOICES, REQUEST_TYPE_CHOICES, REQUEST_STATUS_CHOICES, TABLES_CHOICES
+# Sontillano     # Feb 7, 2019      # changed REQUEST_STATUS_CHOICES
 
 # File creation date: Feb. 11, 2019
 

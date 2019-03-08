@@ -2,6 +2,7 @@
 
 # CODE HISTORY #
 # Sontillano     # Feb 12, 2019     # added paths
+# Sontillano     # Mar 6, 2019      # adminlogout
 
 # File creation date: Feb. 12, 2019
 

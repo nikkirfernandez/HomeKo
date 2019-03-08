@@ -1,9 +1,12 @@
 # This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
 
 # CODE HISTORY #
-# Kasilag     
+# Sontillano		# Feb 13, 2019		# created initial functions
+# Kasilag     		# Feb 19, 2019		# addHousing, editHousing function definitions
+# Sontillano		# Mar 3, 2019		# changed the code for addHousing and editHousing
+# Kasilag			# Mar 7, 2019		# added definition for other functions
 
-# File creation date: Feb. 19, 2019
+# File creation date: Feb. 13, 2019
 
 import time
 
@@ -20,8 +23,12 @@ from .choices import *
 from .forms import *
 from mainpage.models import *
 
-# Create your views here.
 
+# Method name: adminlogin
+# Creation date: Feb 13, 2019 
+# Purpose: View for the admin log in. Contains the authentication of username and password.
+# Calling arguments: No arguments for calling this function.
+# Required files: login.html
 def adminlogin(request):
 	incorrect = False
 	if request.method == "POST":
@@ -45,11 +52,21 @@ def adminlogin(request):
 
 	return render(request, 'adminpage/login.html', content)
 
+# Method name: adminlogout
+# Creation date: Feb 13, 2019 
+# Purpose: Contains the admin log out functionality.
+# Calling arguments: No arguments for calling this function.
+# Required files: 
 def adminlogout(request):
 	logout(request)
 	
 	return HttpResponseRedirect(reverse('adminlogin'))
 
+# Method name: home
+# Creation date: Feb 13, 2019 
+# Purpose: View for the admin home page. Contains the tables in the db.
+# Calling arguments: No arguments for calling this function.
+# Required files: adminHome.html
 @login_required(login_url='/adminpage/login/')
 def home(request):
 
@@ -59,6 +76,11 @@ def home(request):
 
 	return render(request, 'adminpage/adminHome.html', content)
 
+# Method name: tablePage
+# Creation date: Feb 13, 2019 
+# Purpose: View for the records of a table. Contains the primary key and description of the record.
+# Calling arguments: tablename
+# Required files: tablePage.html
 @login_required(login_url='/adminpage/login/')
 def tablePage(request, table):
 	# recordPK is a list of the primary keys 
@@ -137,6 +159,11 @@ def tablePage(request, table):
 
 	return render(request, 'adminpage/tablePage.html', content)
 
+# Method name: addAdditionalInfo
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in AdditionalInfo table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordAdditionalInfo.html
 @login_required(login_url='/adminpage/login/')
 def addAdditionalInfo(request):
 
@@ -162,6 +189,11 @@ def addAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+# Method name: editAdditionalInfo
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in AdditionalInfo table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordAdditionalInfo.html
 @login_required(login_url='/adminpage/login/')
 def editAdditionalInfo(request, id):
 
@@ -191,6 +223,11 @@ def editAdditionalInfo(request, id):
 
 	return render(request, 'adminpage/recordAdditionalInfo.html', content)
 
+# Method name: addArea
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Area table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordArea.html
 @login_required(login_url='/adminpage/login/')
 def addArea(request):
 
@@ -213,6 +250,11 @@ def addArea(request):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+# Method name: editArea
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Area table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordArea.html
 @login_required(login_url='/adminpage/login/')
 def editArea(request, id):
 
@@ -240,6 +282,11 @@ def editArea(request, id):
 
 	return render(request, 'adminpage/recordArea.html', content)
 
+# Method name: addContact
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Contact table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordContact.html
 @login_required(login_url='/adminpage/login/')
 def addContact(request):
 
@@ -262,6 +309,11 @@ def addContact(request):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
+# Method name: editContact
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Contact table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordContact.html
 @login_required(login_url='/adminpage/login/')
 def editContact(request, id):
 
@@ -289,6 +341,11 @@ def editContact(request, id):
 
 	return render(request, 'adminpage/recordContact.html', content)
 
+# Method name: editFeedback
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Feedback table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordFeedback.html
 @login_required(login_url='/adminpage/login/')
 def editFeedback(request, id):
 
@@ -314,6 +371,11 @@ def editFeedback(request, id):
 
 	return render(request, 'adminpage/recordFeedback.html', content)
 
+# Method name: addHousetype
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Housetype table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordHousetype.html
 @login_required(login_url='/adminpage/login/')
 def addHousetype(request):
 
@@ -335,6 +397,11 @@ def addHousetype(request):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+# Method name: editHousetype
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Housetype table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordHousetype.html
 @login_required(login_url='/adminpage/login/')
 def editHousetype(request, id):
 
@@ -362,6 +429,11 @@ def editHousetype(request, id):
 
 	return render(request, 'adminpage/recordHousetype.html', content)
 
+# Method name: addHousing
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Housing table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordHousing.html
 @login_required(login_url='/adminpage/login/')
 def addHousing(request):
 	
@@ -386,6 +458,11 @@ def addHousing(request):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+# Method name: editHousing 
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Housing table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordHousing.html
 @login_required(login_url='/adminpage/login/')
 def editHousing(request, id):
 	error = False
@@ -413,11 +490,24 @@ def editHousing(request, id):
 	if request.method == "POST":
 		form = addHousingForm(request.POST, instance=record)
 		if form.is_valid():
-			post = form.save()
+			
 			if '_addAnother' in request.POST:
+				post = form.save()
 				return HttpResponseRedirect(reverse('addHousing', args=()))
 			elif '_save' in request.POST:
-				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+				if record!=None:
+					post = form.save()
+					return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
+				else:
+					error = True
+					content = {
+						'tableChoices' : TABLES_CHOICES,
+						'recordExist' : True,
+						'record' : record, 				#Ito yung record na result ng query sa db
+						'form' : addHousingForm(),
+						'error' : error,
+					}
+					return render(request, 'adminpage/recordHousing.html', content)
 			
 	form = addHousingForm(instance=record)
 
@@ -431,6 +521,11 @@ def editHousing(request, id):
 
 	return render(request, 'adminpage/recordHousing.html', content)
 
+# Method name: addPropertytype
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in Propertytype table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordPropertytype.html
 @login_required(login_url='/adminpage/login/')
 def addPropertytype(request):
 
@@ -452,6 +547,11 @@ def addPropertytype(request):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+# Method name: editPropertytype
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Propertytype table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordPropertytype.html
 @login_required(login_url='/adminpage/login/')
 def editPropertytype(request, id):
 
@@ -479,6 +579,11 @@ def editPropertytype(request, id):
 
 	return render(request, 'adminpage/recordPropertytype.html', content)
 
+# Method name: editRequest
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Request table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordRequest.html
 @login_required(login_url='/adminpage/login/')
 def editRequest(request, id):
 
@@ -504,6 +609,11 @@ def editRequest(request, id):
 
 	return render(request, 'adminpage/recordRequest.html', content)
 
+# Method name: addHousingAdditionalInfo
+# Creation date: Feb 13, 2019 
+# Purpose: View for adding a record in HousingAdditionalInfo table. Contains the form processing and record adding.
+# Calling arguments: 
+# Required files: recordHousingAdditionalInfo.html
 @login_required(login_url='/adminpage/login/')
 def addHousingAdditionalInfo(request):
 
@@ -525,6 +635,11 @@ def addHousingAdditionalInfo(request):
 
 	return render(request, 'adminpage/recordHousingAdditionalInfo.html', content)
 
+# Method name: editHousingAdditionalInfo
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in HousingAdditionalInfo table. Contains the form processing, record saving and record deletion.
+# Calling arguments: record id
+# Required files: recordHousingAdditionalInfo.html
 @login_required(login_url='/adminpage/login/')
 def editHousingAdditionalInfo(request, id):
 
