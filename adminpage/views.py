@@ -720,11 +720,28 @@ def addRoomCost(request):
 @login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 
-	record = RoomCost.objects.get(roomid=id)
+	error = False
+	try:
+		record = RoomCost.objects.get(roomid=id)
+	except Exception:
+		record = None
+
 	if request.method=="GET":
 		if '_delete' in request.GET:
-			record.delete()
-			return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
+			if record!=None:
+				record.delete()
+				return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
+			else:
+				error = True
+				content = {
+					'tableChoices' : TABLES_CHOICES,
+					'recordExist' : True,
+					'record' : record, 				#Ito yung record na result ng query sa db
+					'form' : addRoomCostForm(),
+					'error' : error,
+				}
+				return render(request, 'adminpage/recordHousing.html', content)
+
 	if request.method == "POST":
 		form = addRoomCostForm(request.POST, instance=record)
 		if form.is_valid():
@@ -740,6 +757,7 @@ def editRoomCost(request, id):
 		'recordExist' : True,
 		'record' : record, 
 		'form' : form,
+		'error' : error,
 	}
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
