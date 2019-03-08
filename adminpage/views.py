@@ -868,6 +868,11 @@ def editPicture(request, id):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+# Method name: addRoomCost
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Room Cost table. Contains the form processing, record adding.
+# Calling arguments: 
+# Required files: recordRoomCost.html
 @login_required(login_url='/adminpage/login/')
 def addRoomCost(request):
 
@@ -889,6 +894,11 @@ def addRoomCost(request):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+# Method name: editRoomCost
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Room Cost table. Contains the form processing, record saving and record deletion.
+# Calling arguments: 
+# Required files: recordRoomCost.html, recordHousing.html
 @login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 
@@ -934,6 +944,11 @@ def editRoomCost(request, id):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+# Method name: addOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Owner table. Contains the form processing, record adding.
+# Calling arguments: 
+# Required files: recordOwner.html
 @login_required(login_url='/adminpage/login/')
 def addOwner(request):
 
@@ -955,6 +970,11 @@ def addOwner(request):
 
 	return render(request, 'adminpage/recordOwner.html', content)
 
+# Method name: editOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Owner table. Contains the form processing, record saving and record deletion.
+# Calling arguments: owner id
+# Required files: recordOwner.html
 @login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
 
