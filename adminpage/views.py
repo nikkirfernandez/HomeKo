@@ -124,6 +124,7 @@ def tablePage(request, table):
 		recordPending = Request.objects.filter(status=1).order_by('requestid')
 		recordProgress = Request.objects.filter(status=2).order_by('requestid')
 		recordDone = Request.objects.filter(status=3).order_by('requestid')
+		recordNotApproved = Request.objects.filter(status=4).order_by('requestid')
 
 		content = {
 			'tableChoices' : TABLES_CHOICES,
@@ -131,6 +132,7 @@ def tablePage(request, table):
 			'pending' : recordPending,
 			'progress' : recordProgress,
 			'done' : recordDone,    
+			'notapproved' : recordNotApproved,
 		}
 		return render(request, 'adminpage/requestTabs.html', content)
 	elif table == "HousingRequest":

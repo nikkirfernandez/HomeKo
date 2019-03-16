@@ -148,17 +148,20 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                     <div class="col-9">
                          <ul class="nav nav-tabs" id="myTab" role="tablist">
                               <li class="nav-item">
-                                   <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Pending</a>
+                                   <a class="nav-link active" id="home-tab" data-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Pending</a>
                               </li>
                               <li class="nav-item">
-                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">In Progress</a>
+                                   <a class="nav-link" id="profile-tab" data-toggle="tab" href="#progress" role="tab" aria-controls="progress" aria-selected="false">In Progress</a>
                               </li>
                               <li class="nav-item">
-                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Done</a>
+                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#done" role="tab" aria-controls="done" aria-selected="false">Done</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" id="contact-tab" data-toggle="tab" href="#notapproved" role="tab" aria-controls="notapproved" aria-selected="false">Not Approved</a>
                               </li>
                          </ul>
                          <div class="tab-content" id="myTabContent">
-                              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                              <div class="tab-pane fade show active" id="pending" role="tabpanel" aria-labelledby="home-tab">
                                    <div class="table-responsive">
                                         <table class="table">
                                              <thead>
@@ -176,7 +179,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                         </table>
                                    </div>
                               </div>
-                              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                              <div class="tab-pane fade" id="progress" role="tabpanel" aria-labelledby="profile-tab">
                                    <div class="table-responsive">
                                         <table class="table">
                                              <thead>
@@ -194,7 +197,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                         </table>
                                    </div>
                               </div>
-                              <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                              <div class="tab-pane fade" id="done" role="tabpanel" aria-labelledby="contact-tab">
                                    <div class="table-responsive">
                                         <table class="table">
                                              <thead>
@@ -203,6 +206,24 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                                              </thead>
                                              <tbody>
                                                   {% for record in done %}
+                                                  <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.requestid}}">
+                                                       <td>{{record.requestid}}</td>
+                                                       <td>{{record.get_reqtype_display}}: {{record.message|truncatewords:10}}</td>
+                                                  </tr>
+                                                  {% endfor %}
+                                             </tbody>
+                                        </table>
+                                   </div>
+                              </div>
+                              <div class="tab-pane fade" id="notapproved" role="tabpanel" aria-labelledby="contact-tab">
+                                   <div class="table-responsive">
+                                        <table class="table">
+                                             <thead>
+                                                  <th>PK</th>
+                                                  <th>Name</th>
+                                             </thead>
+                                             <tbody>
+                                                  {% for record in notapproved %}
                                                   <tr class="clickable-row" data-href="/adminpage/{{tableName}}/{{record.requestid}}">
                                                        <td>{{record.requestid}}</td>
                                                        <td>{{record.get_reqtype_display}}: {{record.message|truncatewords:10}}</td>

@@ -274,23 +274,19 @@ CODE HISTORY
                               <!--email textbox-->          
                               <div class="form-group">
                                    <label for="senderEmail" class="formLabel">Email</label>
-                                   <input type="email" class="form-control" id="senderEmail" required="true" name="email">
+                                   {{requestForm.sender}}
                               </div>
                               
                               <!--request type dropdown-->
                               <div class="form-group">
                                    <label for="requestType" class="formLabel">Request Type</label>
-                                   <select class="form-control" id="requestType" required="true" name="requestType">
-                                   {% for n, request in requestChoices %}
-                                        <option value={{ n }}>{{request}}</option>
-                                   {% endfor %}
-                                   </select>
+                                   {{requestForm.reqtype}}
                               </div>
                               
                               <!--request content textarea-->          
                               <div class="form-group">
                                    <label for="reuestContent" class="formLabel">Request content: </label>
-                                   <textarea class="form-control" id="requestContent" rows="3" required="true" name="content"></textarea>
+                                   {{requestForm.message}}
                               </div>
                               
                               <!-- submit button -->

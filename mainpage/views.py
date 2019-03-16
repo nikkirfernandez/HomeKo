@@ -281,14 +281,11 @@ def enduserRecord(request, housingid):
 
      searchForm = SearchHousing()
      commentForm = AddComment()
-     reportForm = ReportComment()
-     commentFlag = 0
           
      # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
           commentForm = AddComment(request.POST)
-          reportForm = ReportComment(request.POST)
           print("post")
           if commentForm.is_valid():
                print("form valid")
@@ -297,15 +294,6 @@ def enduserRecord(request, housingid):
                post.status = 1
                post.dateposted = datetime.date.today()   
                post.save()
-               return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
-          elif reportForm.is_valid():
-               post = reportForm.save(commit=False)
-               post.reqtype=4
-               post.status = 1
-               post.datesent = datetime.date.today() 
-               post.save()  
-
-               HousingRequest.objects.create(housingid=Housing.objects.get(housingid=housingid), requestid=Request.objects.get(requestid=post.requestid))
                return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
           elif searchForm.is_valid():     
                filtersSet1={}
@@ -385,14 +373,7 @@ def enduserRecord(request, housingid):
                request.session['searchResult'] = results3
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
-          """
-          if '_comment' in request.GET and commentFlag==1:
-               post = commentForm.save(commit=False)
-               post.housingid = housingid
-               post.status = 1
-               post.dateposted = datetime.date.today()   
-               post.save()
-"""
+
      content = {
           'housing' : housing,
           'ownername' : ownerName,
@@ -409,7 +390,6 @@ def enduserRecord(request, housingid):
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
           'commentForm' : commentForm,
-          'reportCommentForm' : reportForm,
      }
      return render(request, 'mainpage/housing_record.html', content)
 
@@ -422,8 +402,14 @@ def enduserRequest(request):
      # if the user submitted the form
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
+          requestForm = AddRequest(request.POST)
 
-          if searchForm.is_valid():     
+          if requestForm.is_valid():
+               post = requestForm.save(commit=False)
+               post.status = 1
+               post.datesent = datetime.date.today()   
+               post.save()
+          elif searchForm.is_valid():     
                filtersSet1={}
                filtersSet2=[]     
                
@@ -503,6 +489,7 @@ def enduserRequest(request):
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
      searchForm = SearchHousing()
+     requestForm = AddRequest()
 
      content = {
           'areaChoices' : AREA_CHOICES,
@@ -512,6 +499,7 @@ def enduserRequest(request):
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
           'requestChoices' : REQUEST_CHOICES,
+          'requestForm' : requestForm,
      }
      return render(request, 'mainpage/request_enduser.html', content)
 
