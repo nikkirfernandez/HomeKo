@@ -29,10 +29,18 @@ class SearchHousing(forms.Form):
      curfew = forms.BooleanField(initial=False, required=False)
 
 
-class AddRequest(forms.Form):
-     email = forms.CharField(max_length=50, required=True)
-     requestType = forms.ChoiceField(choices = REQUEST_CHOICES, widget=forms.Select(), required=True)
-     content = forms.CharField(required=True, widget=forms.Textarea)
+class AddRequest(forms.ModelForm):
+     message = forms.CharField(required=True, widget=forms.Textarea(attrs={'rows': 3}), max_length=500)
+
+     class Meta:
+          model = Request
+          fields = ['sender', 'reqtype', 'message']
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          for field in iter(self.fields):
+               self.fields[field].widget.attrs.update({
+                    'class': 'form-control'
+               })
 
 class SignUp(forms.Form):
      lname = forms.CharField(max_length=40, required=True)
@@ -49,19 +57,4 @@ class AddComment(forms.ModelForm):
           for field in iter(self.fields):
                self.fields[field].widget.attrs.update({
                     'class': 'form-control'
-               })
-
-class ReportComment(forms.ModelForm):
-     message = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), max_length=500, required=True, )
-     class Meta:
-          model = Request
-          fields = ['message', 'sender']
-     def __init__(self, *args, **kwargs):
-          super().__init__(*args, **kwargs)
-          for field in iter(self.fields):
-               self.fields[field].widget.attrs.update({
-                    'class': 'form-control'
-               })
-          self.fields['message'].widget.attrs.update({
-                    'name': 'reportMessage'
                })
