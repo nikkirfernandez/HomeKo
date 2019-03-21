@@ -33,7 +33,7 @@ class editContactForm(forms.ModelForm):
                     'class': 'form-control'
                })
 
-class editHousingForm(forms.ModelForm):
+class housingForm(forms.ModelForm):
      maphtml = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), max_length=500, required=False)
      class Meta:
           model = Housing
@@ -45,7 +45,7 @@ class editHousingForm(forms.ModelForm):
                     'class': 'form-control'
                })
 
-class editHousingAddtnlinfoForm(forms.ModelForm):
+class housingAddtnlinfoForm(forms.ModelForm):
      description = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), max_length=300, required=False, )
      class Meta:
           model = HousingAdditionalInfo
@@ -57,7 +57,7 @@ class editHousingAddtnlinfoForm(forms.ModelForm):
                     'class': 'form-control'
                })
 
-class editRoomCostForm(forms.ModelForm):
+class roomCostForm(forms.ModelForm):
 
      class Meta:
           model = RoomCost

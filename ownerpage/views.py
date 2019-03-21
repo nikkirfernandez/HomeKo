@@ -11,12 +11,19 @@ from .forms import *
 from mainpage.models import *
 
 def home(request):
-	content = {}
+	ownerid = 1
+	records = HousingOwner.objects.filter(ownerid=ownerid)
+	
+	request.session['ownerid'] = ownerid
+	content = {
+		'records' : records,
+	}
 
 	return render(request, 'ownerpage/home.html', content)
 
 def account(request):
-	record = Owner.objects.get(ownerid=1)
+	ownerid = request.session.get('ownerid')
+	record = Owner.objects.get(ownerid=ownerid)
 	form = editOwnerForm(instance=record)
 	content = {
 		'recordExist' : True,
@@ -26,16 +33,16 @@ def account(request):
 
 	return render(request, 'ownerpage/account.html', content)
 
-def housingRecord(request):
+def editHousingRecord(request, housingid):
 	housingid = 1
 	record = Housing.objects.get(housingid=housingid)
-	form = editHousingForm(instance=record)
-	roomform = editRoomCostForm()
-	amenityform = editHousingAddtnlinfoForm()
+	form = housingForm(instance=record)
+	roomform = roomCostForm()
+	amenityform = housingAddtnlinfoForm()
 	amenityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=1)
-	facilityform = editHousingAddtnlinfoForm()
+	facilityform = housingAddtnlinfoForm()
 	facilityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=2)
-	ruleform = editHousingAddtnlinfoForm()
+	ruleform = housingAddtnlinfoForm()
 	ruleform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=3)
 
 	housingRooms = RoomCost.objects.filter(housingid=housingid)
@@ -55,6 +62,27 @@ def housingRecord(request):
 		'amenities' : amenities,
 		'facilities' : facilities,
 		'rules' : rules,
+	}
+
+	return render(request, 'ownerpage/housingrecord.html', content)
+
+def addHousingRecord(request):
+	form = housingForm()
+	roomform = roomCostForm()
+	amenityform = housingAddtnlinfoForm()
+	amenityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=1)
+	facilityform = housingAddtnlinfoForm()
+	facilityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=2)
+	ruleform = housingAddtnlinfoForm()
+	ruleform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=3)
+
+	content = {
+		'recordExist' : False,	
+		'form' : form,
+		'roomform' : roomform,
+		'amenityform' : amenityform,
+		'facilityform' : facilityform,
+		'ruleform' : ruleform,
 	}
 
 	return render(request, 'ownerpage/housingrecord.html', content)

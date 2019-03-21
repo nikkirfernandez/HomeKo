@@ -12,5 +12,6 @@ from . import views
 urlpatterns = [
      path('home/', views.home, name='home'),
      path('account/', views.account, name='account'),
-     path('record/', views.housingRecord, name='housingRecord'),
+     path('housing/add', views.addHousingRecord, name='addHousingRecord'),
+     path('housing/<housingid>', views.editHousingRecord, name='editHousingRecord'),
 ]    
