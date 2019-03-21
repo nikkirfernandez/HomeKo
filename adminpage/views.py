@@ -7,7 +7,7 @@
 # Fernandez		# Mar 6, 2019		# added log in for admin
 # Sontillano		# Mar 7, 2019		# modified log in
 # Kasilag			# Mar 7, 2019		# added definition for other functions
-
+# Sontillano		# Mar 21, 2019		# fixed request processing
 # File creation date: Feb. 13, 2019
 
 import time
@@ -596,6 +596,7 @@ def editRequest(request, id):
 	if request.method == "POST":
 		form = addRequestForm(request.POST, instance=record)
 		if form.is_valid():
+			print("form valid")
 			post = form.save()
 			if '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
