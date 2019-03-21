@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'mainpage.apps.MainpageConfig',
     'adminpage.apps.AdminpageConfig',
+    'ownerpage.apps.OwnerpageConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -128,6 +129,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     STATIC_PATH,
+    os.path.join(BASE_DIR,'ownerpage/static'),
     os.path.join(BASE_DIR,'adminpage/static'),
     os.path.join(BASE_DIR,'mainpage/static'),
 )

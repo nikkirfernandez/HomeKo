@@ -1,0 +1,169 @@
+<!-- 
+This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
+-->
+
+<!--CODE HISTORY 
+# Sontillano     # Mar 20, 2019    # made layout 
+
+# File creation date: Mar. 20, 2019
+-->
+
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en-us" >
+     <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width+device-width, initial-scale=1">
+          <title>Home</title>
+          <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans" rel="stylesheet"> 
+
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <link href="{% static 'adminpage/css/bootstrap.min.css' %}" rel="stylesheet">
+          <script src="{% static 'adminpage/js/bootstrap.min.js' %}"></script>
+
+          <style>
+               .top_content_separator, .bottom_content_separator {
+                    height: 80px;
+               }
+
+               .navbar {
+                    background-color: #705947;
+               }
+
+               .navbar-brand {
+                    font-size: 23px;
+                    font-weight: bold;
+               }
+
+               .nav-link {
+                    font-size: 17px;   
+               }
+
+               .navbar-brand, .nav-link {
+                    font-family: 'Nunito', sans-serif;
+                    color: #f09450;
+               }
+
+               .navbar-brand:hover {
+                    color: #f09450;
+               } 
+
+               .nav-link:hover {
+                    color: white;
+               }
+
+               .title {
+                    font-family: 'Noto Serif SC', serif;
+                    font-size: 33px;
+                    color: #705947;
+               } 
+
+               .btn {
+                    background-color: #f09450;
+                    color: #705947;
+                    font-weight: 550;
+               }
+
+               .btn:hover {
+                    background-color: #f09450;
+                    color: #704525;
+               }
+
+               .separator {
+                    height: 20px;
+               }
+
+               th {
+                    font-family: 'Open Sans', sans-serif;
+               }
+
+               .clickable-row:hover {
+                    cursor: pointer;
+               }
+              
+          </style>
+
+          <script>
+               jQuery(document).ready(function($) {
+                    $(".clickable-row").click(function() {
+                         window.location = $(this).data("href");
+                    });
+               });
+          </script>
+     </head>
+     <body style="background-color:#f8f9fa">
+          <!--navbar-->
+          <nav class="navbar navbar-expand-sm navbar-light bg-light">          
+               <div class="container">
+                    <a class="navbar-brand" href="/ownerpage/home">
+                         <img src="{% static 'ownerpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Owner
+                    </a>  
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="navbarText">
+                         <ul class="navbar-nav mr-auto"></ul>
+                         <ul class="navbar-nav">
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/">View Website</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/ownerpage/account">Account</a>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/ownerpage/logout">Log out</a>
+                              </li>
+                         </ul>
+                    </div>
+               </div>
+          </nav>
+          <!--navbar end-->
+
+          <!-- separator of navbar and actual page content -->
+          <div class="top_content_separator"></div>
+
+          <!-- Container -->          
+          <div class="container">
+               <div class="row justify-content-center">
+                    <div class="col-8 title ">
+                         My Housings 
+                    </div>
+                    <div class="col-2">
+                         <a role="button" href="/ownerpage/housing/add" class="btn">Add housing</a>
+                    </div>
+               </div>   
+
+               <!--separates the title and table-->
+               <div class="separator"></div>
+
+               <div class="row form_login justify-content-center">
+                    <div class="col-9 table-responsive">
+                         <table class="table">
+                              <thead>
+                                   <th>Name</th>
+                              </thead>
+                              <!--
+                              <tbody>
+                                   {% for record in records %}
+                                   <tr class="clickable-row" data-href="/ownerpage/housing/{{record.item1}}">
+                                        <td>{{record.item1}}</td>
+                                   </tr>
+                                   {% endfor %}
+                              </tbody>-->
+                              <tbody>
+                                   <tr><td>House 1</td></tr>
+                                   <tr><td>House 2</td></tr>
+                                   <tr><td>House 3</td></tr>
+                              </tbody>
+                         </table>
+                    </div>
+               </div>
+          </div>
+
+          <!-- space at the bottom -->
+          <div class="bottom_content_separator"></div> 
+     	
+     </body>
+</html>

@@ -22,5 +22,6 @@ urlpatterns = [
     #path('', views.enduserHome, name='home'),
     path('', include('mainpage.urls')),
     path('adminpage/', include('adminpage.urls')),
+    path('ownerpage/', include('ownerpage.urls')),
     #path('admin/', admin.site.urls),
 ]
