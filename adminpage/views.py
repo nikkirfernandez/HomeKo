@@ -5,7 +5,7 @@
 # Kasilag     		# Feb 19, 2019		# addHousing, editHousing function definitions
 # Sontillano		# Mar 3, 2019		# changed the code for addHousing and editHousing
 # Kasilag			# Mar 7, 2019		# added definition for other functions
-
+# Sontillano		# Mar 21, 2019		# fixed request processing
 # File creation date: Feb. 13, 2019
 
 import time
@@ -597,6 +597,7 @@ def editRequest(request, id):
 	if request.method == "POST":
 		form = addRequestForm(request.POST, instance=record)
 		if form.is_valid():
+			print("form valid")
 			post = form.save()
 			if '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Request",)))

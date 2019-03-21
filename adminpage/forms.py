@@ -162,7 +162,7 @@ class addRequestForm(forms.ModelForm):
 
      class Meta:
           model = Request
-          fields = ['reqtype', 'status']
+          fields = ['status']
      def __init__(self, *args, **kwargs):
           super().__init__(*args, **kwargs)
           for field in iter(self.fields):
