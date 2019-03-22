@@ -24,17 +24,19 @@ def home(request):
 def account(request):
 	ownerid = request.session.get('ownerid')
 	record = Owner.objects.get(ownerid=ownerid)
+	contacts = Contact.objects.filter(ownerid=ownerid)
 	form = editOwnerForm(instance=record)
+	contactform = editContactForm()
 	content = {
 		'recordExist' : True,
 		'record' : record, 	
 		'form' : form,
+		'contactform' : contactform,
 	}
 
 	return render(request, 'ownerpage/account.html', content)
 
 def editHousingRecord(request, housingid):
-	housingid = 1
 	record = Housing.objects.get(housingid=housingid)
 	form = housingForm(instance=record)
 	roomform = roomCostForm()
