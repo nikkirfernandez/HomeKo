@@ -106,7 +106,45 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           </style>
      </head>
      <body style="background-color:#f8f9fa">
-          
+
+          <!--add rule modal-->
+          <div class="modal fade" id="addeditrule" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+               <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                         <form method="GET" action="#">
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="exampleModalLabel">Rule</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">         
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="area_modal" class="col-form-label">Rule</label>
+                                        </div>
+                                        <div class="col-8">
+                                             {{ruleform.additionalinfoid}}
+                                        </div>
+                                   </div>      
+                                   <div class="form-group row">
+                                        <div class="col-4">
+                                             <label for="area_modal" class="col-form-label">Description</label>
+                                        </div>
+                                        <div class="col-8">
+                                             {{ruleform.description}}
+                                        </div>
+                                   </div>  
+                              </div>           
+                              <div class="modal-footer">
+                                   <button type="button" class="btn" data-dismiss="modal">Cancel</button>
+                                   <button type="submit" class="btn" id="_save" name="_save" value="0">Save</button>
+                              </div>
+                         </form>          
+                    </div>
+               </div>
+          </div>   
+
           <!-- delete modal -->
           <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
@@ -123,7 +161,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                          <div class="modal-footer">
                               <form method='GET' action='#'>
                                    <button type="button" class="btn btnN" data-dismiss="modal">Cancel</button>
-                                   <button type="submit" class="btn btnY" name="_delete">Yes</button>
+                                   <button type="submit" class="btn btnY" id="_delete" name="_delete" value="0">Yes</button>
                               </form>
                          </div>
                     </div>
@@ -164,11 +202,20 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           <div class="container">
                <div class="row justify-content-center">
                     <div class="col-8 title ">
-                         Housing Information 
+                         Add Rule
                     </div>
                     <div class="col-2">
-                         
+                         <a role="button" href="#" id="add_rule" class="btn">Add rule</a>
                     </div>
+                    <script>
+                         $(document).ready(function(){
+                              $('#add_rule').click(function(){                                
+                                   $('#id_additionalinfoid').val('');
+                                   $('#id_description').val('');
+                                   $('#addeditrule').modal('show')
+                              });
+                         });
+                    </script>
                </div>   
 
                <!--separates the title and table-->
@@ -176,61 +223,47 @@ This is a course requirement for CS 192 Software Engineering II under the superv
 
                <form method="post">
                {% csrf_token %}
+                    {% for rule in rules %} 
                     <div class="row justify-content-center form-group">
-                         <div class="col-3">
-                              <label class="col-form-label fieldName" >name</label>
+                         <div class="col-2">
+                              {{rule.additionalinfoid}}
                          </div>
-                         <div class="col-7">
-                              {{form.housingname}}
+                         <div class="col-6">
+                              {{rule.description}}
                          </div>
-                    </div> 
-                    <div class="row justify-content-center form-group">
-                         <div class="col-3">
-                              <label class="col-form-label fieldName">area</label>
+                         <div class="col-1">
+                              <a class="nav-link" id="edit_{{rule.housingadditionalinfoid}}" href="#{{rule.housingadditionalinfoid}}">edit</a>
                          </div>
-                         <div class="col-7">
-                              {{form.area}}
-                         </div>
-                    </div>
-                    <div class="row justify-content-center form-group">
-                         <div class="col-3">
-                              <label class="col-form-label fieldName" >address</label>
-                         </div>
-                         <div class="col-7">
-                              {{form.address}}
-                         </div>
-                    </div> 
-                    <div class="row justify-content-center form-group">
-                         <div class="col-3">
-                              <label class="col-form-label fieldName">propertytype</label>
-                         </div>
-                         <div class="col-7">
-                              {{form.propertytype}}
+                         <div class="col-1">
+                              <a class="nav-link" href="#{{rule.housingadditionalinfoid}}" id="delete_{{rule.housingadditionalinfoid}}">delete</a>
                          </div>
                     </div>  
-                    <div class="row justify-content-center form-group">
-                         <div class="col-3">
-                              <label class="col-form-label fieldName">hometype</label>
-                         </div>
-                         <div class="col-7">
-                              {{form.housetype}}
-                         </div>
-                    </div>  
+                    <script>
+                         $(document).ready(function(){
+                              $('#edit_{{rule.housingadditionalinfoid}}').click(function(){        
+                                   $('#id_additionalinfoid').val('{{rule.additionalinfoid.additionalinfoid}}');
+                                   $('#id_description').val('{{rule.description}}');
+                                   $('#_save').val('{{rule.housingadditionalinfoid}}');
+                                   $('#addeditrule').modal('show')
+                              });
+
+                              $('#delete_{{rule.housingadditionalinfoid}}').click(function(){
+                                   $('#_delete').val('{{rule.housingadditionalinfoid}}');     
+                                   $('#delete').modal('show')
+                              });
+                         });
+                    </script>
+                    {% endfor %}
 
                     <!--separates the title and table-->
                     <div class="separator"></div> 
                     
                     <div class="row justify-content-end form-group">
                          <div class="col-auto align-self-end">
-                              <a type="button" class="btn btnN" href="/ownerpage/home">Back</a>
+                              <a type="button" class="btn btnN" href="/ownerpage/housing/{{housingid}}/facility">Back</a>
                          </div>
-                         {% if recordExist %}
                          <div class="col-auto align-self-end">
-                              <button type="button" class="btn btnN" data-toggle="modal" data-target="#delete">Delete</button>
-                         </div>
-                         {% endif %}
-                         <div class="col-auto align-self-end">
-                              <button type="submit" class="btn btnY" name="_save">Next</button>
+                              <a type="button" class="btn btnN" href="/ownerpage/home">Done</a>
                          </div>
                     </div>
                </form>

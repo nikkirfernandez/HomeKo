@@ -12,6 +12,10 @@ from . import views
 urlpatterns = [
      path('home/', views.home, name='home'),
      path('account/', views.account, name='account'),
-     path('housing/add', views.addHousingRecord, name='addHousingRecord'),
      path('housing/<housingid>', views.editHousingRecord, name='editHousingRecord'),
+     path('housing/<housingid>/room', views.editRoomRecord, name='editRoomRecord'),
+     path('housing/<housingid>/amenity', views.editAmenityRecord, name='editAmenityRecord'),
+     path('housing/<housingid>/facility', views.editFacilityRecord, name='editFacilityRecord'),
+     path('housing/<housingid>/rule', views.editRuleRecord, name='editRuleRecord'),
+
 ]    
