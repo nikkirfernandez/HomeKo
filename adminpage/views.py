@@ -4,8 +4,10 @@
 # Sontillano		# Feb 13, 2019		# created initial functions
 # Kasilag     		# Feb 19, 2019		# addHousing, editHousing function definitions
 # Sontillano		# Mar 3, 2019		# changed the code for addHousing and editHousing
+# Fernandez		# Mar 6, 2019		# added log in for admin
+# Sontillano		# Mar 7, 2019		# modified log in
 # Kasilag			# Mar 7, 2019		# added definition for other functions
-
+# Sontillano		# Mar 21, 2019		# fixed request processing
 # File creation date: Feb. 13, 2019
 
 import time
@@ -83,6 +85,7 @@ def home(request):
 # Required files: tablePage.html
 @login_required(login_url='/adminpage/login/')
 def tablePage(request, table):
+
 	# recordPK is a list of the primary keys 
 	# recordName is a list of names that represent the records
     # records = [{'item1': t[0], 'item2': t[1]} for t in zip(recordPK, recordName)]
@@ -156,7 +159,7 @@ def tablePage(request, table):
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'tableName' : table,
-		'records' : records,          
+		'records' : records,
 	}
 
 	return render(request, 'adminpage/tablePage.html', content)
@@ -178,7 +181,7 @@ def addAdditionalInfo(request):
 				return HttpResponseRedirect(reverse('addAdditionalInfo', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
-			
+
 	form = addAdditionalinfoForm()
 	#print(form)
 
@@ -212,7 +215,7 @@ def editAdditionalInfo(request, id):
 				return HttpResponseRedirect(reverse('addAdditionalInfo', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
-			
+
 	form = addAdditionalinfoForm(instance=record)
 
 	content = {
@@ -241,7 +244,6 @@ def addArea(request):
 				return HttpResponseRedirect(reverse('addArea', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
-
 	form = addAreaForm()
 
 	content = {
@@ -300,7 +302,6 @@ def addContact(request):
 				return HttpResponseRedirect(reverse('addContact', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
-
 	form = addContactForm()
 
 	content = {
@@ -381,16 +382,14 @@ def editFeedback(request, id):
 @login_required(login_url='/adminpage/login/')
 def addHousetype(request):
 
-	if request.method == "POST":
-		form = addHousetypeForm(request.POST)
+	form = addHousetypeForm(request.POST)
+	if request.method == 'POST':
 		if form.is_valid():
-			post = form.save()
+			newHousetype = form.save()
 			if '_addAnother' in request.POST:
 				return HttpResponseRedirect(reverse('addHousetype', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Housetype",)))
-	form = addHousetypeForm()
-
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
@@ -438,7 +437,7 @@ def editHousetype(request, id):
 # Required files: recordHousing.html
 @login_required(login_url='/adminpage/login/')
 def addHousing(request):
-	
+
 	if request.method == "POST":
 		form = addHousingForm(request.POST)
 
@@ -448,7 +447,7 @@ def addHousing(request):
 				return HttpResponseRedirect(reverse('addHousing', args=()))
 			elif '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
-			
+
 	form = addHousingForm()
 	#print(form)
 
@@ -516,7 +515,7 @@ def editHousing(request, id):
 	content = {
 		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : True,
-		'record' : record, 				#Ito yung record na result ng query sa db
+		'record' : record, 			
 		'form' : form,
 		'error' : error,
 	}
@@ -597,6 +596,7 @@ def editRequest(request, id):
 	if request.method == "POST":
 		form = addRequestForm(request.POST, instance=record)
 		if form.is_valid():
+			print("form valid")
 			post = form.save()
 			if '_save' in request.POST:
 				return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
@@ -644,6 +644,20 @@ def addHousingAdditionalInfo(request):
 # Required files: recordHousingAdditionalInfo.html
 @login_required(login_url='/adminpage/login/')
 def editHousingAdditionalInfo(request, id):
+	dbEntry = HousingAdditionalInfo.objects.get(pk=id)
+	form = addHousingAddtnlinfoForm(request.POST, instance=dbEntry)
+	if request.method == "GET":
+		if '_delete' in request.GET:
+			dbEntry.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalInfo",)))
+	if request.method == 'POST':
+		if form.is_valid():
+			newForm = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousingAddtionalinfo', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalInfo",)))
+
 
 	record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=id)
 	if request.method=="GET":
@@ -702,6 +716,20 @@ def addHousingOwner(request):
 # Required files: recordHousingOwner.html
 @login_required(login_url='/adminpage/login/')
 def editHousingOwner(request, id):
+	dbEntry = HousingOwner.objects.get(pk=id)
+	form = addHousingOwnerForm(request.POST, instance=dbEntry)
+	if request.method == "GET":
+		if '_delete' in request.GET:
+			dbEntry.delete()
+			return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
+	if request.method == 'POST':
+		if form.is_valid():
+			newForm = form.save()
+			if '_addAnother' in request.POST:
+				return HttpResponseRedirect(reverse('addHousingOwner', args=()))
+			elif '_save' in request.POST:
+				return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
+
 
 	record = HousingOwner.objects.get(housingownerid=id)
 	if request.method=="GET":
@@ -843,6 +871,11 @@ def editPicture(request, id):
 
 	return render(request, 'adminpage/recordPicture.html', content)
 
+# Method name: addRoomCost
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Room Cost table. Contains the form processing, record adding.
+# Calling arguments: 
+# Required files: recordRoomCost.html
 @login_required(login_url='/adminpage/login/')
 def addRoomCost(request):
 
@@ -864,6 +897,11 @@ def addRoomCost(request):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+# Method name: editRoomCost
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Room Cost table. Contains the form processing, record saving and record deletion.
+# Calling arguments: 
+# Required files: recordRoomCost.html, recordHousing.html
 @login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 
@@ -909,6 +947,11 @@ def editRoomCost(request, id):
 
 	return render(request, 'adminpage/recordRoomCost.html', content)
 
+# Method name: addOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Owner table. Contains the form processing, record adding.
+# Calling arguments: 
+# Required files: recordOwner.html
 @login_required(login_url='/adminpage/login/')
 def addOwner(request):
 
@@ -923,13 +966,18 @@ def addOwner(request):
 	form = addOwnerForm()
 
 	content = {
-		'tableChoices' : TABLES_CHOICES, 
+		'tableChoices' : TABLES_CHOICES,
 		'recordExist' : False,
 		'form' : form,
 	}
 
 	return render(request, 'adminpage/recordOwner.html', content)
 
+# Method name: editOwner
+# Creation date: Feb 13, 2019 
+# Purpose: View for a record in Owner table. Contains the form processing, record saving and record deletion.
+# Calling arguments: owner id
+# Required files: recordOwner.html
 @login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
 

@@ -5,6 +5,7 @@
 # Sontillano     # Feb 6, 2019     # fixed enduserHome, enduserSearchResult, enduserRecord 
 # Sontillano     # Mar 5, 2019     # added comment verification
 # Sontillano     # Mar 6, 2019     # added comment report functionality
+# Sontillano     # Mar 20, 2019    # send request functionality added
 
 # File creation date: Feb. 1, 2019
 

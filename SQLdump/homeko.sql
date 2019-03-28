@@ -7,7 +7,7 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,14 +21,14 @@
 
 DROP TABLE IF EXISTS `additionalinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `additionalinfo` (
   `additionalInfoID` int(11) NOT NULL AUTO_INCREMENT,
   `additionalInfoName` varchar(70) NOT NULL,
   `additionalInfoType` int(11) NOT NULL,
   PRIMARY KEY (`additionalInfoID`),
   KEY `infoType` (`additionalInfoType`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,13 +47,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `area` (
   `areaID` int(11) NOT NULL AUTO_INCREMENT,
   `areaName` varchar(30) NOT NULL,
   PRIMARY KEY (`areaID`),
   KEY `areaName` (`areaName`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,13 +72,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_group_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_group_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE `auth_group_permissions` (
   KEY `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_group_permissio_permission_id_84c5c92e_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_group_permissions_group_id_b120cbf9_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +152,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `password` varchar(128) NOT NULL,
@@ -167,7 +167,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +176,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$120000$n6ICjGtEw66O$HrUqWwz4OuIE8Fr6Wuo1TggZVQF5r40YdqzSI6wsuCo=','2019-02-05 15:17:00.243707',1,'nvsontillano','','','nvsontillano@up.edu.ph',1,1,'2019-02-05 08:46:39.075385');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$120000$n6ICjGtEw66O$HrUqWwz4OuIE8Fr6Wuo1TggZVQF5r40YdqzSI6wsuCo=','2019-02-09 02:56:06.543046',1,'nvsontillano','','','nvsontillano@up.edu.ph',1,1,'2019-02-05 08:46:39.075385');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +186,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_user_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_user_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -196,7 +196,7 @@ CREATE TABLE `auth_user_groups` (
   KEY `auth_user_groups_group_id_97559544_fk_auth_group_id` (`group_id`),
   CONSTRAINT `auth_user_groups_group_id_97559544_fk_auth_group_id` FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`),
   CONSTRAINT `auth_user_groups_user_id_6a12ed8b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,7 +214,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `auth_user_user_permissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `auth_user_user_permissions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE `auth_user_user_permissions` (
   KEY `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` (`permission_id`),
   CONSTRAINT `auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm` FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`),
   CONSTRAINT `auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +242,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `contact` (
   `contactID` int(11) NOT NULL AUTO_INCREMENT,
   `contactNo` varchar(11) NOT NULL,
@@ -250,7 +250,7 @@ CREATE TABLE `contact` (
   PRIMARY KEY (`contactID`),
   KEY `ownerID_idx` (`ownerID`),
   CONSTRAINT `ownerID` FOREIGN KEY (`ownerID`) REFERENCES `owner` (`ownerID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -269,7 +269,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `django_admin_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `django_admin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `action_time` datetime(6) NOT NULL,
@@ -284,7 +284,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +293,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2019-02-05 09:11:58.688573','1','Area object (1)',1,'[{\"added\": {}}]',2,1),(2,'2019-02-05 09:12:07.954334','2','Area object (2)',1,'[{\"added\": {}}]',2,1),(3,'2019-02-05 09:16:15.727255','3','Area object (3)',1,'[{\"added\": {}}]',2,1),(4,'2019-02-05 09:16:44.477045','4','Area object (4)',1,'[{\"added\": {}}]',2,1),(5,'2019-02-05 09:16:54.461578','5','Area object (5)',1,'[{\"added\": {}}]',2,1),(6,'2019-02-05 09:16:59.742191','6','Area object (6)',1,'[{\"added\": {}}]',2,1),(7,'2019-02-05 09:17:09.648568','7','Area object (7)',1,'[{\"added\": {}}]',2,1),(8,'2019-02-05 09:17:15.023646','8','Area object (8)',1,'[{\"added\": {}}]',2,1),(9,'2019-02-05 09:17:20.929979','9','Area object (9)',1,'[{\"added\": {}}]',2,1),(10,'2019-02-05 09:17:46.335454','1','Propertytype object (1)',1,'[{\"added\": {}}]',18,1),(11,'2019-02-05 09:17:53.444944','2','Propertytype object (2)',1,'[{\"added\": {}}]',18,1),(12,'2019-02-05 09:18:04.943793','1','Propertytype object (1)',2,'[]',18,1),(13,'2019-02-05 09:18:35.458828','1','Housetype object (1)',1,'[{\"added\": {}}]',15,1),(14,'2019-02-05 09:18:51.021550','2','Housetype object (2)',1,'[{\"added\": {}}]',15,1),(15,'2019-02-05 09:19:16.817238','3','Housetype object (3)',1,'[{\"added\": {}}]',15,1),(16,'2019-02-05 09:19:21.489195','3','Housetype object (3)',2,'[]',15,1),(17,'2019-02-05 10:45:41.758238','1','Owner object (1)',1,'[{\"added\": {}}]',17,2),(18,'2019-02-05 10:45:45.752651','1','Contact object (1)',1,'[{\"added\": {}}]',9,2),(19,'2019-02-05 10:50:06.858439','2','jcarlos - 09821141133',1,'[{\"added\": {}}]',9,2),(20,'2019-02-05 10:50:39.455565','2','nikkis',1,'[{\"added\": {}}]',17,2),(21,'2019-02-05 10:50:41.689609','3','nikkis - 09887124412',1,'[{\"added\": {}}]',9,2),(22,'2019-02-05 10:51:16.000734','3','nikkif',1,'[{\"added\": {}}]',17,2),(23,'2019-02-05 10:51:18.051311','4','nikkif - 09554221444',1,'[{\"added\": {}}]',9,2),(24,'2019-02-05 10:53:02.539156','1','Housetype object (1)',1,'[{\"added\": {}}]',15,2),(25,'2019-02-05 10:53:36.502805','1','Propertytype object (1)',1,'[{\"added\": {}}]',18,2),(26,'2019-02-05 10:53:56.526183','1','Housing object (1)',1,'[{\"added\": {}}]',16,2),(27,'2019-02-05 10:59:53.655157','2','Shared Room',1,'[{\"added\": {}}]',15,2),(28,'2019-02-05 11:00:02.668036','3','Entire House',1,'[{\"added\": {}}]',15,2),(29,'2019-02-05 11:00:43.038138','2','House',1,'[{\"added\": {}}]',18,2),(30,'2019-02-05 11:00:58.808312','2','Bahay ni Chancy',1,'[{\"added\": {}}]',16,2),(31,'2019-02-05 15:24:21.283075','1','HousingOwner object (1)',1,'[{\"added\": {}}]',27,1),(32,'2019-02-05 15:24:34.055626','2','HousingOwner object (2)',1,'[{\"added\": {}}]',27,1),(33,'2019-02-05 15:26:46.582315','1','Feedback object (1)',1,'[{\"added\": {}}]',14,1),(34,'2019-02-05 15:27:13.276063','2','Feedback object (2)',1,'[{\"added\": {}}]',14,1),(35,'2019-02-05 15:28:10.833724','3','Feedback object (3)',1,'[{\"added\": {}}]',14,1),(36,'2019-02-05 15:29:09.586689','1','Kitchen - 1',1,'[{\"added\": {}}]',1,1),(37,'2019-02-05 15:29:52.175242','2','Air conditioning - 1',1,'[{\"added\": {}}]',1,1),(38,'2019-02-05 15:29:59.987842','3','Washer - 1',1,'[{\"added\": {}}]',1,1),(39,'2019-02-05 15:30:06.661534','4','Dryer - 1',1,'[{\"added\": {}}]',1,1),(40,'2019-02-05 15:30:19.005463','5','Wifi - 1',1,'[{\"added\": {}}]',1,1),(41,'2019-02-05 15:30:32.630656','6','Iron - 1',1,'[{\"added\": {}}]',1,1),(42,'2019-02-05 15:30:39.699537','7','TV - 1',1,'[{\"added\": {}}]',1,1),(43,'2019-02-05 15:32:06.768447','8','Parking - 2',1,'[{\"added\": {}}]',1,1),(44,'2019-02-05 15:32:18.893628','9','Pets allowed - 3',1,'[{\"added\": {}}]',1,1),(45,'2019-02-05 15:32:41.815822','10','Smoking allowed - 3',1,'[{\"added\": {}}]',1,1),(46,'2019-02-05 15:32:54.956634','11','No curfew - 3',1,'[{\"added\": {}}]',1,1),(47,'2019-02-05 15:35:50.355661','1','Kitchen - 1',3,'',1,1),(49,'2019-02-05 15:38:39.770866','12','Kitchen - 1',1,'[{\"added\": {}}]',1,1),(50,'2019-02-05 15:39:06.424659','1','HousingAdditionalInfo object (1)',1,'[{\"added\": {}}]',26,1),(51,'2019-02-05 15:39:26.201536','2','HousingAdditionalInfo object (2)',1,'[{\"added\": {}}]',26,1),(52,'2019-02-05 15:40:13.916215','3','HousingAdditionalInfo object (3)',1,'[{\"added\": {}}]',26,1),(53,'2019-02-05 15:40:28.161411','4','HousingAdditionalInfo object (4)',1,'[{\"added\": {}}]',26,1),(54,'2019-02-05 15:40:55.458671','5','HousingAdditionalInfo object (5)',1,'[{\"added\": {}}]',26,1),(55,'2019-02-05 15:41:13.318499','6','HousingAdditionalInfo object (6)',1,'[{\"added\": {}}]',26,1),(56,'2019-02-05 15:41:29.035840','7','HousingAdditionalInfo object (7)',1,'[{\"added\": {}}]',26,1),(57,'2019-02-05 15:41:56.583106','8','HousingAdditionalInfo object (8)',1,'[{\"added\": {}}]',26,1),(58,'2019-02-05 15:42:18.033319','9','HousingAdditionalInfo object (9)',1,'[{\"added\": {}}]',26,1),(59,'2019-02-05 15:44:29.936720','1','RoomCost object (1)',1,'[{\"added\": {}}]',30,1),(60,'2019-02-05 15:45:05.491738','2','RoomCost object (2)',1,'[{\"added\": {}}]',30,1),(61,'2019-02-05 15:45:42.816778','3','RoomCost object (3)',1,'[{\"added\": {}}]',30,1),(62,'2019-02-05 15:46:03.160817','4','RoomCost object (4)',1,'[{\"added\": {}}]',30,1),(63,'2019-02-05 15:46:24.239385','5','RoomCost object (5)',1,'[{\"added\": {}}]',30,1);
+INSERT INTO `django_admin_log` VALUES (1,'2019-02-05 09:11:58.688573','1','Area object (1)',1,'[{\"added\": {}}]',2,1),(2,'2019-02-05 09:12:07.954334','2','Area object (2)',1,'[{\"added\": {}}]',2,1),(3,'2019-02-05 09:16:15.727255','3','Area object (3)',1,'[{\"added\": {}}]',2,1),(4,'2019-02-05 09:16:44.477045','4','Area object (4)',1,'[{\"added\": {}}]',2,1),(5,'2019-02-05 09:16:54.461578','5','Area object (5)',1,'[{\"added\": {}}]',2,1),(6,'2019-02-05 09:16:59.742191','6','Area object (6)',1,'[{\"added\": {}}]',2,1),(7,'2019-02-05 09:17:09.648568','7','Area object (7)',1,'[{\"added\": {}}]',2,1),(8,'2019-02-05 09:17:15.023646','8','Area object (8)',1,'[{\"added\": {}}]',2,1),(9,'2019-02-05 09:17:20.929979','9','Area object (9)',1,'[{\"added\": {}}]',2,1),(10,'2019-02-05 09:17:46.335454','1','Propertytype object (1)',1,'[{\"added\": {}}]',18,1),(11,'2019-02-05 09:17:53.444944','2','Propertytype object (2)',1,'[{\"added\": {}}]',18,1),(12,'2019-02-05 09:18:04.943793','1','Propertytype object (1)',2,'[]',18,1),(13,'2019-02-05 09:18:35.458828','1','Housetype object (1)',1,'[{\"added\": {}}]',15,1),(14,'2019-02-05 09:18:51.021550','2','Housetype object (2)',1,'[{\"added\": {}}]',15,1),(15,'2019-02-05 09:19:16.817238','3','Housetype object (3)',1,'[{\"added\": {}}]',15,1),(16,'2019-02-05 09:19:21.489195','3','Housetype object (3)',2,'[]',15,1),(17,'2019-02-05 10:45:41.758238','1','Owner object (1)',1,'[{\"added\": {}}]',17,2),(18,'2019-02-05 10:45:45.752651','1','Contact object (1)',1,'[{\"added\": {}}]',9,2),(19,'2019-02-05 10:50:06.858439','2','jcarlos - 09821141133',1,'[{\"added\": {}}]',9,2),(20,'2019-02-05 10:50:39.455565','2','nikkis',1,'[{\"added\": {}}]',17,2),(21,'2019-02-05 10:50:41.689609','3','nikkis - 09887124412',1,'[{\"added\": {}}]',9,2),(22,'2019-02-05 10:51:16.000734','3','nikkif',1,'[{\"added\": {}}]',17,2),(23,'2019-02-05 10:51:18.051311','4','nikkif - 09554221444',1,'[{\"added\": {}}]',9,2),(24,'2019-02-05 10:53:02.539156','1','Housetype object (1)',1,'[{\"added\": {}}]',15,2),(25,'2019-02-05 10:53:36.502805','1','Propertytype object (1)',1,'[{\"added\": {}}]',18,2),(26,'2019-02-05 10:53:56.526183','1','Housing object (1)',1,'[{\"added\": {}}]',16,2),(27,'2019-02-05 10:59:53.655157','2','Shared Room',1,'[{\"added\": {}}]',15,2),(28,'2019-02-05 11:00:02.668036','3','Entire House',1,'[{\"added\": {}}]',15,2),(29,'2019-02-05 11:00:43.038138','2','House',1,'[{\"added\": {}}]',18,2),(30,'2019-02-05 11:00:58.808312','2','Bahay ni Chancy',1,'[{\"added\": {}}]',16,2),(31,'2019-02-05 15:24:21.283075','1','HousingOwner object (1)',1,'[{\"added\": {}}]',27,1),(32,'2019-02-05 15:24:34.055626','2','HousingOwner object (2)',1,'[{\"added\": {}}]',27,1),(33,'2019-02-05 15:26:46.582315','1','Feedback object (1)',1,'[{\"added\": {}}]',14,1),(34,'2019-02-05 15:27:13.276063','2','Feedback object (2)',1,'[{\"added\": {}}]',14,1),(35,'2019-02-05 15:28:10.833724','3','Feedback object (3)',1,'[{\"added\": {}}]',14,1),(36,'2019-02-05 15:29:09.586689','1','Kitchen - 1',1,'[{\"added\": {}}]',1,1),(37,'2019-02-05 15:29:52.175242','2','Air conditioning - 1',1,'[{\"added\": {}}]',1,1),(38,'2019-02-05 15:29:59.987842','3','Washer - 1',1,'[{\"added\": {}}]',1,1),(39,'2019-02-05 15:30:06.661534','4','Dryer - 1',1,'[{\"added\": {}}]',1,1),(40,'2019-02-05 15:30:19.005463','5','Wifi - 1',1,'[{\"added\": {}}]',1,1),(41,'2019-02-05 15:30:32.630656','6','Iron - 1',1,'[{\"added\": {}}]',1,1),(42,'2019-02-05 15:30:39.699537','7','TV - 1',1,'[{\"added\": {}}]',1,1),(43,'2019-02-05 15:32:06.768447','8','Parking - 2',1,'[{\"added\": {}}]',1,1),(44,'2019-02-05 15:32:18.893628','9','Pets allowed - 3',1,'[{\"added\": {}}]',1,1),(45,'2019-02-05 15:32:41.815822','10','Smoking allowed - 3',1,'[{\"added\": {}}]',1,1),(46,'2019-02-05 15:32:54.956634','11','No curfew - 3',1,'[{\"added\": {}}]',1,1),(47,'2019-02-05 15:35:50.355661','1','Kitchen - 1',3,'',1,1),(49,'2019-02-05 15:38:39.770866','12','Kitchen - 1',1,'[{\"added\": {}}]',1,1),(50,'2019-02-05 15:39:06.424659','1','HousingAdditionalInfo object (1)',1,'[{\"added\": {}}]',26,1),(51,'2019-02-05 15:39:26.201536','2','HousingAdditionalInfo object (2)',1,'[{\"added\": {}}]',26,1),(52,'2019-02-05 15:40:13.916215','3','HousingAdditionalInfo object (3)',1,'[{\"added\": {}}]',26,1),(53,'2019-02-05 15:40:28.161411','4','HousingAdditionalInfo object (4)',1,'[{\"added\": {}}]',26,1),(54,'2019-02-05 15:40:55.458671','5','HousingAdditionalInfo object (5)',1,'[{\"added\": {}}]',26,1),(55,'2019-02-05 15:41:13.318499','6','HousingAdditionalInfo object (6)',1,'[{\"added\": {}}]',26,1),(56,'2019-02-05 15:41:29.035840','7','HousingAdditionalInfo object (7)',1,'[{\"added\": {}}]',26,1),(57,'2019-02-05 15:41:56.583106','8','HousingAdditionalInfo object (8)',1,'[{\"added\": {}}]',26,1),(58,'2019-02-05 15:42:18.033319','9','HousingAdditionalInfo object (9)',1,'[{\"added\": {}}]',26,1),(59,'2019-02-05 15:44:29.936720','1','RoomCost object (1)',1,'[{\"added\": {}}]',30,1),(60,'2019-02-05 15:45:05.491738','2','RoomCost object (2)',1,'[{\"added\": {}}]',30,1),(61,'2019-02-05 15:45:42.816778','3','RoomCost object (3)',1,'[{\"added\": {}}]',30,1),(62,'2019-02-05 15:46:03.160817','4','RoomCost object (4)',1,'[{\"added\": {}}]',30,1),(63,'2019-02-05 15:46:24.239385','5','RoomCost object (5)',1,'[{\"added\": {}}]',30,1),(64,'2019-02-06 20:28:59.467318','1','Bahay ni Nikki F',2,'[{\"changed\": {\"fields\": [\"maphtml\"]}}]',16,1),(65,'2019-02-06 20:32:50.555072','2','Bahay ni Chancy',2,'[]',16,1),(66,'2019-02-07 21:56:29.700923','2','Bahay ni Chancy',2,'[]',16,1),(67,'2019-02-07 21:59:37.839823','3','Yellow House',1,'[{\"added\": {}}]',16,1),(68,'2019-02-07 22:13:03.789293','3','Yellow House',3,'',16,1),(69,'2019-02-08 00:08:59.694206','4','Yellow House',1,'[{\"added\": {}}]',16,1),(70,'2019-02-08 00:09:15.210050','4','Yellow House',2,'[]',16,1),(71,'2019-02-08 00:11:21.384287','5','Orange House',1,'[{\"added\": {}}]',16,1);
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -303,14 +303,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `django_content_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `django_content_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `app_label` varchar(100) NOT NULL,
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,14 +329,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `django_migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `django_migrations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `app` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,14 +355,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `django_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `django_session` (
   `session_key` varchar(40) NOT NULL,
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL,
   PRIMARY KEY (`session_key`),
   KEY `django_session_expire_date_a5c62663` (`expire_date`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +371,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('9ve842ab9c22uedqfgnok7hrjht7a74n','MDZkZGY1ZWM0OWIzNzZjYTA1ZWI4MzBmMmJjNTdiMDIxZTA4NzkyMDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJlNTIyYWI3MWQ4ZGUxNDVlYTg2MzhmZGFlNDA1MGE4NjU2OWEzYzYxIn0=','2019-02-19 15:17:00.259335'),('nynj8ce2hnbkz2a63433tpv9ymgrw3ey','MDZkZGY1ZWM0OWIzNzZjYTA1ZWI4MzBmMmJjNTdiMDIxZTA4NzkyMDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJlNTIyYWI3MWQ4ZGUxNDVlYTg2MzhmZGFlNDA1MGE4NjU2OWEzYzYxIn0=','2019-02-19 08:47:16.294578');
+INSERT INTO `django_session` VALUES ('nynj8ce2hnbkz2a63433tpv9ymgrw3ey','MDZkZGY1ZWM0OWIzNzZjYTA1ZWI4MzBmMmJjNTdiMDIxZTA4NzkyMDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJlNTIyYWI3MWQ4ZGUxNDVlYTg2MzhmZGFlNDA1MGE4NjU2OWEzYzYxIn0=','2019-02-19 08:47:16.294578'),('rifn8b243t5dpvze9or8gvsl9s82cscc','MWY2MDUzOGZjOTMxYTNkNzg1M2IzOGMwMjM5YmY2ZjAwMzdlNDU5ZTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJlNTIyYWI3MWQ4ZGUxNDVlYTg2MzhmZGFlNDA1MGE4NjU2OWEzYzYxIiwic2VhcmNoUmVzdWx0IjpbMSwyLDQsNSw2LDcsOSwxMF19','2019-03-20 16:30:28.494398');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,7 +381,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `feedback`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `feedback` (
   `feedbackID` int(11) NOT NULL AUTO_INCREMENT,
   `housingID` int(11) NOT NULL,
@@ -392,7 +392,7 @@ CREATE TABLE `feedback` (
   KEY `status` (`status`),
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingID` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +401,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (1,1,'mabait yung landlady',2,'2019-02-05'),(2,2,'ganda dito',2,'2019-02-05'),(3,1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor quis risus sit amet blandit. Suspendisse id dui at ligula feugiat laoreet. Donec mi turpis, malesuada quis fermentum dignissim, mollis non sapien. Phasellus sit amet ligula ac elit pharetra mollis vel nec ante. Duis vitae scelerisque metus, id commodo velit.',2,'2019-02-05');
+INSERT INTO `feedback` VALUES (1,1,'mabait yung landlady',2,'2019-02-05'),(2,2,'ganda dito',2,'2019-02-05'),(3,1,'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin auctor quis risus sit amet blandit. Suspendisse id dui at ligula feugiat laoreet. Donec mi turpis, malesuada quis fermentum dignissim, mollis non sapien. Phasellus sit amet ligula ac elit pharetra mollis vel nec ante. Duis vitae scelerisque metus, id commodo velit.',2,'2019-02-05'),(4,6,'hello',1,'2019-03-03'),(5,6,'hello',1,'2019-03-03'),(6,6,'hello',1,'2019-03-03'),(7,6,'help',1,'2019-03-03'),(8,6,'kajsndkhjeb',1,'2019-03-03');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -411,13 +411,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `housetype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `housetype` (
   `houseTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `houseTypeName` varchar(20) NOT NULL,
   PRIMARY KEY (`houseTypeID`),
   KEY `typeName` (`houseTypeName`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -436,7 +436,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `housing`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `housing` (
   `housingID` int(11) NOT NULL AUTO_INCREMENT,
   `housingName` varchar(50) NOT NULL,
@@ -445,10 +445,6 @@ CREATE TABLE `housing` (
   `propertyType` int(11) NOT NULL,
   `houseType` int(11) NOT NULL,
   `mapHTML` varchar(500) DEFAULT NULL,
-  `creationDate` date NOT NULL,
-  `createdBy` varchar(45) NOT NULL,
-  `lastEditedDate` varchar(45) NOT NULL,
-  `lastEditedBy` date NOT NULL,
   PRIMARY KEY (`housingID`),
   KEY `propertyType_idx` (`propertyType`),
   KEY `houseType_idx` (`houseType`),
@@ -457,7 +453,7 @@ CREATE TABLE `housing` (
   CONSTRAINT `area` FOREIGN KEY (`area`) REFERENCES `area` (`areaID`),
   CONSTRAINT `houseType` FOREIGN KEY (`houseType`) REFERENCES `housetype` (`houseTypeID`),
   CONSTRAINT `propertyType` FOREIGN KEY (`propertyType`) REFERENCES `propertytype` (`propertyTypeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -466,7 +462,7 @@ CREATE TABLE `housing` (
 
 LOCK TABLES `housing` WRITE;
 /*!40000 ALTER TABLE `housing` DISABLE KEYS */;
-INSERT INTO `housing` VALUES (1,'Bahay ni Nikki F',6,'2nd St.',1,1,NULL,'2019-02-05','Jeff','baligtad and label','2019-02-05'),(2,'Bahay ni Chancy',7,'Unang kanto',2,3,NULL,'2019-02-05','Jeff','Jeff','2019-02-05');
+INSERT INTO `housing` VALUES (1,'Bahay ni Nikki F',6,'2nd St.',1,2,'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3859.9385911281083!2d121.07119751435769!3d14.659426389765029!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b75dfef56eb3%3A0x83cbae2de31e220a!2sIlang+Ilang+Residence+Hall!5e0!3m2!1sen!2sph!4v1549024344251'),(2,'Bahay ni Chancy',7,'Unang kanto',2,3,NULL),(4,'Yellow House',1,'3 asdfl street',2,2,NULL),(5,'Orange House',1,'werty',2,1,NULL),(6,'new house',5,'1st street',1,3,NULL),(7,'new house 2',4,'2nd street',2,2,''),(9,'new house 3',2,'3rd street',1,2,''),(10,'sharpie yeyyyy',3,'445th corner',1,2,'');
 /*!40000 ALTER TABLE `housing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -476,7 +472,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `housingadditionalinfo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `housingadditionalinfo` (
   `housingAdditionalInfoID` int(11) NOT NULL AUTO_INCREMENT,
   `additionalInfoID` int(11) NOT NULL,
@@ -487,7 +483,7 @@ CREATE TABLE `housingadditionalinfo` (
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `additionalinfoid2` FOREIGN KEY (`additionalInfoID`) REFERENCES `additionalinfo` (`additionalInfoID`),
   CONSTRAINT `housingid2` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -506,7 +502,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `housingowner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `housingowner` (
   `housingOwnerID` int(11) NOT NULL AUTO_INCREMENT,
   `housingID` int(11) NOT NULL,
@@ -516,7 +512,7 @@ CREATE TABLE `housingowner` (
   KEY `ownerID_idx` (`ownerID`),
   CONSTRAINT `housingid3` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`),
   CONSTRAINT `ownerid2` FOREIGN KEY (`ownerID`) REFERENCES `owner` (`ownerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -535,7 +531,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `housingrequest`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `housingrequest` (
   `housingRequestID` int(11) NOT NULL AUTO_INCREMENT,
   `requestID` int(11) NOT NULL,
@@ -545,7 +541,7 @@ CREATE TABLE `housingrequest` (
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingid4` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`),
   CONSTRAINT `requestid` FOREIGN KEY (`requestID`) REFERENCES `request` (`requestID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -563,7 +559,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `owner`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `owner` (
   `ownerID` int(11) NOT NULL AUTO_INCREMENT,
   `ownerName` varchar(70) NOT NULL,
@@ -571,7 +567,7 @@ CREATE TABLE `owner` (
   `lastName` varchar(40) NOT NULL,
   `email` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`ownerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -590,7 +586,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `picture`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `picture` (
   `pictureID` int(11) NOT NULL AUTO_INCREMENT,
   `fileName` varchar(30) NOT NULL,
@@ -598,7 +594,7 @@ CREATE TABLE `picture` (
   PRIMARY KEY (`pictureID`),
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingid5` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -616,13 +612,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `propertytype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `propertytype` (
   `propertyTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `propertyTypeName` varchar(20) NOT NULL,
   PRIMARY KEY (`propertyTypeID`),
   KEY `typeName` (`propertyTypeName`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -641,7 +637,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `request`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `request` (
   `requestID` int(11) NOT NULL AUTO_INCREMENT,
   `type` int(11) NOT NULL,
@@ -650,7 +646,7 @@ CREATE TABLE `request` (
   `dateSent` date NOT NULL,
   `sender` varchar(50) NOT NULL,
   PRIMARY KEY (`requestID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -668,7 +664,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `roomcost`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+ SET character_set_client = utf8 ;
 CREATE TABLE `roomcost` (
   `roomID` int(11) NOT NULL AUTO_INCREMENT,
   `roomName` varchar(100) NOT NULL,
@@ -677,7 +673,7 @@ CREATE TABLE `roomcost` (
   PRIMARY KEY (`roomID`),
   KEY `housingid6_idx` (`housingID`),
   CONSTRAINT `housingid6` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -699,4 +695,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-05 23:46:42
+-- Dump completed on 2019-03-07  1:23:42
