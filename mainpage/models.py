@@ -184,7 +184,7 @@ class DjangoSession(models.Model):
 #This class contains the attributes for Feedback Table to be added to the connected MySQL Database
 class Feedback(models.Model):
 	feedbackid = models.AutoField(db_column='feedbackID', primary_key=True)  # Field name made lowercase.
-	housingid = models.ForeignKey('Housing', models.DO_NOTHING, db_column='housingID')  # Field name made lowercase.
+	housingid = models.ForeignKey('Housing', on_delete=models.CASCADE, db_column='housingID')  # Field name made lowercase.
 	comment = models.CharField(max_length=500, db_column='comment')
 	status = models.IntegerField(db_column='status', choices = FEEDBACK_STATUS_CHOICES)
 	dateposted = models.DateField(db_column='datePosted')  # Field name made lowercase.
@@ -256,7 +256,7 @@ class HousingAdditionalInfo(models.Model):
 	housingadditionalinfoid = models.AutoField(db_column='housingAdditionalInfoID', primary_key=True)
 	additionalinfoid = models.ForeignKey(Additionalinfo, models.DO_NOTHING, db_column='additionalInfoID')
 	description = models.CharField(max_length=300, db_column='description', blank=True, null=True)
-	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	housingid = models.ForeignKey(Housing, on_delete=models.CASCADE, db_column='housingID')
 
 	class Meta:
 		managed = False
@@ -265,8 +265,8 @@ class HousingAdditionalInfo(models.Model):
 #This class contains the attributes for HousingOwner Table to be added to the connected MySQL Database
 class HousingOwner(models.Model):
 	housingownerid = models.AutoField(db_column='HousingOwnerID', primary_key=True)
-	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
-	ownerid = models.ForeignKey(Owner, models.DO_NOTHING, db_column='ownerID')
+	housingid = models.ForeignKey(Housing, on_delete=models.CASCADE, db_column='housingID')
+	ownerid = models.ForeignKey(Owner, on_delete=models.CASCADE, db_column='ownerID')
 
 	class Meta:
 		managed = False
@@ -275,8 +275,8 @@ class HousingOwner(models.Model):
 #This class contains the attributes for HousingRequest Table to be added to the connected MySQL Database
 class HousingRequest(models.Model):
 	housingrequestid = models.AutoField(db_column='HousingRequestID', primary_key=True)
-	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
-	requestid = models.ForeignKey(Request, models.DO_NOTHING, db_column='requestID')
+	housingid = models.ForeignKey(Housing, on_delete=models.CASCADE, db_column='housingID')
+	requestid = models.ForeignKey(Request, on_delete=models.CASCADE, db_column='requestID')
 
 	class Meta:
 		managed = False
@@ -297,7 +297,7 @@ class RoomCost(models.Model):
 	roomid = models.AutoField(db_column='roomID', primary_key=True)
 	roomname = models.CharField(db_column='roomName', max_length=100)
 	cost = models.FloatField(db_column='cost')
-	housingid = models.ForeignKey(Housing, models.DO_NOTHING, db_column='housingID')
+	housingid = models.ForeignKey(Housing, on_delete=models.CASCADE, db_column='housingID')
 
 	class Meta:
 		managed = False
