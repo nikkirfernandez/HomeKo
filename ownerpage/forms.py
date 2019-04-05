@@ -1,9 +1,9 @@
 # This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
 
 # CODE HISTORY #
-# Sontillano     # Feb 11, 2019     # added AdminLogin, addAdditionalinfo, addArea, addContact, addFeedback, addHousetype, addHousingAddtnlinfo, addHousingOwner, addHousingRequest, addHousing, addOwner, addPicture, addPropertytype, addRequest, addRoomCost
+# Sontillano     # Mar 29, 2019     # added editOwnerForm, editContactForm, housingForm, housingAddtnlinfoForm, roomCostForm
 
-# File creation date: Feb. 11, 2019
+# File creation date: Mar 29, 2019
 
 from django import forms
 from mainpage.models import *

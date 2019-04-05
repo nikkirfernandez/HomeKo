@@ -6,6 +6,7 @@
 # Sontillano     # Mar 5, 2019     # added comment verification
 # Sontillano     # Mar 6, 2019     # added comment report functionality
 # Sontillano     # Mar 20, 2019    # send request functionality added
+# Fernandez      # Apr 3, 2019     # added register
 
 # File creation date: Feb. 1, 2019
 
@@ -510,6 +511,11 @@ def enduserRequest(request):
      }
      return render(request, 'mainpage/request_enduser.html', content)
 
+# Method name: ownerLogin
+# Creation date: Apr 3, 2019 
+# Purpose: log in form for the housing owners
+# Calling arguments: No arguments for calling this function.
+# Required files: login_owner.html
 def ownerLogin(request):
      # if the user submitted the form
      incorrect = False
@@ -631,6 +637,11 @@ def ownerLogin(request):
      }
      return render(request, 'mainpage/login_owner.html', content)
 
+# Method name: ownerLogin
+# Creation date: Apr 3, 2019 
+# Purpose: account creation form for the housing owners
+# Calling arguments: No arguments for calling this function.
+# Required files: register_owner.html
 def register(request):
      if request.method == 'POST':
           form = OwnerRegistrationForm(request.POST)

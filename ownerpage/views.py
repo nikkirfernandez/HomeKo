@@ -1,3 +1,11 @@
+# License: MIT License
+
+# CODE HISTORY #
+# Sontillano     # Mar 30, 2019     # added home, account, editHousingRecord, editRoomRecord, editAmenityRecord, editFacilityRecord, editRuleRecord
+# Sontillano     # Apr 3, 2019     # added ownerlogout
+
+# File creation date: Mar. 30, 2019
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
@@ -10,6 +18,11 @@ from django.contrib import messages
 from .forms import *
 from mainpage.models import *
 
+# Method name: home 
+# Creation date: Mar 30, 2019 
+# Purpose: View for the owner home page. Contains the list of housings the owner own.
+# Calling arguments: No arguments for calling this function.
+# Required files: home.html
 def home(request):
 	ownerid = request.session.get('ownerid')
 	records = HousingOwner.objects.filter(ownerid=ownerid)
@@ -20,11 +33,21 @@ def home(request):
 
 	return render(request, 'ownerpage/home.html', content)
 
+# Method name: ownerlogout
+# Creation date: Apr 3, 2019 
+# Purpose: Logs out the owner
+# Calling arguments: No arguments for calling this function.
+# Required files: None
 def ownerlogout(request):
 	logout(request)
 	
 	return HttpResponseRedirect('/ownerlogin')
-	
+
+# Method name: account
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit his/her personal information
+# Calling arguments: No arguments for calling this function.
+# Required files: account.html
 def account(request):
 	ownerid = request.session.get('ownerid')
 	record = Owner.objects.get(ownerid=ownerid)
@@ -48,6 +71,11 @@ def account(request):
 
 	return render(request, 'ownerpage/account.html', content)
 
+# Method name: editContactRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit his/her contact information
+# Calling arguments: No arguments for calling this function.
+# Required files: contactrecord.html
 def editContactRecord(request):
 	ownerid = request.session.get('ownerid')
 	contacts = Contact.objects.filter(ownerid=ownerid)
@@ -87,6 +115,11 @@ def editContactRecord(request):
 
 	return render(request, 'ownerpage/contactrecord.html', content)
 
+# Method name: editHousingRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit the fields of a Housing record
+# Calling arguments: No arguments for calling this function.
+# Required files: housingrecord.html
 def editHousingRecord(request, housingid):
 	record = Housing.objects.get(housingid=housingid)
 	form = housingForm(instance=record)
@@ -113,6 +146,11 @@ def editHousingRecord(request, housingid):
 
 	return render(request, 'ownerpage/housingrecord.html', content)
 
+# Method name: editRoomRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit the fields of a Room record
+# Calling arguments: No arguments for calling this function.
+# Required files: roomrecord.html
 def editRoomRecord(request, housingid):
 	roomform = roomCostForm()
 	housingRooms = RoomCost.objects.filter(housingid=housingid)
@@ -154,6 +192,11 @@ def editRoomRecord(request, housingid):
 
 	return render(request, 'ownerpage/roomrecord.html', content)
 
+# Method name: editAmenityRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit the fields of a Amenity record
+# Calling arguments: No arguments for calling this function.
+# Required files: amenityrecord.html
 def editAmenityRecord(request, housingid):
 	amenityform = housingAddtnlinfoForm()
 	amenityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=1)
@@ -198,6 +241,11 @@ def editAmenityRecord(request, housingid):
 
 	return render(request, 'ownerpage/amenityrecord.html', content)
 
+# Method name: editFacilityRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit the fields of a Facility record
+# Calling arguments: No arguments for calling this function.
+# Required files: facilityrecord.html
 def editFacilityRecord(request, housingid):
 	facilityform = housingAddtnlinfoForm()
 	facilityform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=2)
@@ -239,6 +287,11 @@ def editFacilityRecord(request, housingid):
 
 	return render(request, 'ownerpage/facilityrecord.html', content)
 
+# Method name: editRuleRecord
+# Creation date: Mar 30, 2019 
+# Purpose: Owner can edit the fields of a Rule record
+# Calling arguments: No arguments for calling this function.
+# Required files: rulerecord.html
 def editRuleRecord(request, housingid):
 	ruleform = housingAddtnlinfoForm()
 	ruleform.fields["additionalinfoid"].queryset = Additionalinfo.objects.filter(additionalinfotype=3)

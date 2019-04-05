@@ -1,9 +1,10 @@
-# License: MIT License
-# CODE HISTORY #
-# Sontillano     # Feb 5, 2019     # added SearchHousing, AddRequest, SignUp
-# Sontillano     # Mar 6, 2019     # added ReportComment
+# This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
 
-# File creation date: Feb. 5, 2019
+# CODE HISTORY #
+# Sontillano     # Mar 30, 2019    # added SearchHousing, AddRequest, AddComment, OwnerLogin
+# Fenandez       # Apr 3, 2019     # added OwnerRegistrationForm
+
+# File creation date: Feb. 30, 2019
 
 from django import forms
 from django.contrib.auth.models import User

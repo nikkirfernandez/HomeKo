@@ -2,6 +2,7 @@
 
 # CODE HISTORY #
 # Sontillano     # Mar 21, 2019     # added paths
+# Sontillano	 # Apr 3, 2019		# adde ownerlogout and editContactRecord
 
 # File creation date: Mar 21, 2019
 
