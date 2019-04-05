@@ -229,7 +229,9 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               {{facility.additionalinfoid}}
                          </div>
                          <div class="col-6">
+                              {% if facility.description %}
                               {{facility.description}}
+                              {% endif %}
                          </div>
                          <div class="col-1">
                               <a class="nav-link" id="edit_{{facility.housingadditionalinfoid}}" href="#{{facility.housingadditionalinfoid}}">edit</a>
@@ -242,7 +244,11 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                          $(document).ready(function(){
                               $('#edit_{{facility.housingadditionalinfoid}}').click(function(){              
                                    $('#id_additionalinfoid').val('{{facility.additionalinfoid.additionalinfoid}}');
+                                   {% if facility.description %}
                                    $('#id_description').val('{{facility.description}}');
+                                   {% else %}
+                                   $('#id_description').val();
+                                   {% endif %}
                                    $('#_save').val('{{facility.housingadditionalinfoid}}');
                                    $('#addeditfacility').modal('show')
                               });

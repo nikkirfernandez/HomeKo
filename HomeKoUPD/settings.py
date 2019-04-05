@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -135,4 +136,4 @@ STATICFILES_DIRS = (
 )
 
 # my_project/settings.py
-LOGIN_REDIRECT_URL = '/adminpage/home'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

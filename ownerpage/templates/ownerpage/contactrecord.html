@@ -106,14 +106,13 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           </style>
      </head>
      <body style="background-color:#f8f9fa">
-
-          <!--amenity modal-->
-          <div class="modal fade" id="addeditamenity" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <!--room modal-->
+          <div class="modal fade" id="addeditcontact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                          <form method="GET" action="#">
                               <div class="modal-header">
-                                   <h5 class="modal-title" id="exampleModalLabel">Add Amenity</h5>
+                                   <h5 class="modal-title" id="exampleModalLabel">Contact</h5>
                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                    </button>
@@ -121,20 +120,12 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                               <div class="modal-body">         
                                    <div class="form-group row">
                                         <div class="col-4">
-                                             <label for="area_modal" class="col-form-label">Amenity</label>
+                                             <label for="area_modal" class="col-form-label">Contact No.</label>
                                         </div>
                                         <div class="col-8">
-                                             {{amenityform.additionalinfoid}}
+                                             {{contactform.contactno}}
                                         </div>
                                    </div>      
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="area_modal" class="col-form-label">Description</label>
-                                        </div>
-                                        <div class="col-8">
-                                             {{amenityform.description}}
-                                        </div>
-                                   </div>  
                               </div>           
                               <div class="modal-footer">
                                    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
@@ -143,7 +134,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                          </form>          
                     </div>
                </div>
-          </div>        
+          </div>                   
 
           <!-- delete modal -->
           <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -202,17 +193,16 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           <div class="container">
                <div class="row justify-content-center">
                     <div class="col-8 title ">
-                         Add Amenity 
+                         Contact
                     </div>
                     <div class="col-2">
-                         <a role="button" href="#" id="add_amenity" class="btn">Add amenity</a>
+                         <a role="button" href="#" id="add_contact" class="btn">Add contact</a>
                     </div>
                     <script>
                          $(document).ready(function(){
-                              $('#add_amenity').click(function(){                                
-                                   $('#id_additionalinfoid').val('');
-                                   $('#id_description').val('');
-                                   $('#addeditamenity').modal('show')
+                              $('#add_contact').click(function(){                                
+                                   $('#id_contactno').val();
+                                   $('#addeditcontact').modal('show')
                               });
                          });
                     </script>
@@ -223,32 +213,28 @@ This is a course requirement for CS 192 Software Engineering II under the superv
 
                <form method="post">
                {% csrf_token %}
-                    {% for amenity in amenities %}
-                    <div class="row justify-content-center form-group">
-                         <div class="col-2">
-                              {{amenity.additionalinfoid}}
-                         </div>
-                         <div class="col-6">
-                              {{amenity.description}}
+                    {% for contact in contacts %}
+                    <div class="row justify-content-center form-group">                        
+                         <div class="col-8">
+                              {{contact.contactno}}
                          </div>
                          <div class="col-1">
-                              <a class="nav-link" id="edit_{{amenity.housingadditionalinfoid}}" href="#{{amenity.housingadditionalinfoid}}">edit</a>
-                         </div>
+                              <a class="nav-link" id="edit_{{contact.contactid}}" href="#{{contact.contactid}}">edit</a>
+                         </div> 
                          <div class="col-1">
-                              <a class="nav-link" href="#{{amenity.housingadditionalinfoid}}" id="delete_{{amenity.housingadditionalinfoid}}">delete</a>
-                         </div>
-                    </div> 
+                              <a class="nav-link" href="#{{contact.contactid}}" id="delete_{{contact.contactid}}">delete</a>
+                         </div>               
+                    </div>  
                     <script>
                          $(document).ready(function(){
-                              $('#edit_{{amenity.housingadditionalinfoid}}').click(function(){                                
-                                   $('#id_additionalinfoid').val('{{amenity.additionalinfoid.additionalinfoid}}');
-                                   $('#id_description').val('{{amenity.description}}');
-                                   $('#_save').val('{{amenity.housingadditionalinfoid}}');
-                                   $('#addeditamenity').modal('show')
+                              $('#edit_{{contact.contactid}}').click(function(){
+                                   $('#id_contactno').val('{{contact.contactno}}');
+                                   $('#_save').val('{{contact.contactid}}');
+                                   $('#addeditcontact').modal('show')
                               });
 
-                              $('#delete_{{amenity.housingadditionalinfoid}}').click(function(){
-                                   $('#_delete').val('{{amenity.housingadditionalinfoid}}');                  
+                              $('#delete_{{contact.contactid}}').click(function(){
+                                   $('#_delete').val('{{contact.contactid}}');    
                                    $('#delete').modal('show')
                               });
                          });
@@ -260,10 +246,10 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                     
                     <div class="row justify-content-end form-group">
                          <div class="col-auto align-self-end">
-                              <a type="button" class="btn btnN" href="/ownerpage/housing/{{housingid}}/room">Back</a>
+                              <a type="button" class="btn btnN" href="/ownerpage/account">Back</a>
                          </div>
                          <div class="col-auto align-self-end">
-                              <a type="button" class="btn btnN" href="/ownerpage/housing/{{housingid}}/facility">Next</a>
+                              <a type="button" class="btn btnN" href="/ownerpage/home">Done</a>
                          </div>
                     </div>
                </form>
@@ -271,6 +257,6 @@ This is a course requirement for CS 192 Software Engineering II under the superv
 
           <!-- space at the bottom -->
           <div class="bottom_content_separator"></div> 
-     	
+          
      </body>
 </html>
