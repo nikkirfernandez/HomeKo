@@ -10,8 +10,10 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-     path('home/', views.home, name='home'),
+     path('home/', views.home, name='ownerhome'),
+     path('logout/', views.ownerlogout, name='ownerlogout'),
      path('account/', views.account, name='account'),
+     path('contact/', views.editContactRecord, name='editContactRecord'),
      path('housing/<housingid>', views.editHousingRecord, name='editHousingRecord'),
      path('housing/<housingid>/room', views.editRoomRecord, name='editRoomRecord'),
      path('housing/<housingid>/amenity', views.editAmenityRecord, name='editAmenityRecord'),

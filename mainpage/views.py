@@ -10,9 +10,15 @@
 # File creation date: Feb. 1, 2019
 
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
+from django.template.loader import render_to_string
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 import datetime
 
 from .forms import *
@@ -506,10 +512,31 @@ def enduserRequest(request):
 
 def ownerLogin(request):
      # if the user submitted the form
+     incorrect = False
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
-
-          if searchForm.is_valid():     
+          ownerForm = OwnerLogin(request.POST)
+          if "login" in request.POST:
+               if ownerForm.is_valid():
+                    uname = request.POST['uname']
+                    pw = request.POST['pw']
+                    user = authenticate(request, username=uname, password=pw)
+                    if user is not None:
+                         if user.is_superuser==0:    
+                              print("success")
+                              login(request, user)
+                              owner = Owner.objects.get(ownername=uname).ownerid
+                              print(owner)
+                              request.session['ownerid'] = owner
+                              return redirect('ownerhome')
+                         else:
+                              incorrect = True
+                    else:
+                         incorrect = True
+               else:
+                    print(ownerForm.errors)
+                    return HttpResponseRedirect(reverse('ownerLogin'))
+          elif searchForm.is_valid():     
                filtersSet1={}
                filtersSet2=[]     
                
@@ -590,6 +617,7 @@ def ownerLogin(request):
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
      searchForm = SearchHousing()
+     ownerForm = OwnerLogin()
 
      content = {
           'areaChoices' : AREA_CHOICES,
@@ -598,5 +626,43 @@ def ownerLogin(request):
           'amenityChoices' : AMENITY_CHOICES,
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
+          'incorrect' : incorrect,
+          'ownerForm' : ownerForm,
      }
      return render(request, 'mainpage/login_owner.html', content)
+
+def register(request):
+     if request.method == 'POST':
+          form = OwnerRegistrationForm(request.POST)
+          if form.is_valid():
+               post = form.save(commit=False)
+               newOwnerRecord = Owner.objects.create(ownername=post.username, firstname=post.first_name, lastname=post.last_name)
+               newOwnerRecord.save()
+
+               if post.email == "":
+                    post.email = "None"
+               else:
+                    newOwnerRecord.email = post.email
+                    newOwnerRecord.save()
+
+               if request.POST['contact'] != "":
+                    newContactRecord = Contact.objects.create(ownerid=newOwnerRecord, contactno=request.POST['contact']) 
+
+               post.save()
+
+               user = authenticate(request, username=post.username, password=post.password1)
+               if user is not None:
+                    login(request, user)
+                    request.session['ownerid'] = newOwnerRecord.ownerid
+                    return redirect('ownerhome')
+
+
+               #return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+               return redirect('ownerLogin')
+     
+     form = OwnerRegistrationForm()
+
+     content = {
+          'form': form,
+     }
+     return render(request,'mainpage/register_owner.html', content)
