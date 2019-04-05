@@ -6,6 +6,9 @@
 # File creation date: Feb. 5, 2019
 
 from django import forms
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.helper import FormHelper
 from .choices import *
 from .models import *
 
@@ -42,11 +45,6 @@ class AddRequest(forms.ModelForm):
                     'class': 'form-control'
                })
 
-class SignUp(forms.Form):
-     lname = forms.CharField(max_length=40, required=True)
-     fname = forms.CharField(max_length=40, required=True)
-     contact = forms.CharField(max_length=70, required=True)  
-
 class AddComment(forms.ModelForm):
      comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}), max_length=500, required=True, )
      class Meta:
@@ -58,3 +56,25 @@ class AddComment(forms.ModelForm):
                self.fields[field].widget.attrs.update({
                     'class': 'form-control'
                })
+
+class OwnerLogin(forms.Form):
+     uname = forms.CharField(max_length=50, required=True)
+     pw = forms.CharField(max_length=50, required=True)
+
+class OwnerRegistrationForm(UserCreationForm):
+     first_name = forms.CharField()
+     last_name = forms.CharField()
+     email = forms.EmailField()
+     contact = forms.CharField()
+
+     class Meta:
+          model = User
+          fields = ['first_name','last_name','username','email','contact','password1','password2']
+
+     def __init__(self, *args, **kwargs):
+          super().__init__(*args, **kwargs)
+          self.helper = FormHelper()
+          self.helper.form_show_labels = False
+          super(OwnerRegistrationForm, self).__init__(*args, **kwargs)
+          self.fields['email'].required = False
+          self.fields['contact'].required = False
