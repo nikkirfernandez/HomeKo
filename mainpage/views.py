@@ -506,7 +506,7 @@ def enduserRequest(request):
           'amenityChoices' : AMENITY_CHOICES,
           'facilityChoices' : FACILITY_CHOICES,
           'ruleChoices' : RULE_CHOICES,
-          'requestChoices' : REQUEST_CHOICES,
+          'requestChoices' : REQUEST_TYPE_CHOICES,
           'requestForm' : requestForm,
      }
      return render(request, 'mainpage/request_enduser.html', content)

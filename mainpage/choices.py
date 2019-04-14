@@ -1,6 +1,6 @@
 # License: MIT License
 # CODE HISTORY #
-# Sontillano     # Feb 5, 2019     # added AREA_CHOICES, PROPERTY_CHOICES, HOME_CHOICES, AMENITY_CHOICES, FACILITY_CHOICES, RULE_CHOICES, REQUEST_CHOICES
+# Sontillano     # Feb 5, 2019     # added AREA_CHOICES, PROPERTY_CHOICES, HOME_CHOICES, AMENITY_CHOICES, FACILITY_CHOICES, RULE_CHOICES
 
 # File creation date: Feb. 5, 2019
 
@@ -48,12 +48,6 @@ RULE_CHOICES = (
      (1, ("Pets allowed")),
      (2, ("Smoking allowed")),
      (3, ("No curfew")),
-)
-
-REQUEST_CHOICES = (
-     (1, ("Add")),
-     (2, ("Update")),
-     (3, ("Delete")),
 )
 
 INFOTYPE_CHOICES = (
