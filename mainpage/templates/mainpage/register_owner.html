@@ -18,7 +18,7 @@ CODE HISTORY
      <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width+device-width, initial-scale=1">
-          <title>HomeKo</title>
+          <title>Owner Sign up</title>
 
           <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans:300" rel="stylesheet"> 
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -84,11 +84,11 @@ CODE HISTORY
                <div class="container">
                     {% if request.user.is_superuser %}
                     <a class="navbar-brand" href="/adminpage/home">
-                         <img src="{% static 'adminpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Admin     
+                         <img src="{% static 'mainpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Admin     
                     </a>  
                     {% elif user.is_authenticated %}
                     <a class="navbar-brand" href="/ownerpage/home">
-                         <img src="{% static 'adminpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Owner     
+                         <img src="{% static 'mainpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Owner     
                     </a>  
                     {% else %}
                     <a class="navbar-brand" href="/">
