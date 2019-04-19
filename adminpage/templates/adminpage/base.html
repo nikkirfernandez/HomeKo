@@ -1,33 +1,48 @@
-<!-- 
-This is a course requirement for CS 192 Software Engineering II under the supervision of Asst. Prof. Ma. Rowena C. Solamo of the Department of Computer Science, College of Engineering, University of the Philippines, Diliman for the AY 2018-2019.
--->
-<!--
+<!-- License: MIT License 
 CODE HISTORY 
-# Fernandez     # Apr 3, 2019    # made content of the page
-# Sontillano    # Apr 4, 2019    # changed the layout
+# Sontillano     # Jan 27, 2019    # made layout of the page
 
-# File creation date: Apr 3, 2019
+# File creation date: Apr. 18, 2019
 -->
 
 <!DOCTYPE html>
 
 {% load static %}
-{% load crispy_forms_tags %}
 
 <html>
      <head>
+          <title>{% block title %} HomeKo Admin {% endblock title %}</title>
           <meta charset="UTF-8">
           <meta name="viewport" content="width+device-width, initial-scale=1">
-          <title>Owner Sign up</title>
 
-          <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans:300" rel="stylesheet"> 
+          {% block imports %}
+          <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans" rel="stylesheet"> 
+          {% endblock imports %}
+
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
           <link href="{% static 'mainpage/css/bootstrap.min.css' %}" rel="stylesheet">
           <script src="{% static 'mainpage/js/bootstrap.min.js' %}"></script>
-          <link href="{% static 'mainpage/css/styles.css' %}" rel="stylesheet">
-     </head>
-     <body style="background-color:#f8f9fa">  
+          <link href="{% static 'adminpage/css/styles.css' %}" rel="stylesheet">
 
+          {% block scripts %}{% endblock scripts %}
+     </head>
+     <body style="background-color:#f8f9fa">
+
+          {% block otherModals %}
+          {% endblock otherModals %}
+
+          {% block greeting %}
+               {% if user.is_authenticated %}
+               <div class="row greeting">
+                    <div class="container">
+                         Hello! You are logged in as {{user.username}}.
+                    </div>
+               </div>
+               {% endif %}
+          {% endblock %}
+
+          <!--navbar-->
+          {% block navbar %}
           <nav class="navbar navbar-expand-sm navbar-light bg-light">          
                <div class="container">
                     {% if request.user.is_superuser %}
@@ -47,51 +62,41 @@ CODE HISTORY
                     <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarText">
+                         {% block navbarRight %}
                          <ul class="navbar-nav mr-auto"></ul>
                          <ul class="navbar-nav">
                               <li class="nav-item">
-                                   <a class="nav-link active" href="/ownerlogin">Housing Owner</a>
+                                   <a class="nav-link" href="/">View Website</a>
+                              </li>
+                              <li class="nav-item dropdown">
+                                   <a class="nav-link dropdown-toggle" id="tablesDropDown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tables</a>
+                                   <div class="dropdown-menu" aria-labelledby="tablesDropDown">
+                                     {% for n, table in tableChoices %}
+                                     <a class="dropdown-item" href="/adminpage/{{table}}">{{table}}</a>
+                                     {% endfor %}
+                                   </div>
+                              </li>
+                              <li class="nav-item">
+                                   <a class="nav-link" href="/adminpage/logout">Log out</a>
                               </li>
                          </ul>
+                         {% endblock navbarRight %}
                     </div>
                </div>
           </nav>
+          {% endblock navbar %}
           <!--navbar end-->
           
           <!-- separator of navbar and actual page content -->
           <div class="top_content_separator"></div>
-          
-          <!-- actual page content -->
-          <div class="container">
-               <!--page title-->
-               <div class="row title_owner justify-content-center">
-                    Create a Housing Owner  
-               </div>
 
-               <!--separate page description and form-->
-               <div class="form_separator"></div>
-
-               <!--request form-->
-               <div class="row form_login justify-content-center">
-                    <div class="col-4">
-                         {% block content %}
-							<form method = "POST">
-							{% csrf_token %}
-								<fieldset class="form-group">
-									{{form|crispy}}
-								</fieldset>
-								<div class="form-group">
-									<button class="btn btnY" type="submit">Create</button>
-								</div>
-							</form>
-						{% endblock content %}
-                    </div>
-               </div>
-          </div>
+          {% block content %}
+          {% endblock content %}
 
           <!-- space at the bottom -->
           <div class="bottom_content_separator"></div>
+
+          {% block otherScripts %}
+          {% endblock otherScripts %}
      </body>
 </html>
-
-

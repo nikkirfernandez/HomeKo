@@ -7,263 +7,19 @@ CODE HISTORY
 # File creation date: Jan. 27, 2019
 -->
 
-<!DOCTYPE html>
+{% extends "mainpage/base.html" %}
 
-{% load static %}
+          {% block title %}
+          {{housing.housingname}}
+          {% endblock title %}
 
-<html>
-     <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width+device-width, initial-scale=1">
-          <title>{{housing.housingname}}</title>
-
-          <link href="https://fonts.googleapis.com/css?family=Noto+Serif+SC|Nunito:300|Open+Sans" rel="stylesheet"> 
-          
-          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-          <link href="{% static 'mainpage/css/bootstrap.min.css' %}" rel="stylesheet">
-          <script src="{% static 'mainpage/js/bootstrap.min.js' %}"></script>
-          <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet">
-
-          <style>
-               .top_content_separator, .bottom_content_separator {
-                    height: 80px;
-               }
-
-               .navbar {
-                    background-color: #705947;
-               }
-
-               .navbar-brand {
-                    font-size: 23px;
-                    font-weight: bold;
-               }
-
-               .nav-link {
-                    font-size: 17px;   
-               }
-
-               .navbar-brand, .nav-link {
-                    font-family: 'Nunito', sans-serif;
-                    color: #f09450;
-               }
-
-               .navbar-brand:hover {
-                    color: #f09450;
-               } 
-
-               .nav-link:hover {
-                    color: white;
-               }
-
-               .btn {
-                    background-color: #f09450;
-                    color: #705947;
-                    font-weight: 550;
-               }
-
-               .btn:hover {
-                    background-color: #f09450;
-                    color: #704525;
-               }
-
-
-               .housing_name {
-                    font-family: 'Noto Serif SC', serif;
-                    font-size: 27px;
-                    font-weight: bold;
-               } 
-
-               .housing_types, .housing_contact_title, .housing_address_title, .housing_price_title, .housing_amenity_title, .housing_facility_title, .housing_rule_title, .housing_comment_title  {
-                    font-family: 'Noto Serif SC', serif;
-                    font-size: 19px;
-                    color: #705947;
-               } 
-
-               .housing_price_link:hover, .housing_amenity_link:hover, .housing_facility_link:hover, .housing_rule_link:hover {
-                    cursor: pointer;
-                    color: #705947;
-               }
-
-               .housing_price_desc, .amenity_desc, .facility_desc, .rule_desc, .comment_item, .comment_date {
-                    font-family: 'Open Sans', sans-serif;
-               }
-
-               .table-responsive {
-                    margin: auto;
-               }
-
-               .comment_date {
-                    border-style: solid;
-                    border-width: 0 0 1px 0;
-                    border-color: #e1e1e1;
-               }
-
-               .amenity_item, .facility_item, .rule_item {
-                    font-family: 'Nunito', sans-serif;
-                    font-size: 18px;
-                    font-style: italic;
-               }
-
-               .iframe-container {
-                    overflow: hidden;
-                    padding-top: 56.25%;
-                    position: relative;
-               }
-
-               .iframe-container iframe {
-                    border: 0;
-                    height: 100%;
-                    left: 0;
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-               }
-
-               /* 4x3 Aspect Ratio */
-               .iframe-container-4x3 {
-                    padding-top: 75%;
-               }
-
-          </style>
-          <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script>
-          
-     </head>
-     <body style="background-color:#f8f9fa">
-          <!-- search modal: overlay search housing form -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-               <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                         <form method="post">
-                         {% csrf_token %}
-                              <div class="modal-header">
-                                   <h5 class="modal-title" id="exampleModalLabel">Search Housing</h5>
-                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                   </button>
-                              </div>
-                              <div class="modal-body">         
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="area_modal" class="col-form-label">Area</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <select class="form-control" id="area_modal" name="area">
-                                             {% for n, area in areaChoices %}
-                                                  <option value={{ n }}>{{area}}</option>
-                                             {% endfor %}
-                                             </select>
-                                        </div>
-                                   </div>                                   
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="propertyType_modal" class="col-form-label">Property Type</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <select class="form-control" id="propertyType_modal" name="propertyType">
-                                             {% for n, property in propertyChoices %}
-                                                  <option value={{ n }}>{{property}}</option>
-                                             {% endfor %}
-                                             </select>
-                                        </div>
-                                   </div>
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="houseType_modal" class="col-form-label">Home Type</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <select class="form-control" id="houseType_modal" name="homeType">
-                                             {% for n, home in homeChoices %}
-                                                  <option value={{ n }}>{{home}}</option>
-                                             {% endfor %}
-                                             </select>
-                                        </div>
-                                   </div>
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="price_modal" class="col-form-label">Max cost (per month)</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <input type="text" class="form-control" placeholder="Maximum" name="priceMax">
-                                        </div>
-                                   </div>
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="rate" class="col-form-label">Amenities</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="kitchen" name="kitchen">
-                                                  <label class="form-check-label" for="kitchen" class="checkboxChoice">Kitchen</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="aircon" name="aircon">
-                                                  <label class="form-check-label" for="aircon" class="checkboxChoice">Air conditioning</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="washer" name="washer">
-                                                  <label class="form-check-label" for="washer" class="checkboxChoice">Washer</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="dryer" name="dryer">
-                                                  <label class="form-check-label" for="dryer" class="checkboxChoice">Dryer</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="wifi" name="wifi">
-                                                  <label class="form-check-label" for="wifi" class="checkboxChoice">Wifi</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="iron" name="iron">
-                                                  <label class="form-check-label" for="iron" class="checkboxChoice">Iron</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="tv" name="tv">
-                                                  <label class="form-check-label" for="tv" class="checkboxChoice">TV</label>
-                                             </div> 
-                                        </div>
-                                   </div>
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="rate" class="col-form-label">Facilities</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="parking" name="parking">
-                                                  <label class="form-check-label" for="parking" class="checkboxChoice">Parking</label>
-                                             </div> 
-                                        </div>
-                                   </div>
-                                   <div class="form-group row">
-                                        <div class="col-4">
-                                             <label for="rate" class="col-form-label">House Rules</label>
-                                        </div>
-                                        <div class="col-8">
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="pets" name="pet">
-                                                  <label class="form-check-label" for="pets" class="checkboxChoice">Pets allowed</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="smoking" name="smoking">
-                                                  <label class="form-check-label" for="smoking" class="checkboxChoice">Smoking allowed</label>
-                                             </div> 
-                                             <div class="form-check">
-                                                  <input class="form-check-input" type="checkbox" id="nocurfew" name="curfew">
-                                                  <label class="form-check-label" for="nocurfew" class="checkboxChoice">No curfew</label>
-                                             </div> 
-                                        </div>
-                                   </div>                                  
-                              </div>          
-                              <div class="modal-footer">
-                                   <button type="button" class="btn" data-dismiss="modal">Close</button>
-                                   <button type="submit" class="btn">Search</button>
-                              </div>
-                         </form>          
-                    </div>
-               </div>
-          </div>
-          <!--search modal end-->
+          {% block scripts %}    
+          <script src="https://unpkg.com/ionicons@4.5.5/dist/ionicons.js"></script> 
+          {% endblock scripts %} 
+     
 
           <!-- confirm comment modal start -->
-          
+          {% block otherModals %}
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -278,55 +34,16 @@ CODE HISTORY
                          </div>
                          <div class="modal-footer">
                               <button type="button" class="btn btnN" data-dismiss="modal"">Cancel comment</button>
-                              <button type="button" class="btn btnN" data-dismiss="modal" onclick="myFunction()">OK</button>
+                              <button type="button" class="btn btnY" data-dismiss="modal" onclick="myFunction()">OK</button>
                          </div>
                     </div>
                </div>
           </div>
-
+          {% endblock otherModals %}
           <!-- confirm comment modal end -->
 
-          <!--navbar-->
-          <nav class="navbar navbar-expand-sm navbar-light bg-light">          
-               <div class="container">
-                    {% if request.user.is_superuser %}
-                    <a class="navbar-brand" href="/adminpage/home">
-                         <img src="{% static 'mainpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Admin     
-                    </a>  
-                    {% elif user.is_authenticated %}
-                    <a class="navbar-brand" href="/ownerpage/home">
-                         <img src="{% static 'mainpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo Owner     
-                    </a>  
-                    {% else %}
-                    <a class="navbar-brand" href="/">
-                         <img src="{% static 'mainpage/homeko_logo.svg' %}" width="45" height="45" alt=""> HomeKo                         
-                    </a>  
-                    {% endif %}
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-between" id="navbarText">
-                         <ul class="navbar-nav mr-auto"></ul>
-                         <ul class="navbar-nav">
-                              <li class="nav-item">
-                                   <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">Search</a>
-                              </li>
-                              <li class="nav-item">
-                                   <a class="nav-link" href="/request">Housing Request</a>
-                              </li>
-                              <li class="nav-item">
-                                   <a class="nav-link" href="/ownerlogin">Housing Owner</a>
-                              </li>
-                         </ul>
-                    </div>
-               </div>
-          </nav>
-          <!--navbar end-->
-
-          <!-- separator of navbar and actual page content -->
-          <div class="top_content_separator"></div>
-
           <!-- actual page content -->
+          {% block content %}
           <div class="container">
                <!-- housing name -->
                <div class="row housing_name justify-content-center">
@@ -336,7 +53,7 @@ CODE HISTORY
                </div>
 
                <!-- housing types -->
-               <div class="row housing_types justify-content-center pb-3">
+               <div class="row subtitle justify-content-center pb-3">
                     <div class="col-9">
                          {{housing.propertytype.propertytypename}} | {{housing.housetype.housetypename}}
                     </div>
@@ -345,7 +62,7 @@ CODE HISTORY
                <!-- housing contact -->
                <div class="row housing_contact justify-content-center pb-3">
                     <div class="col-9">
-                         <div class="housing_contact_title">
+                         <div class="subtitle">
                               Contact: 
                          </div>
                          {% if ownername %}
@@ -357,7 +74,7 @@ CODE HISTORY
                <!-- housing address -->
                <div class="row housing_address justify-content-center pb-3">
                     <div class="col-9">
-                         <div class="housing_address_title">
+                         <div class="subtitle">
                               Address: 
                          </div>
                          {{housing.address}}
@@ -376,16 +93,16 @@ CODE HISTORY
                {% endif %}
 
                <!-- housing cost -->
-               <div class="row housing_price_title justify-content-center align-items-center pb-3">
+               <div class="row subtitle justify-content-center align-items-center pb-3">
                     <div class="col-9">
-                         <a class="housing_price_link" data-toggle="collapse" data-target="#housing_price_desc" aria-expanded="true" aria-controls="housing_price_desc">
+                         <a class="subtitle_link" data-toggle="collapse" data-target="#housing_price_desc" aria-expanded="true" aria-controls="housing_price_desc">
                               Cost
                               <ion-icon name="arrow-dropdown"></ion-icon>
                          </a>          
                     </div>
                </div>
                {% if rooms %}
-               <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
+               <div class="row description justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
                     <div class="col-8 table-responsive">
                          <table class="table">
                               <tbody>
@@ -402,7 +119,7 @@ CODE HISTORY
                     </div>
                </div>
                {% else %}
-               <div class="row housing_price_desc justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
+               <div class="row description justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
                     <div class="col-8">
                          NONE
                     </div>
@@ -410,9 +127,9 @@ CODE HISTORY
                {% endif %}
 
                <!-- housing amenities -->
-               <div class="row housing_amenity_title justify-content-center align-items-center pb-3">
+               <div class="row subtitle justify-content-center align-items-center pb-3">
                     <div class="col-9">
-                         <a class="housing_amenity_link" data-toggle="collapse" data-target="#housing_amenity_desc" aria-expanded="false" aria-controls="housing_amenity_desc">
+                         <a class="subtitle_link" data-toggle="collapse" data-target="#housing_amenity_desc" aria-expanded="false" aria-controls="housing_amenity_desc">
                               Amenities
                               <ion-icon name="arrow-dropdown"></ion-icon>
                          </a>          
@@ -421,11 +138,11 @@ CODE HISTORY
                {% if amenities %}
                {% for amenity in amenities %}         
                <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
-                    <div class="col-8 amenity_item">
+                    <div class="col-8 item">
                          {{amenity.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if amenity.description %}
-                    <div class="col-7 amenity_desc">
+                    <div class="col-7 description">
                          {{amenity.description}}
                     </div>
                     {% endif %} 
@@ -440,9 +157,9 @@ CODE HISTORY
                {% endif %} 
 
                <!-- housing facilities -->         
-               <div class="row housing_facility_title justify-content-center align-items-center pb-3">
+               <div class="row subtitle justify-content-center align-items-center pb-3">
                     <div class="col-9">         
-                         <a class="housing_facility_link" data-toggle="collapse" data-target="#housing_facility_desc" aria-expanded="false" aria-controls="housing_facility_desc">
+                         <a class="subtitle_link" data-toggle="collapse" data-target="#housing_facility_desc" aria-expanded="false" aria-controls="housing_facility_desc">
                               Facilities
                               <ion-icon name="arrow-dropdown"></ion-icon>
                          </a>            
@@ -451,11 +168,11 @@ CODE HISTORY
                {% if facilities %}
                {% for facility in facilities %}
                <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">          
-                    <div class="col-8 facility_item">
+                    <div class="col-8 item">
                          {{facility.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if facility.description %}
-                    <div class="col-7 facility_desc">
+                    <div class="col-7 description">
                          {{facility.description}}
                     </div>
                     {% endif %}
@@ -470,9 +187,9 @@ CODE HISTORY
                {% endif %} 
 
                <!-- housing rules -->
-               <div class="row housing_rule_title justify-content-center align-items-center pb-3">
+               <div class="row subtitle justify-content-center align-items-center pb-3">
                     <div class="col-9">         
-                         <a class="housing_rule_link" data-toggle="collapse" data-target="#housing_rule_desc" aria-expanded="false" aria-controls="housing_rule_desc">
+                         <a class="subtitle_link" data-toggle="collapse" data-target="#housing_rule_desc" aria-expanded="false" aria-controls="housing_rule_desc">
                               House Rules
                               <ion-icon name="arrow-dropdown"></ion-icon>
                          </a>                  
@@ -481,11 +198,11 @@ CODE HISTORY
                {% if rules %}
                {% for rule in rules %}
                <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">         
-                    <div class="col-8 rule_item">
+                    <div class="col-8 item">
                          {{rule.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if rule.description %}
-                    <div class="col-7 rule_desc">
+                    <div class="col-7 description">
                          {{rule.description}}
                     </div>
                     {% endif %}
@@ -501,13 +218,13 @@ CODE HISTORY
 
                <!-- housing comments -->
                <div class="row justify-content-center pt-5 pb-2">
-                    <div class="col-9 housing_comment_title ">      
+                    <div class="col-9 subtitle ">      
                          Comments  
                     </div>
                </div>
                {% for comment in comments %}
                <div class="row justify-content-center pt-2">
-                    <div class="col-8 comment_item ">         
+                    <div class="col-8 description ">         
                          {{comment.comment}}
                     </div>
                </div>
@@ -526,16 +243,15 @@ CODE HISTORY
                               {{commentForm.comment}}
                          </div>
                          <div class="col-1 comment_post pt-4">
-                              <button type="button" class="btn" data-toggle="modal" data-target="#myModal">Post</button>
+                              <button type="button" class="btn btnY" data-toggle="modal" data-target="#myModal">Post</button>
                          </div>          
                     </div>
                </form>         
           </div>
-
-          <!-- space at the bottom -->
-          <div class="bottom_content_separator"></div>
-
+          {% endblock content %}
+         
           <!--show modal when comment is successfully submitted -->
+          {% block otherScripts %}
           <script>        
                //$('#myForm').on('submit', function(e) {
                //     $('#myModal').modal('show');
@@ -545,6 +261,5 @@ CODE HISTORY
                function myFunction() {
                     document.forms["myForm"].submit();
                }                
-          </script>   
-     </body>
-</html>
+          </script> 
+          {% endblock otherScripts %}  

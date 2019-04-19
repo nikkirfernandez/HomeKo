@@ -517,125 +517,131 @@ def enduserRequest(request):
 # Calling arguments: No arguments for calling this function.
 # Required files: login_owner.html
 def ownerLogin(request):
-     # if the user submitted the form
-     incorrect = False
-     if request.method == "POST" :
-          searchForm = SearchHousing(request.POST)
-          ownerForm = OwnerLogin(request.POST)
-          if "login" in request.POST:
-               if ownerForm.is_valid():
-                    uname = request.POST['uname']
-                    pw = request.POST['pw']
-                    user = authenticate(request, username=uname, password=pw)
-                    if user is not None:
-                         if user.is_superuser==0:    
-                              print("success")
-                              login(request, user)
-                              owner = Owner.objects.get(ownername=uname).ownerid
-                              print(owner)
-                              request.session['ownerid'] = owner
-                              return redirect('ownerhome')
+     if request.user.is_authenticated:
+          if request.user.is_superuser:
+               return HttpResponseRedirect('/adminpage/home')        
+          else:
+               return HttpResponseRedirect('/ownerpage/home')
+     else:
+          # if the user submitted the form
+          incorrect = False
+          if request.method == "POST" :
+               searchForm = SearchHousing(request.POST)
+               ownerForm = OwnerLogin(request.POST)
+               if "login" in request.POST:
+                    if ownerForm.is_valid():
+                         uname = request.POST['uname']
+                         pw = request.POST['pw']
+                         user = authenticate(request, username=uname, password=pw)
+                         if user is not None:
+                              if user.is_superuser==0:    
+                                   print("success")
+                                   login(request, user)
+                                   owner = Owner.objects.get(ownername=uname).ownerid
+                                   print(owner)
+                                   request.session['ownerid'] = owner
+                                   return redirect('ownerhome')
+                              else:
+                                   incorrect = True
                          else:
                               incorrect = True
                     else:
-                         incorrect = True
-               else:
-                    print(ownerForm.errors)
-                    return HttpResponseRedirect(reverse('ownerLogin'))
-          elif searchForm.is_valid():     
-               filtersSet1={}
-               filtersSet2=[]     
+                         print(ownerForm.errors)
+                         return HttpResponseRedirect(reverse('ownerLogin'))
+               elif searchForm.is_valid():     
+                    filtersSet1={}
+                    filtersSet2=[]     
                
-               # get the inputs to these dropdown boxes then add to filterSet1 to be used in the query later 
-               areaIndex = searchForm.cleaned_data['area']
-               if areaIndex!='1':
-                    area = AREA_CHOICES[int(areaIndex)-1][1]
-                    filtersSet1['area__areaname'] = area						
-               propertyIndex = searchForm.cleaned_data['propertyType']
-               if propertyIndex!='1':
-                    propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
-                    filtersSet1['propertytype__propertytypename'] = propertyType     
-               homeIndex = searchForm.cleaned_data['homeType']
-               if homeIndex!='1':
-                    homeType = HOME_CHOICES[int(homeIndex)-1][1]
-                    filtersSet1['housetype__housetypename'] = homeType     
+                    # get the inputs to these dropdown boxes then add to filterSet1 to be used in the query later 
+                    areaIndex = searchForm.cleaned_data['area']
+                    if areaIndex!='1':
+                         area = AREA_CHOICES[int(areaIndex)-1][1]
+                         filtersSet1['area__areaname'] = area						
+                    propertyIndex = searchForm.cleaned_data['propertyType']
+                    if propertyIndex!='1':
+                         propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
+                         filtersSet1['propertytype__propertytypename'] = propertyType     
+                    homeIndex = searchForm.cleaned_data['homeType']
+                    if homeIndex!='1':
+                         homeType = HOME_CHOICES[int(homeIndex)-1][1]
+                         filtersSet1['housetype__housetypename'] = homeType     
                
-               # get the input to this textbox
-               priceMax = searchForm.cleaned_data['priceMax']
+                    # get the input to this textbox
+                    priceMax = searchForm.cleaned_data['priceMax']
 
-               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-               if(searchForm.cleaned_data['kitchen'])==True:
-                    filtersSet2.append("Kitchen")
-               if(searchForm.cleaned_data['aircon']) == True:
-                    filtersSet2.append("Air conditioning")
-               if(searchForm.cleaned_data['washer']) == True:
-                    filtersSet2.append("Washer")
-               if(searchForm.cleaned_data['dryer'])==True:
-                    filtersSet2.append("Dryer")
-               if(searchForm.cleaned_data['wifi']) == True:
-                    filtersSet2.append("Wifi")
-               if(searchForm.cleaned_data['iron'])==True:
-                    filtersSet2.append("Iron")
-               if(searchForm.cleaned_data['tv'])==True:
-                    filtersSet2.append("TV")
-               if(searchForm.cleaned_data['parking'])==True:
-                    filtersSet2.append("Parking")
-               if(searchForm.cleaned_data['pet'])==True:
-                    filtersSet2.append("Pets allowed")
-               if(searchForm.cleaned_data['smoking'])==True:
-                    filtersSet2.append("Smoking allowed")
-               if(searchForm.cleaned_data['curfew'])==True:
-                    filtersSet2.append("No curfew")     
+                    # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
+                    if(searchForm.cleaned_data['kitchen'])==True:
+                         filtersSet2.append("Kitchen")
+                    if(searchForm.cleaned_data['aircon']) == True:
+                         filtersSet2.append("Air conditioning")
+                    if(searchForm.cleaned_data['washer']) == True:
+                         filtersSet2.append("Washer")
+                    if(searchForm.cleaned_data['dryer'])==True:
+                         filtersSet2.append("Dryer")
+                    if(searchForm.cleaned_data['wifi']) == True:
+                         filtersSet2.append("Wifi")
+                    if(searchForm.cleaned_data['iron'])==True:
+                         filtersSet2.append("Iron")
+                    if(searchForm.cleaned_data['tv'])==True:
+                         filtersSet2.append("TV")
+                    if(searchForm.cleaned_data['parking'])==True:
+                         filtersSet2.append("Parking")
+                    if(searchForm.cleaned_data['pet'])==True:
+                         filtersSet2.append("Pets allowed")
+                    if(searchForm.cleaned_data['smoking'])==True:
+                         filtersSet2.append("Smoking allowed")
+                    if(searchForm.cleaned_data['curfew'])==True:
+                         filtersSet2.append("No curfew")     
 
-               # Filter round 1: get the queryset with the filtersSet1 
-               housingResults = Housing.objects.filter(**filtersSet1)
+                    # Filter round 1: get the queryset with the filtersSet1 
+                    housingResults = Housing.objects.filter(**filtersSet1)
                
-               # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-               results2 = []
-               if priceMax!=None:
-                    for result in housingResults:
-                         result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                         if result2temp!=None: 
-                              results2.append(result2temp.housingid.housingid)
-               else:
-                    results2 = [result.housingid for result in housingResults]     
+                    # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
+                    results2 = []
+                    if priceMax!=None:
+                         for result in housingResults:
+                              result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
+                              if result2temp!=None: 
+                                   results2.append(result2temp.housingid.housingid)
+                    else:
+                         results2 = [result.housingid for result in housingResults]     
 
-               # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-               results3 = []
-               if len(filtersSet2)==0:
-                    results3=results2
-               else:
-                    for result in results2:
-                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                         ctr = 0
-                         for filters in filtersSet2:
-                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                              if result3temp == None:
-                                   break
-                              ctr = ctr+1
-                         if ctr==len(filtersSet2):
-                              results3.append(result3temp.housingid.housingid)
+                    # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
+                    results3 = []
+                    if len(filtersSet2)==0:
+                         results3=results2
+                    else:
+                         for result in results2:
+                              housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
+                              ctr = 0
+                              for filters in filtersSet2:
+                                   result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
+                                   if result3temp == None:
+                                        break
+                                   ctr = ctr+1
+                              if ctr==len(filtersSet2):
+                                   results3.append(result3temp.housingid.housingid)
                
                
-               # do this so that the list can be passed to the enduserSearchResult method
-               request.session['searchResult'] = results3
-               # go to enduserSearchResult method to display the search result 
-               return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
+                    # do this so that the list can be passed to the enduserSearchResult method
+                    request.session['searchResult'] = results3
+                    # go to enduserSearchResult method to display the search result 
+                    return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
-     searchForm = SearchHousing()
-     ownerForm = OwnerLogin()
+          searchForm = SearchHousing()
+          ownerForm = OwnerLogin()
 
-     content = {
-          'areaChoices' : AREA_CHOICES,
-          'propertyChoices' : PROPERTY_CHOICES,
-          'homeChoices' : HOME_CHOICES,
-          'amenityChoices' : AMENITY_CHOICES,
-          'facilityChoices' : FACILITY_CHOICES,
-          'ruleChoices' : RULE_CHOICES,
-          'incorrect' : incorrect,
-          'ownerForm' : ownerForm,
-     }
-     return render(request, 'mainpage/login_owner.html', content)
+          content = {
+               'areaChoices' : AREA_CHOICES,
+               'propertyChoices' : PROPERTY_CHOICES,
+               'homeChoices' : HOME_CHOICES,
+               'amenityChoices' : AMENITY_CHOICES,
+               'facilityChoices' : FACILITY_CHOICES,
+               'ruleChoices' : RULE_CHOICES,
+               'incorrect' : incorrect,
+               'ownerForm' : ownerForm,
+          }
+          return render(request, 'mainpage/login_owner.html', content)
 
 # Method name: ownerLogin
 # Creation date: Apr 3, 2019 

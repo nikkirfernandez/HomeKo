@@ -1,0 +1,94 @@
+.top_content_separator, .bottom_content_separator {
+	height: 50px;
+}
+
+.navbar {
+	background-color: #705947;
+}
+
+.navbar-brand {
+	font-size: 23px;
+	font-weight: bold;
+}
+
+.nav-link {
+	font-size: 17px;   
+}
+
+.navbar-brand, .nav-link {
+	font-family: 'Nunito', sans-serif;
+	color: #f09450;
+}
+
+.navbar-brand:hover {
+	color: #f09450;
+} 
+
+.nav-link:hover {
+	color: white;
+}
+
+.nav-link.tab:hover {
+	color: black;
+}
+
+.greeting {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 15px;
+	color: white;
+	background-color: #f09450;
+	padding: 2px 0 2px 0;
+}
+
+.separator {
+	height: 20px;
+}
+
+.separator_adminhome {
+	height: 40px;
+}
+
+.title {
+	font-family: 'Noto Serif SC', serif;
+	font-size: 33px;
+	color: #705947;
+} 
+
+.fieldName {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.btnY {
+	background-color: #f09450;
+	color: #705947;
+	font-weight: 550;
+}
+
+.btnY:hover {
+	background-color: #f09450;
+	color: #704525;
+}
+
+.btnN {
+	color: #ffffff;
+	background-color: #705947;
+	font-weight: 550;
+}
+
+.table_list {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.th_tabsTable {
+	font-family: 'Open Sans', sans-serif;
+}
+               
+.clickable-row:hover {
+	cursor: pointer;
+}
+
+.formLabel {
+	font-family: 'Noto Serif SC', serif;
+	font-size: 18px;
+	color: #705947;
+}

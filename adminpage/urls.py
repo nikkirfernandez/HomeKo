@@ -7,8 +7,8 @@
 # File creation date: Feb. 12, 2019
 
 from django.urls import path, include
-
 from . import views
+
 
 urlpatterns = [
      path('login/', views.adminlogin, name='adminlogin'),
@@ -29,8 +29,8 @@ urlpatterns = [
      path('Propertytype/add/', views.addPropertytype, name='addPropertytype'),
      path('Propertytype/<id>/', views.editPropertytype, name='editPropertytype'),
      path('Request/<id>/', views.editRequest, name='editRequest'),
-     path('HousingAdditionalInfo/add/', views.addHousingAdditionalInfo, name='addHousingAdditionalInfo'),
-     path('HousingAdditionalInfo/<id>/', views.editHousingAdditionalInfo, name='editHousingAdditionalInfo'),
+     path('HousingAdditionalinfo/add/', views.addHousingAdditionalInfo, name='addHousingAdditionalInfo'),
+     path('HousingAdditionalinfo/<id>/', views.editHousingAdditionalInfo, name='editHousingAdditionalInfo'),
      path('HousingOwner/add/', views.addHousingOwner, name='addHousingOwner'),
      path('HousingOwner/<id>/', views.editHousingOwner, name='editHousingOwner'),
      path('HousingRequest/add/', views.addHousingRequest, name='addHousingRequest'),
