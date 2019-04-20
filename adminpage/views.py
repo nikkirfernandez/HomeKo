@@ -47,7 +47,6 @@ def adminlogin(request):
 				user = authenticate(request, username=uname, password=pw)
 				if user is not None:
 					if user.is_superuser==1:    
-						print("success")
 						login(request, user)
 						return HttpResponseRedirect(reverse('home'))
 					else:
@@ -57,7 +56,6 @@ def adminlogin(request):
 		form = AdminLogin()
 
 		content = {
-			'tableChoices' : TABLES_CHOICES,
 			'form' : form,
 			'incorrect' : incorrect,
 		}
@@ -75,7 +73,6 @@ def adminlogout(request):
 		logout(request)
 	
 	return HttpResponseRedirect(reverse('adminlogin'))
-
 
 # Method name: home
 # Creation date: Feb 13, 2019 
@@ -141,7 +138,6 @@ def tablePage(request, table):
 			recordProgress = Request.objects.filter(status=2).order_by('requestid')
 			recordDone = Request.objects.filter(status=3).order_by('requestid')
 			recordNotApproved = Request.objects.filter(status=4).order_by('requestid')
-
 			content = {
 				'tableChoices' : TABLES_CHOICES,
 				'tableName' : table,     
@@ -182,7 +178,6 @@ def tablePage(request, table):
 	else:
 		return HttpResponseRedirect(reverse('adminlogin'))
 
-
 # Method name: addAdditionalInfo
 # Creation date: Feb 13, 2019 
 # Purpose: View for adding a record in AdditionalInfo table. Contains the form processing and record adding.
@@ -221,18 +216,29 @@ def addAdditionalInfo(request):
 @login_required(login_url='/adminpage/login/')
 def editAdditionalInfo(request, id):
 	if request.user.is_superuser:
-		record = Additionalinfo.objects.get(additionalinfoid=id)
+		try:
+			record = Additionalinfo.objects.get(additionalinfoid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
 		if request.method == "POST":
 			form = addAdditionalinfoForm(request.POST, instance=record)
-			if form.is_valid():
-				post = form.save()
+			if form.is_valid():			
 				if '_addAnother' in request.POST:
+					post = form.save()
 					return HttpResponseRedirect(reverse('addAdditionalInfo', args=()))
 				elif '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
 
 		form = addAdditionalinfoForm(instance=record)
@@ -285,18 +291,26 @@ def addArea(request):
 @login_required(login_url='/adminpage/login/')
 def editArea(request, id):
 	if request.user.is_superuser:
-		record = Area.objects.get(areaid=id)
+		try:
+			record = Area.objects.get(areaid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
 		if request.method == "POST":
 			form = addAreaForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addArea', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Area",)))
 		form = addAreaForm(instance=record)
 
@@ -347,18 +361,26 @@ def addContact(request):
 @login_required(login_url='/adminpage/login/')
 def editContact(request, id):
 	if request.user.is_superuser:
-		record = Contact.objects.get(contactid=id)
+		try:
+			record = Contact.objects.get(contactid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
 		if request.method == "POST":
 			form = addContactForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addContact', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Contact",)))
 		form = addContactForm(instance=record)
 
@@ -381,16 +403,26 @@ def editContact(request, id):
 @login_required(login_url='/adminpage/login/')
 def editFeedback(request, id):
 	if request.user.is_superuser:
-		record = Feedback.objects.get(feedbackid=id)
+		try:
+			record = Feedback.objects.get(feedbackid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
 		if request.method == "POST":
 			form = addFeedbackForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
 				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Feedback",)))
 		form = addFeedbackForm(instance=record)
 
@@ -439,18 +471,26 @@ def addHousetype(request):
 @login_required(login_url='/adminpage/login/')
 def editHousetype(request, id):
 	if request.user.is_superuser:
-		record = Housetype.objects.get(housetypeid=id)
+		try:
+			record = Housetype.objects.get(housetypeid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Housetype",)))
 		if request.method == "POST":
 			form = addHousetypeForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addHousetype', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Housetype",)))
 		form = addHousetypeForm(instance=record)
 
@@ -502,7 +542,6 @@ def addHousing(request):
 @login_required(login_url='/adminpage/login/')
 def editHousing(request, id):
 	if request.user.is_superuser:
-		error = False
 		try:
 			record = Housing.objects.get(housingid=id)
 		except Exception:
@@ -512,38 +551,18 @@ def editHousing(request, id):
 			if '_delete' in request.GET:
 				if record!=None:
 					record.delete()
-					return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
 				else:
-					error = True
-					content = {
-						'tableChoices' : TABLES_CHOICES,
-						'recordExist' : True,
-						'record' : record, 				#Ito yung record na result ng query sa db
-						'form' : addHousingForm(),
-						'error' : error,
-					}
-					return render(request, 'adminpage/recordHousing.html', content)
-
+					messages.error(request,'Record does not exist.')
+				return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
 		if request.method == "POST":
 			form = addHousingForm(request.POST, instance=record)
 			if form.is_valid():		
-				if '_addAnother' in request.POST:
-					post = form.save()
-					return HttpResponseRedirect(reverse('addHousing', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
 					if record!=None:
 						post = form.save()
-						return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
 					else:
-						error = True
-						content = {
-							'tableChoices' : TABLES_CHOICES,
-							'recordExist' : True,
-							'record' : record, 				#Ito yung record na result ng query sa db
-							'form' : addHousingForm(),
-							'error' : error,
-						}
-						return render(request, 'adminpage/recordHousing.html', content)
+						messages.error(request,'Record does not exist.')
+					return HttpResponseRedirect(reverse('tablePage', args=("Housing",)))
 			
 		form = addHousingForm(instance=record)
 
@@ -552,7 +571,6 @@ def editHousing(request, id):
 			'recordExist' : True,
 			'record' : record, 			
 			'form' : form,
-			'error' : error,
 		}
 
 		return render(request, 'adminpage/recordHousing.html', content)
@@ -595,18 +613,26 @@ def addPropertytype(request):
 @login_required(login_url='/adminpage/login/')
 def editPropertytype(request, id):
 	if request.user.is_superuser:
-		record = Propertytype.objects.get(propertytypeid=id)
+		try:
+			record = Propertytype.objects.get(propertytypeid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Propertytype",)))
 		if request.method == "POST":
 			form = addPropertytypeForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addPropertytype', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Propertytype",)))
 		form = addPropertytypeForm(instance=record)
 
@@ -629,17 +655,26 @@ def editPropertytype(request, id):
 @login_required(login_url='/adminpage/login/')
 def editRequest(request, id):
 	if request.user.is_superuser:
-		record = Request.objects.get(requestid=id)
+		try:
+			record = Request.objects.get(requestid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
 		if request.method == "POST":
 			form = addRequestForm(request.POST, instance=record)
-			if form.is_valid():
-				print("form valid")
-				post = form.save()
+			if form.is_valid():	
 				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Request",)))
 		form = addRequestForm(instance=record)
 
@@ -692,18 +727,26 @@ def addHousingAdditionalInfo(request):
 @login_required(login_url='/adminpage/login/')
 def editHousingAdditionalInfo(request, id):
 	if request.user.is_superuser:
-		record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=id)
+		try:
+			record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
 		if request.method == "POST":
 			form = addHousingAddtnlinfoForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addHousingAdditionalInfo', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("HousingAdditionalinfo",)))
 		form = addHousingAddtnlinfoForm(instance=record)
 
@@ -754,18 +797,26 @@ def addHousingOwner(request):
 @login_required(login_url='/adminpage/login/')
 def editHousingOwner(request, id):
 	if request.user.is_superuser:
-		record = HousingOwner.objects.get(housingownerid=id)
+		try:
+			record = HousingOwner.objects.get(housingownerid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
 		if request.method == "POST":
 			form = addHousingOwnerForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addHousingOwner', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("HousingOwner",)))
 		form = addHousingOwnerForm(instance=record)
 
@@ -816,18 +867,26 @@ def addHousingRequest(request):
 @login_required(login_url='/adminpage/login/')
 def editHousingRequest(request, id):
 	if request.user.is_superuser:
-		record = HousingRequest.objects.get(housingrequestid=id)
+		try:
+			record = HousingRequest.objects.get(housingrequestid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("HousingRequest",)))
 		if request.method == "POST":
 			form = addHousingRequestForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addHousingRequest', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("HousingRequest",)))
 		form = addHousingRequestForm(instance=record)
 
@@ -878,18 +937,26 @@ def addPicture(request):
 @login_required(login_url='/adminpage/login/')
 def editPicture(request, id):
 	if request.user.is_superuser:
-		record = Picture.objects.get(pictureid=id)
+		try:
+			record = Picture.objects.get(pictureid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Picture",)))
 		if request.method == "POST":
 			form = addPictureForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addPicture', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Picture",)))
 		form = addPictureForm(instance=record)
 
@@ -940,7 +1007,6 @@ def addRoomCost(request):
 @login_required(login_url='/adminpage/login/')
 def editRoomCost(request, id):
 	if request.user.is_superuser:
-		error = False
 		try:
 			record = RoomCost.objects.get(roomid=id)
 		except Exception:
@@ -950,25 +1016,17 @@ def editRoomCost(request, id):
 			if '_delete' in request.GET:
 				if record!=None:
 					record.delete()
-					return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
 				else:
-					error = True
-					content = {
-						'tableChoices' : TABLES_CHOICES,
-						'recordExist' : True,
-						'record' : record, 				#Ito yung record na result ng query sa db
-						'form' : addRoomCostForm(),
-						'error' : error,
-					}
-					return render(request, 'adminpage/recordHousing.html', content)
-
+					messages.error(request,'Record does not exist.')
+				return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
 		if request.method == "POST":
 			form = addRoomCostForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addRoomCost', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("RoomCost",)))
 		form = addRoomCostForm(instance=record)
 
@@ -977,7 +1035,6 @@ def editRoomCost(request, id):
 			'recordExist' : True,
 			'record' : record, 
 			'form' : form,
-			'error' : error,
 		}
 
 		return render(request, 'adminpage/recordRoomCost.html', content)
@@ -1020,18 +1077,26 @@ def addOwner(request):
 @login_required(login_url='/adminpage/login/')
 def editOwner(request, id):
 	if request.user.is_superuser:
-		record = Owner.objects.get(ownerid=id)
+		try:
+			record = Owner.objects.get(ownerid=id)
+		except Exception:
+			record = None
+
 		if request.method=="GET":
 			if '_delete' in request.GET:
-				record.delete()
+				if record!=None:
+					record.delete()
+				else:
+					messages.error(request,'Record does not exist.')
 				return HttpResponseRedirect(reverse('tablePage', args=("Owner",)))
 		if request.method == "POST":
 			form = addOwnerForm(request.POST, instance=record)
 			if form.is_valid():
-				post = form.save()
-				if '_addAnother' in request.POST:
-					return HttpResponseRedirect(reverse('addOwner', args=()))
-				elif '_save' in request.POST:
+				if '_save' in request.POST:
+					if record!=None:
+						post = form.save()
+					else:
+						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Owner",)))
 		form = addOwnerForm(instance=record)
 

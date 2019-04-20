@@ -96,7 +96,6 @@ def editContactRecord(request):
 			if '_delete' in request.GET:
 				# if delete button is clicked
 				recordid = request.GET.get('_delete', '')	#id of the record to be deleted
-				print(recordid)
 				record = Contact.objects.get(contactid=recordid)
 				record.delete()
 				return HttpResponseRedirect(reverse('editContactRecord', args=()))
@@ -105,16 +104,11 @@ def editContactRecord(request):
 				recordid = request.GET.get('_save', '') #id of the record to be edited or if this is 0, then add a new record
 				contactno = request.GET.get('contactno', '') #contactno
 				if recordid=='0':
-					print("add")
 					newRecord = Contact.objects.create(contactno=contactno, ownerid=Owner.objects.get(ownerid=ownerid))
 				else:
 					record = Contact.objects.get(contactid=recordid)
 					record.contactno = contactno
 					record.save()
-					print("edit")
-			
-				print(recordid)
-				print(contactno)
 				return HttpResponseRedirect(reverse('editContactRecord', args=()))
 
 		contactform = editContactForm()
@@ -178,7 +172,6 @@ def editRoomRecord(request, housingid):
 			if '_delete' in request.GET:
 				# if delete button is clicked
 				recordid = request.GET.get('_delete', '')	#id of the record to be deleted
-				print(recordid)
 				record = RoomCost.objects.get(roomid=recordid)
 				record.delete()
 				return HttpResponseRedirect(reverse('editRoomRecord', args=(housingid,)))
@@ -188,18 +181,12 @@ def editRoomRecord(request, housingid):
 				roomname = request.GET.get('roomname', '') #roomname
 				cost = request.GET.get('cost', '') #cost
 				if recordid=='0':
-					print("add")
 					newRecord = RoomCost.objects.create(roomname=roomname, cost=cost, housingid=Housing.objects.get(housingid=housingid))
 				else:
 					record = RoomCost.objects.get(roomid=recordid)
 					record.roomname = roomname
 					record.cost = cost
 					record.save()
-					print("edit")
-			
-				print(recordid)
-				print(roomname)
-				print(cost)
 				return HttpResponseRedirect(reverse('editRoomRecord', args=(housingid,)))
 
 		content = {
@@ -229,7 +216,6 @@ def editAmenityRecord(request, housingid):
 			if '_delete' in request.GET:
 				# if delete button is clicked
 				recordid = request.GET.get('_delete', '')	#id of the record to be deleted
-				print(recordid)
 				record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 				record.delete()
 				return HttpResponseRedirect(reverse('editAmenityRecord', args=(housingid,)))
@@ -240,17 +226,12 @@ def editAmenityRecord(request, housingid):
 				additionalinfoid = request.GET.get('additionalinfoid', '') #additionalinfoid
 				description = request.GET.get('description', '') #description
 				if recordid=='0':
-					print("add")
 					newRecord = HousingAdditionalInfo.objects.create(additionalinfoid=Additionalinfo.objects.get(additionalinfoid=additionalinfoid), description=description, housingid=Housing.objects.get(housingid=housingid))
 				else:
 					record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 					record.additionalinfoid = Additionalinfo.objects.get(additionalinfoid=additionalinfoid)
 					record.description = description
 					record.save()
-					print("edit")
-				print(recordid)
-				print(additionalinfoid)
-				print(description)
 				return HttpResponseRedirect(reverse('editAmenityRecord', args=(housingid,)))
 
 		content = {
@@ -280,7 +261,6 @@ def editFacilityRecord(request, housingid):
 			if '_delete' in request.GET:
 				# if delete button is clicked
 				recordid = request.GET.get('_delete', '')	#id of the record to be deleted
-				print(recordid)
 				record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 				record.delete()
 				return HttpResponseRedirect(reverse('editFacilityRecord', args=(housingid,)))
@@ -291,16 +271,12 @@ def editFacilityRecord(request, housingid):
 				additionalinfoid = request.GET.get('additionalinfoid', '') #additionalinfoid
 				description = request.GET.get('description', '') #description
 				if recordid=='0':
-					print("add")
 					newRecord = HousingAdditionalInfo.objects.create(additionalinfoid=Additionalinfo.objects.get(additionalinfoid=additionalinfoid), description=description, housingid=Housing.objects.get(housingid=housingid))
 				else:
 					record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 					record.additionalinfoid = Additionalinfo.objects.get(additionalinfoid=additionalinfoid)
 					record.description = description
 					record.save()
-				print(recordid)
-				print(additionalinfoid)
-				print(description)
 				return HttpResponseRedirect(reverse('editFacilityRecord', args=(housingid,)))
 			
 		content = {
@@ -330,7 +306,6 @@ def editRuleRecord(request, housingid):
 			if '_delete' in request.GET:
 				# if delete button is clicked
 				recordid = request.GET.get('_delete', '')	#id of the record to be deleted
-				print(recordid)
 				record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 				record.delete()
 				return HttpResponseRedirect(reverse('editRuleRecord', args=(housingid,)))
@@ -341,16 +316,12 @@ def editRuleRecord(request, housingid):
 				additionalinfoid = request.GET.get('additionalinfoid', '') #additionalinfoid
 				description = request.GET.get('description', '') #description
 				if recordid=='0':
-					print("add")
 					newRecord = HousingAdditionalInfo.objects.create(additionalinfoid=Additionalinfo.objects.get(additionalinfoid=additionalinfoid), description=description, housingid=Housing.objects.get(housingid=housingid))
 				else:
 					record = HousingAdditionalInfo.objects.get(housingadditionalinfoid=recordid)
 					record.additionalinfoid = Additionalinfo.objects.get(additionalinfoid=additionalinfoid)
 					record.description = description
 					record.save()
-				print(recordid)
-				print(additionalinfoid)
-				print(description)
 				return HttpResponseRedirect(reverse('editRuleRecord', args=(housingid,)))
 
 		content = {

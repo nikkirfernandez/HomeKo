@@ -20,6 +20,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Count
 import datetime
 
 from .forms import *
@@ -63,61 +64,28 @@ def enduserHome(request):
                # get the input to this textbox
                priceMax = searchForm.cleaned_data['priceMax']
 
-               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-               if(searchForm.cleaned_data['kitchen'])==True:
-                    filtersSet2.append("Kitchen")
-               if(searchForm.cleaned_data['aircon']) == True:
-                    filtersSet2.append("Air conditioning")
-               if(searchForm.cleaned_data['washer']) == True:
-                    filtersSet2.append("Washer")
-               if(searchForm.cleaned_data['dryer'])==True:
-                    filtersSet2.append("Dryer")
-               if(searchForm.cleaned_data['wifi']) == True:
-                    filtersSet2.append("Wifi")
-               if(searchForm.cleaned_data['iron'])==True:
-                    filtersSet2.append("Iron")
-               if(searchForm.cleaned_data['tv'])==True:
-                    filtersSet2.append("TV")
-               if(searchForm.cleaned_data['parking'])==True:
-                    filtersSet2.append("Parking")
-               if(searchForm.cleaned_data['pet'])==True:
-                    filtersSet2.append("Pets allowed")
-               if(searchForm.cleaned_data['smoking'])==True:
-                    filtersSet2.append("Smoking allowed")
-               if(searchForm.cleaned_data['curfew'])==True:
-                    filtersSet2.append("No curfew")     
-
+               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later 
+               checkboxNames = {'kitchen': 12, 'aircon': 2, 'washer': 3, 'dryer': 4, 'wifi': 5, 'iron': 6, 'tv': 7, 'parking': 8, 'pet': 9, 'smoking': 10, 'curfew': 11}    
+               for i,j in checkboxNames.items():
+                    if(searchForm.cleaned_data[i])==True:
+                         filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
+                         
                # Filter round 1: get the queryset with the filtersSet1 
                housingResults = Housing.objects.filter(**filtersSet1)
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-               results2 = []
                if priceMax!=None:
-                    for result in housingResults:
-                         result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                         if result2temp!=None: 
-                              results2.append(result2temp.housingid.housingid)
-               else:
-                    results2 = [result.housingid for result in housingResults]     
-
+                    housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
+                         
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-               results3 = []
-               if len(filtersSet2)==0:
-                    results3=results2
-               else:
-                    for result in results2:
-                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                         ctr = 0
-                         for filters in filtersSet2:
-                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                              if result3temp == None:
-                                   break
-                              ctr = ctr+1
-                         if ctr==len(filtersSet2):
-                              results3.append(result3temp.housingid.housingid)
+               if len(filtersSet2)!=0:
+                    housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
+               results = []
+               for i in housingResults:
+                    results.append(i.housingid)
                # do this so that the list can be passed to the enduserSearchResult method
-               request.session['searchResult'] = results3
+               request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
@@ -157,9 +125,9 @@ def enduserSearchResult(request):
                if priceMin['cost__min']==None and priceMax['cost__max']==None:
                     priceRange.append("")
                elif priceMin['cost__min']==None: 
-                    priceRange.append(str(priceMin['cost__min']))
-               elif priceMax['cost__max']==None: 
                     priceRange.append(str(priceMax['cost__max']))
+               elif priceMax['cost__max']==None: 
+                    priceRange.append(str(priceMin['cost__min']))
                else:
                     priceRange.append(str(priceMin['cost__min']) + "-" + str(priceMax['cost__max']))
 
@@ -180,7 +148,7 @@ def enduserSearchResult(request):
                areaIndex = searchForm.cleaned_data['area']
                if areaIndex!='1':
                     area = AREA_CHOICES[int(areaIndex)-1][1]
-                    filtersSet1['area__areaname'] = area						
+                    filtersSet1['area__areaname'] = area                             
                propertyIndex = searchForm.cleaned_data['propertyType']
                if propertyIndex!='1':
                     propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
@@ -193,61 +161,28 @@ def enduserSearchResult(request):
                # get the input to this textbox
                priceMax = searchForm.cleaned_data['priceMax']
 
-               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-               if(searchForm.cleaned_data['kitchen'])==True:
-                    filtersSet2.append("Kitchen")
-               if(searchForm.cleaned_data['aircon']) == True:
-                    filtersSet2.append("Air conditioning")
-               if(searchForm.cleaned_data['washer']) == True:
-                    filtersSet2.append("Washer")
-               if(searchForm.cleaned_data['dryer'])==True:
-                    filtersSet2.append("Dryer")
-               if(searchForm.cleaned_data['wifi']) == True:
-                    filtersSet2.append("Wifi")
-               if(searchForm.cleaned_data['iron'])==True:
-                    filtersSet2.append("Iron")
-               if(searchForm.cleaned_data['tv'])==True:
-                    filtersSet2.append("TV")
-               if(searchForm.cleaned_data['parking'])==True:
-                    filtersSet2.append("Parking")
-               if(searchForm.cleaned_data['pet'])==True:
-                    filtersSet2.append("Pets allowed")
-               if(searchForm.cleaned_data['smoking'])==True:
-                    filtersSet2.append("Smoking allowed")
-               if(searchForm.cleaned_data['curfew'])==True:
-                    filtersSet2.append("No curfew")     
-
+               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later 
+               checkboxNames = {'kitchen': 12, 'aircon': 2, 'washer': 3, 'dryer': 4, 'wifi': 5, 'iron': 6, 'tv': 7, 'parking': 8, 'pet': 9, 'smoking': 10, 'curfew': 11}    
+               for i,j in checkboxNames.items():
+                    if(searchForm.cleaned_data[i])==True:
+                         filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
+                         
                # Filter round 1: get the queryset with the filtersSet1 
                housingResults = Housing.objects.filter(**filtersSet1)
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-               results2 = []
                if priceMax!=None:
-                    for result in housingResults:
-                         result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                         if result2temp!=None: 
-                              results2.append(result2temp.housingid.housingid)
-               else:
-                    results2 = [result.housingid for result in housingResults]     
-
+                    housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
+                         
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-               results3 = []
-               if len(filtersSet2)==0:
-                    results3=results2
-               else:
-                    for result in results2:
-                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                         ctr = 0
-                         for filters in filtersSet2:
-                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                              if result3temp == None:
-                                   break
-                              ctr = ctr+1
-                         if ctr==len(filtersSet2):
-                              results3.append(result3temp.housingid.housingid)
+               if len(filtersSet2)!=0:
+                    housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
+               results = []
+               for i in housingResults:
+                    results.append(i.housingid)
                # do this so that the list can be passed to the enduserSearchResult method
-               request.session['searchResult'] = results3
+               request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
@@ -294,9 +229,7 @@ def enduserRecord(request, housingid):
      if request.method == "POST" :
           searchForm = SearchHousing(request.POST)
           commentForm = AddComment(request.POST)
-          print("post")
           if commentForm.is_valid():
-               print("form valid")
                post = commentForm.save(commit=False)
                post.housingid = Housing.objects.get(housingid=housingid)
                post.status = 1
@@ -311,7 +244,7 @@ def enduserRecord(request, housingid):
                areaIndex = searchForm.cleaned_data['area']
                if areaIndex!='1':
                     area = AREA_CHOICES[int(areaIndex)-1][1]
-                    filtersSet1['area__areaname'] = area						
+                    filtersSet1['area__areaname'] = area                             
                propertyIndex = searchForm.cleaned_data['propertyType']
                if propertyIndex!='1':
                     propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
@@ -324,61 +257,28 @@ def enduserRecord(request, housingid):
                # get the input to this textbox
                priceMax = searchForm.cleaned_data['priceMax']
 
-               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-               if(searchForm.cleaned_data['kitchen'])==True:
-                    filtersSet2.append("Kitchen")
-               if(searchForm.cleaned_data['aircon']) == True:
-                    filtersSet2.append("Air conditioning")
-               if(searchForm.cleaned_data['washer']) == True:
-                    filtersSet2.append("Washer")
-               if(searchForm.cleaned_data['dryer'])==True:
-                    filtersSet2.append("Dryer")
-               if(searchForm.cleaned_data['wifi']) == True:
-                    filtersSet2.append("Wifi")
-               if(searchForm.cleaned_data['iron'])==True:
-                    filtersSet2.append("Iron")
-               if(searchForm.cleaned_data['tv'])==True:
-                    filtersSet2.append("TV")
-               if(searchForm.cleaned_data['parking'])==True:
-                    filtersSet2.append("Parking")
-               if(searchForm.cleaned_data['pet'])==True:
-                    filtersSet2.append("Pets allowed")
-               if(searchForm.cleaned_data['smoking'])==True:
-                    filtersSet2.append("Smoking allowed")
-               if(searchForm.cleaned_data['curfew'])==True:
-                    filtersSet2.append("No curfew")     
-
+               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later 
+               checkboxNames = {'kitchen': 12, 'aircon': 2, 'washer': 3, 'dryer': 4, 'wifi': 5, 'iron': 6, 'tv': 7, 'parking': 8, 'pet': 9, 'smoking': 10, 'curfew': 11}    
+               for i,j in checkboxNames.items():
+                    if(searchForm.cleaned_data[i])==True:
+                         filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
+                         
                # Filter round 1: get the queryset with the filtersSet1 
                housingResults = Housing.objects.filter(**filtersSet1)
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-               results2 = []
                if priceMax!=None:
-                    for result in housingResults:
-                         result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                         if result2temp!=None: 
-                              results2.append(result2temp.housingid.housingid)
-               else:
-                    results2 = [result.housingid for result in housingResults]     
-
+                    housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
+                         
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-               results3 = []
-               if len(filtersSet2)==0:
-                    results3=results2
-               else:
-                    for result in results2:
-                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                         ctr = 0
-                         for filters in filtersSet2:
-                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                              if result3temp == None:
-                                   break
-                              ctr = ctr+1
-                         if ctr==len(filtersSet2):
-                              results3.append(result3temp.housingid.housingid)
+               if len(filtersSet2)!=0:
+                    housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
+               results = []
+               for i in housingResults:
+                    results.append(i.housingid)
                # do this so that the list can be passed to the enduserSearchResult method
-               request.session['searchResult'] = results3
+               request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
 
@@ -425,7 +325,7 @@ def enduserRequest(request):
                areaIndex = searchForm.cleaned_data['area']
                if areaIndex!='1':
                     area = AREA_CHOICES[int(areaIndex)-1][1]
-                    filtersSet1['area__areaname'] = area						
+                    filtersSet1['area__areaname'] = area                             
                propertyIndex = searchForm.cleaned_data['propertyType']
                if propertyIndex!='1':
                     propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
@@ -438,61 +338,28 @@ def enduserRequest(request):
                # get the input to this textbox
                priceMax = searchForm.cleaned_data['priceMax']
 
-               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-               if(searchForm.cleaned_data['kitchen'])==True:
-                    filtersSet2.append("Kitchen")
-               if(searchForm.cleaned_data['aircon']) == True:
-                    filtersSet2.append("Air conditioning")
-               if(searchForm.cleaned_data['washer']) == True:
-                    filtersSet2.append("Washer")
-               if(searchForm.cleaned_data['dryer'])==True:
-                    filtersSet2.append("Dryer")
-               if(searchForm.cleaned_data['wifi']) == True:
-                    filtersSet2.append("Wifi")
-               if(searchForm.cleaned_data['iron'])==True:
-                    filtersSet2.append("Iron")
-               if(searchForm.cleaned_data['tv'])==True:
-                    filtersSet2.append("TV")
-               if(searchForm.cleaned_data['parking'])==True:
-                    filtersSet2.append("Parking")
-               if(searchForm.cleaned_data['pet'])==True:
-                    filtersSet2.append("Pets allowed")
-               if(searchForm.cleaned_data['smoking'])==True:
-                    filtersSet2.append("Smoking allowed")
-               if(searchForm.cleaned_data['curfew'])==True:
-                    filtersSet2.append("No curfew")     
-
+               # get the inputs to these checkboxes then add to filterSet2 to be used in the query later 
+               checkboxNames = {'kitchen': 12, 'aircon': 2, 'washer': 3, 'dryer': 4, 'wifi': 5, 'iron': 6, 'tv': 7, 'parking': 8, 'pet': 9, 'smoking': 10, 'curfew': 11}    
+               for i,j in checkboxNames.items():
+                    if(searchForm.cleaned_data[i])==True:
+                         filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
+                         
                # Filter round 1: get the queryset with the filtersSet1 
                housingResults = Housing.objects.filter(**filtersSet1)
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-               results2 = []
                if priceMax!=None:
-                    for result in housingResults:
-                         result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                         if result2temp!=None: 
-                              results2.append(result2temp.housingid.housingid)
-               else:
-                    results2 = [result.housingid for result in housingResults]     
-
+                    housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
+                         
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-               results3 = []
-               if len(filtersSet2)==0:
-                    results3=results2
-               else:
-                    for result in results2:
-                         housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                         ctr = 0
-                         for filters in filtersSet2:
-                              result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                              if result3temp == None:
-                                   break
-                              ctr = ctr+1
-                         if ctr==len(filtersSet2):
-                              results3.append(result3temp.housingid.housingid)
+               if len(filtersSet2)!=0:
+                    housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
+               results = []
+               for i in housingResults:
+                    results.append(i.housingid)
                # do this so that the list can be passed to the enduserSearchResult method
-               request.session['searchResult'] = results3
+               request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
                return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
@@ -535,10 +402,8 @@ def ownerLogin(request):
                          user = authenticate(request, username=uname, password=pw)
                          if user is not None:
                               if user.is_superuser==0:    
-                                   print("success")
                                    login(request, user)
                                    owner = Owner.objects.get(ownername=uname).ownerid
-                                   print(owner)
                                    request.session['ownerid'] = owner
                                    return redirect('ownerhome')
                               else:
@@ -546,7 +411,6 @@ def ownerLogin(request):
                          else:
                               incorrect = True
                     else:
-                         print(ownerForm.errors)
                          return HttpResponseRedirect(reverse('ownerLogin'))
                elif searchForm.is_valid():     
                     filtersSet1={}
@@ -556,7 +420,7 @@ def ownerLogin(request):
                     areaIndex = searchForm.cleaned_data['area']
                     if areaIndex!='1':
                          area = AREA_CHOICES[int(areaIndex)-1][1]
-                         filtersSet1['area__areaname'] = area						
+                         filtersSet1['area__areaname'] = area                             
                     propertyIndex = searchForm.cleaned_data['propertyType']
                     if propertyIndex!='1':
                          propertyType = PROPERTY_CHOICES[int(propertyIndex)-1][1]
@@ -569,62 +433,28 @@ def ownerLogin(request):
                     # get the input to this textbox
                     priceMax = searchForm.cleaned_data['priceMax']
 
-                    # get the inputs to these checkboxes then add to filterSet2 to be used in the query later      
-                    if(searchForm.cleaned_data['kitchen'])==True:
-                         filtersSet2.append("Kitchen")
-                    if(searchForm.cleaned_data['aircon']) == True:
-                         filtersSet2.append("Air conditioning")
-                    if(searchForm.cleaned_data['washer']) == True:
-                         filtersSet2.append("Washer")
-                    if(searchForm.cleaned_data['dryer'])==True:
-                         filtersSet2.append("Dryer")
-                    if(searchForm.cleaned_data['wifi']) == True:
-                         filtersSet2.append("Wifi")
-                    if(searchForm.cleaned_data['iron'])==True:
-                         filtersSet2.append("Iron")
-                    if(searchForm.cleaned_data['tv'])==True:
-                         filtersSet2.append("TV")
-                    if(searchForm.cleaned_data['parking'])==True:
-                         filtersSet2.append("Parking")
-                    if(searchForm.cleaned_data['pet'])==True:
-                         filtersSet2.append("Pets allowed")
-                    if(searchForm.cleaned_data['smoking'])==True:
-                         filtersSet2.append("Smoking allowed")
-                    if(searchForm.cleaned_data['curfew'])==True:
-                         filtersSet2.append("No curfew")     
-
+                    # get the inputs to these checkboxes then add to filterSet2 to be used in the query later 
+                    checkboxNames = {'kitchen': 12, 'aircon': 2, 'washer': 3, 'dryer': 4, 'wifi': 5, 'iron': 6, 'tv': 7, 'parking': 8, 'pet': 9, 'smoking': 10, 'curfew': 11}    
+                    for i,j in checkboxNames.items():
+                         if(searchForm.cleaned_data[i])==True:
+                              filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
+                         
                     # Filter round 1: get the queryset with the filtersSet1 
                     housingResults = Housing.objects.filter(**filtersSet1)
                
                     # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
-                    results2 = []
                     if priceMax!=None:
-                         for result in housingResults:
-                              result2temp = RoomCost.objects.filter(housingid=result.housingid, cost__lte = priceMax).first()
-                              if result2temp!=None: 
-                                   results2.append(result2temp.housingid.housingid)
-                    else:
-                         results2 = [result.housingid for result in housingResults]     
-
+                         housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
+                         
                     # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
-                    results3 = []
-                    if len(filtersSet2)==0:
-                         results3=results2
-                    else:
-                         for result in results2:
-                              housingTemp = HousingAdditionalInfo.objects.filter(housingid=result)
-                              ctr = 0
-                              for filters in filtersSet2:
-                                   result3temp = housingTemp.filter(additionalinfoid__additionalinfoname=filters).first()
-                                   if result3temp == None:
-                                        break
-                                   ctr = ctr+1
-                              if ctr==len(filtersSet2):
-                                   results3.append(result3temp.housingid.housingid)
+                    if len(filtersSet2)!=0:
+                         housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
-               
+                    results = []
+                    for i in housingResults:
+                         results.append(i.housingid)
                     # do this so that the list can be passed to the enduserSearchResult method
-                    request.session['searchResult'] = results3
+                    request.session['searchResult'] = results
                     # go to enduserSearchResult method to display the search result 
                     return HttpResponseRedirect(reverse('enduserSearchResult', args=()))
      
@@ -649,37 +479,42 @@ def ownerLogin(request):
 # Calling arguments: No arguments for calling this function.
 # Required files: register_owner.html
 def register(request):
-     if request.method == 'POST':
-          form = OwnerRegistrationForm(request.POST)
-          if form.is_valid():
-               post = form.save(commit=False)
-               newOwnerRecord = Owner.objects.create(ownername=post.username, firstname=post.first_name, lastname=post.last_name)
-               newOwnerRecord.save()
-
-               if post.email == "":
-                    post.email = "None"
-               else:
-                    newOwnerRecord.email = post.email
+     if request.user.is_authenticated:
+          if request.user.is_superuser:
+               return HttpResponseRedirect('/adminpage/home')        
+          else:
+               return HttpResponseRedirect('/ownerpage/home')
+     else:
+          if request.method == 'POST':
+               form = OwnerRegistrationForm(request.POST)
+               if form.is_valid():
+                    post = form.save(commit=False)
+                    newOwnerRecord = Owner.objects.create(ownername=post.username, firstname=post.first_name, lastname=post.last_name)
                     newOwnerRecord.save()
 
-               if request.POST['contact'] != "":
-                    newContactRecord = Contact.objects.create(ownerid=newOwnerRecord, contactno=request.POST['contact']) 
+                    if post.email == "":
+                         post.email = "None"
+                    else:
+                         newOwnerRecord.email = post.email
+                         newOwnerRecord.save()
 
-               post.save()
+                    if request.POST['contact'] != "":
+                        newContactRecord = Contact.objects.create(ownerid=newOwnerRecord, contactno=request.POST['contact']) 
 
-               user = authenticate(request, username=post.username, password=post.password1)
-               if user is not None:
-                    login(request, user)
-                    request.session['ownerid'] = newOwnerRecord.ownerid
-                    return redirect('ownerhome')
+                    post.save()
 
+                    user = authenticate(request, username=post.username, password=post.password1)
+                    if user is not None:
+                         login(request, user)
+                         request.session['ownerid'] = newOwnerRecord.ownerid
+                         return redirect('ownerhome')
 
-               #return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
-               return redirect('ownerLogin')
+                    #return HttpResponseRedirect(reverse('enduserRecord', args=(housingid,)))
+                    return redirect('ownerLogin')
      
-     form = OwnerRegistrationForm()
+          form = OwnerRegistrationForm()
 
-     content = {
-          'form': form,
-     }
+          content = {
+               'form': form,
+          }
      return render(request,'mainpage/register_owner.html', content)
