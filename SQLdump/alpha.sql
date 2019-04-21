@@ -28,7 +28,7 @@ CREATE TABLE `additionalinfo` (
   `additionalInfoType` int(11) NOT NULL,
   PRIMARY KEY (`additionalInfoID`),
   KEY `infoType` (`additionalInfoType`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,6 +37,7 @@ CREATE TABLE `additionalinfo` (
 
 LOCK TABLES `additionalinfo` WRITE;
 /*!40000 ALTER TABLE `additionalinfo` DISABLE KEYS */;
+INSERT INTO `additionalinfo` VALUES (13,'Telephone',1),(14,'Gym',2),(15,'Laundry Area',2),(16,'Curfew',3),(17,'Balcony',2);
 /*!40000 ALTER TABLE `additionalinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +62,7 @@ CREATE TABLE `area` (
 
 LOCK TABLES `area` WRITE;
 /*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` VALUES (10,'DummyArea1'),(11,'DummyArea2');
+INSERT INTO `area` VALUES (10,'Area 1'),(11,'Area 2');
 /*!40000 ALTER TABLE `area` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -132,7 +133,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `auth_permission_content_type_id_codename_01ab375a_uniq` (`content_type_id`,`codename`),
   CONSTRAINT `auth_permission_content_type_id_2f476e4b_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +166,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -174,7 +175,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (2,'pbkdf2_sha256$120000$DYwlrCPxD4Oa$tPE190UMrVdyWLsy5zxQQ3g/AZN3B6GWbmaVmEadzdk=','2019-03-21 08:02:11.338679',1,'crkasilag','','','crkasilag@up.edu.ph',1,1,'2019-03-21 08:00:00.585561');
+INSERT INTO `auth_user` VALUES (2,'pbkdf2_sha256$120000$DYwlrCPxD4Oa$tPE190UMrVdyWLsy5zxQQ3g/AZN3B6GWbmaVmEadzdk=','2019-04-21 14:48:25.506793',1,'crkasilag','','','crkasilag@up.edu.ph',1,1,'2019-03-21 08:00:00.585561'),(3,'pbkdf2_sha256$120000$USt8LYIxNdMy$QCJNVxXZ0ymWNq30vQVR57Ekhg6Aoij5hjs37GJnPXs=','2019-04-21 14:45:46.313893',0,'edgarfelizmenio','Edgar','Felizmenio','123@123.com',0,1,'2019-04-21 14:44:34.064880');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +249,7 @@ CREATE TABLE `contact` (
   PRIMARY KEY (`contactID`),
   KEY `ownerID_idx` (`ownerID`),
   CONSTRAINT `ownerID` FOREIGN KEY (`ownerID`) REFERENCES `owner` (`ownerID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -257,6 +258,7 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` VALUES (5,'09669388244',4),(6,'09123456755',5),(7,'09000000000',6),(8,'099999999',7);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,7 +283,7 @@ CREATE TABLE `django_admin_log` (
   KEY `django_admin_log_user_id_c564eba6_fk_auth_user_id` (`user_id`),
   CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +308,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `django_content_type_app_label_model_76bd3d3b_uniq` (`app_label`,`model`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +333,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +367,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('eh442tn2873vzr08degz9yvgfrcnhkp7','ODE2Y2U5NWMxMzE2YWE5ZmRiNGFjMGYwYTgyNTdiOTVjMTllN2I5Nzp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4NWI0NzRkOWI5YjE4MjZkZjkxNzg1MjAyYzEzOWNjODgyMDdlZGRhIn0=','2019-04-04 08:02:11.368480');
+INSERT INTO `django_session` VALUES ('eh442tn2873vzr08degz9yvgfrcnhkp7','ODE2Y2U5NWMxMzE2YWE5ZmRiNGFjMGYwYTgyNTdiOTVjMTllN2I5Nzp7Il9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI4NWI0NzRkOWI5YjE4MjZkZjkxNzg1MjAyYzEzOWNjODgyMDdlZGRhIn0=','2019-04-04 08:02:11.368480'),('qqhdytak6qj6xh8128nb0q8k8r4gihf9','NjA4ZjgxMDAzMWJlODViMTEzOWE5NDE4MTA1MTRjNzhlYjM5ZDM3OTp7InNlYXJjaFJlc3VsdCI6WzExLDEyXSwiX2F1dGhfdXNlcl9pZCI6IjIiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6Ijg1YjQ3NGQ5YjliMTgyNmRmOTE3ODUyMDJjMTM5Y2M4ODIwN2VkZGEifQ==','2019-05-05 14:49:11.891957');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -386,7 +388,7 @@ CREATE TABLE `feedback` (
   KEY `status` (`status`),
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingID` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -395,6 +397,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
+INSERT INTO `feedback` VALUES (9,11,'Gym too few equipments',2,'2019-04-21'),(10,11,'Room # 3 is pretty decent for its price, very large.',2,'2019-04-21'),(11,11,'Very Accomodating Seller, item shipped quickly',3,'2019-04-21'),(12,12,'Awkward yung name ng rooms.',1,'2019-04-21'),(13,12,'di totoo na may gym, forever under construction',2,'2019-04-21');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,7 +482,7 @@ CREATE TABLE `housing` (
 
 LOCK TABLES `housing` WRITE;
 /*!40000 ALTER TABLE `housing` DISABLE KEYS */;
-INSERT INTO `housing` VALUES (11,'DummyHouse1',10,'DummyAddress',3,4,''),(12,'DummyHouse2',11,'DummyAddress',4,5,'');
+INSERT INTO `housing` VALUES (11,'DummyHouse1',10,'Street #5',3,4,''),(12,'DummyHouse2',11,'Street # 10',4,5,'');
 /*!40000 ALTER TABLE `housing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -500,7 +503,7 @@ CREATE TABLE `housingadditionalinfo` (
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `additionalinfoid2` FOREIGN KEY (`additionalInfoID`) REFERENCES `additionalinfo` (`additionalInfoID`),
   CONSTRAINT `housingid2` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,6 +512,7 @@ CREATE TABLE `housingadditionalinfo` (
 
 LOCK TABLES `housingadditionalinfo` WRITE;
 /*!40000 ALTER TABLE `housingadditionalinfo` DISABLE KEYS */;
+INSERT INTO `housingadditionalinfo` VALUES (10,14,'Open 10AM-9PM',11),(11,16,'11PM',11),(12,16,'10PM',12),(13,13,'10 pesos per minute',11),(14,17,'8 sqm',11),(15,14,'Under Construction',12),(16,15,'Washing Machines Available for rent',12);
 /*!40000 ALTER TABLE `housingadditionalinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,7 +532,7 @@ CREATE TABLE `housingowner` (
   KEY `ownerID_idx` (`ownerID`),
   CONSTRAINT `housingid3` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`),
   CONSTRAINT `ownerid2` FOREIGN KEY (`ownerID`) REFERENCES `owner` (`ownerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -537,6 +541,7 @@ CREATE TABLE `housingowner` (
 
 LOCK TABLES `housingowner` WRITE;
 /*!40000 ALTER TABLE `housingowner` DISABLE KEYS */;
+INSERT INTO `housingowner` VALUES (3,11,4),(4,12,5);
 /*!40000 ALTER TABLE `housingowner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -556,7 +561,7 @@ CREATE TABLE `housingrequest` (
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingid4` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`),
   CONSTRAINT `requestid` FOREIGN KEY (`requestID`) REFERENCES `request` (`requestID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,6 +570,7 @@ CREATE TABLE `housingrequest` (
 
 LOCK TABLES `housingrequest` WRITE;
 /*!40000 ALTER TABLE `housingrequest` DISABLE KEYS */;
+INSERT INTO `housingrequest` VALUES (1,3,11),(2,2,12);
 /*!40000 ALTER TABLE `housingrequest` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,7 +588,7 @@ CREATE TABLE `owner` (
   `lastName` varchar(40) NOT NULL,
   `email` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`ownerID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -591,6 +597,7 @@ CREATE TABLE `owner` (
 
 LOCK TABLES `owner` WRITE;
 /*!40000 ALTER TABLE `owner` DISABLE KEYS */;
+INSERT INTO `owner` VALUES (4,'pczuniga','Phillip Christian','Zuniga','someemail@somesite.com'),(5,'razuniga','Rose Anne','Zuniga','emailnimamz@homeko.com'),(6,'wmtan','Wilson','Tan','emailnisirwilson@site.com'),(7,'edgarfelizmenio','Edgar','Felizmenio','123@123.com');
 /*!40000 ALTER TABLE `owner` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,7 +615,7 @@ CREATE TABLE `picture` (
   PRIMARY KEY (`pictureID`),
   KEY `housingID_idx` (`housingID`),
   CONSTRAINT `housingid5` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -617,6 +624,7 @@ CREATE TABLE `picture` (
 
 LOCK TABLES `picture` WRITE;
 /*!40000 ALTER TABLE `picture` DISABLE KEYS */;
+INSERT INTO `picture` VALUES (1,'something.png',11);
 /*!40000 ALTER TABLE `picture` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -693,7 +701,7 @@ CREATE TABLE `request` (
 
 LOCK TABLES `request` WRITE;
 /*!40000 ALTER TABLE `request` DISABLE KEYS */;
-INSERT INTO `request` VALUES (1,1,'dummy text.',3,'2019-03-21','dummyemail@dummy.com'),(2,2,'dummy text',4,'2019-03-21','dummyemail@dummy.com'),(3,3,'Dummy Text',2,'2019-03-21','dummyemail@dummy.com');
+INSERT INTO `request` VALUES (1,1,'Malingap St.\r\n\r\nContact No: 09xxxxxxxxxx',2,'2019-04-21','someuser@somesite.com'),(2,2,'Superman Room DummyHouse2 price adjusted to 8000',2,'2019-04-21','something@something.com'),(3,3,'Room # 3 DummyHouse1 is temporarily unavailable',2,'2019-04-21','something@something.com');
 /*!40000 ALTER TABLE `request` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -712,7 +720,7 @@ CREATE TABLE `roomcost` (
   PRIMARY KEY (`roomID`),
   KEY `housingid6_idx` (`housingID`),
   CONSTRAINT `housingid6` FOREIGN KEY (`housingID`) REFERENCES `housing` (`housingID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -721,6 +729,7 @@ CREATE TABLE `roomcost` (
 
 LOCK TABLES `roomcost` WRITE;
 /*!40000 ALTER TABLE `roomcost` DISABLE KEYS */;
+INSERT INTO `roomcost` VALUES (6,'Room # 1',3000,11),(7,'Room # 2',3000,11),(8,'Room # 3',4500,11),(9,'Flash',2500,12),(10,'Superman',6000,12),(11,'Batman',4000,12),(12,'Wonder Woman',6500,12);
 /*!40000 ALTER TABLE `roomcost` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -733,4 +742,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-21 22:50:13
+-- Dump completed on 2019-04-22  4:49:23
