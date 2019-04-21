@@ -24,16 +24,9 @@ from mainpage.models import *
 # Calling arguments: No arguments for calling this function.
 # Required files: home.html
 def home(request):
-<<<<<<< Updated upstream
 	ownerid = request.session.get('ownerid')
 	records = HousingOwner.objects.filter(ownerid=ownerid)
 
-=======
-	ownerid = 3
-	records = HousingOwner.objects.filter(ownerid=ownerid)
-
-	request.session['ownerid'] = ownerid
->>>>>>> Stashed changes
 	content = {
 		'records' : records,
 	}
@@ -134,30 +127,17 @@ def editHousingRecord(request, housingid):
 	if request.method=="GET":
 		if '_delete' in request.GET:
 			record.delete()
-<<<<<<< Updated upstream
 			return HttpResponseRedirect(reverse('home', args=()))
 
 	if request.method == "POST":
 		form = housingForm(request.POST, instance=record)
-=======
-			print("delete")
-			return HttpResponseRedirect(reverse('editHousingRecord', args=()))
-
-	if request.method == "POST":
-		form = editOwnerForm(request.POST, instance=record)
->>>>>>> Stashed changes
 		if form.is_valid():
-			if '_next' in request.POST:
-				post=form.save()
+			if '_save' in request.POST:
 				# if next button is pressed, save the form then go the rooms form
-<<<<<<< Updated upstream
 				print("save")
 				post = form.save()
 				return HttpResponseRedirect(reverse('editRoomRecord', args=(housingid,)))
 
-=======
-				return HttpResponseRedirect(reverse('editHousingRecord', args=("Housing", )))
->>>>>>> Stashed changes
 	content = {
 		'recordExist' : True,
 		'record' : record, 	
@@ -174,7 +154,6 @@ def editHousingRecord(request, housingid):
 def editRoomRecord(request, housingid):
 	roomform = roomCostForm()
 	housingRooms = RoomCost.objects.filter(housingid=housingid)
-	housingInstance = Housing.objects.get(housingid=housingid)
 
 	if request.method=="GET":
 		if '_delete' in request.GET:
@@ -202,8 +181,6 @@ def editRoomRecord(request, housingid):
 			print(recordid)
 			print(roomname)
 			print(cost)
-			room = RoomCost(housingid=housingInstance, recordid=recordid, roomname=roomname, cost=cost)
-			room.save()
 			return HttpResponseRedirect(reverse('editRoomRecord', args=(housingid,)))
 
 	content = {
