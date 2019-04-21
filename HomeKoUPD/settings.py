@@ -83,8 +83,8 @@ WSGI_APPLICATION = 'HomeKoUPD.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'heroku_c56369ae8095d6a',
-        'NAME': 'homeko_heroku',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'heroku_c56369ae8095d6a,
         'USER': 'bd28bc4415515b',
         'PASSWORD': 'b67a01ce',
         'HOST': 'us-cdbr-iron-east-02.cleardb.net',
