@@ -240,7 +240,6 @@ def editAdditionalInfo(request, id):
 					else:
 						messages.error(request,'Record does not exist.')
 					return HttpResponseRedirect(reverse('tablePage', args=("Additionalinfo",)))
-
 		form = addAdditionalinfoForm(instance=record)
 
 		content = {
@@ -249,6 +248,7 @@ def editAdditionalInfo(request, id):
 			'recordExist' : True,
 			'record' : record, 				#Ito yung record na result ng query sa db
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordAdditionalInfo.html', content)
