@@ -83,20 +83,42 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                     <div class="separator"></div> 
                     
                     <div class="row justify-content-end form-group">
-                         <div class="col-auto align-self-end">
+                         <div class="col-auto align-self-end d-none d-sm-block">
                               <a type="button" class="btn btnN" href="/adminpage/Contact">Cancel</a>
                          </div>
                          {% if recordExist %}
-                         <div class="col-auto align-self-end">
+                         <div class="col-auto align-self-end d-none d-sm-block">
                               <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
                          </div>
                          {% endif %}
                          {% if not recordExist %}
-                         <div class="col-auto align-self-end">
+                         <div class="col-auto align-self-end d-none d-sm-block">
                               <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
                          </div>
                          {% endif %}
-                         <div class="col-auto align-self-end">
+                         <div class="col-auto align-self-end d-none d-sm-block">
+                              <button type="submit" class="btn btnY" name="_save">Save</button>
+                         </div>
+                    </div>
+                    <div class="row justify-content-center form-group">
+                         <div class="d-sm-none">
+                              <a type="button" class="btn btnN" href="/adminpage/Contact">Cancel</a>
+                         </div>
+                    </div>
+                    <div class="row justify-content-center form-group">
+                         {% if recordExist %}
+                         <div class="d-sm-none">
+                              <button type="button" class="btn btnN" data-toggle="modal" data-target="#myModal">Delete</button>
+                         </div>
+                         {% endif %}
+                         {% if not recordExist %}
+                         <div class="d-sm-none">
+                              <button type="submit" class="btn btnY" name="_addAnother">Save and add another</button>
+                         </div>
+                         {% endif %}
+                    </div>
+                    <div class="row justify-content-center form-group">
+                         <div class="col-auto align-self-end d-sm-none">
                               <button type="submit" class="btn btnY" name="_save">Save</button>
                          </div>
                     </div>

@@ -71,10 +71,16 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           <!-- Container -->          
           <div class="container">
                <div class="row justify-content-center">
-                    <div class="col-8 title ">
+                    <div class="col-lg-8 col-md-7 col-6 d-none d-sm-block title ">
                          Contact
                     </div>
-                    <div class="col-2">
+                    <div class="col-11 d-block d-sm-none title ">
+                         Contact
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-4 d-none d-sm-block">
+                         <a role="button" href="#" id="add_contact" class="btn btnY">Add contact</a>
+                    </div>
+                    <div class="col-11 d-block d-sm-none">
                          <a role="button" href="#" id="add_contact" class="btn btnY">Add contact</a>
                     </div>
                     <script>
@@ -94,13 +100,13 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                {% csrf_token %}
                     {% for contact in contacts %}
                     <div class="row justify-content-center form-group">                        
-                         <div class="col-8">
+                         <div class="col-sm-7 col-6">
                               {{contact.contactno}}
                          </div>
-                         <div class="col-1">
+                         <div class="col-sm-1 col-2">
                               <a class="nav-link" id="edit_{{contact.contactid}}" href="#{{contact.contactid}}">edit</a>
                          </div> 
-                         <div class="col-1">
+                         <div class="col-sm-1 col-2">
                               <a class="nav-link" href="#{{contact.contactid}}" id="delete_{{contact.contactid}}">delete</a>
                          </div>               
                     </div>  

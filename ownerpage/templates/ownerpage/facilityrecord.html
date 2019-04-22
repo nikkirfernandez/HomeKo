@@ -78,10 +78,16 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           <!-- Container -->          
           <div class="container">
                <div class="row justify-content-center">
-                    <div class="col-8 title ">
+                    <div class="col-lg-8 col-md-7 col-6 d-none d-sm-block title ">
                          Add Facility
                     </div>
-                    <div class="col-2">
+                    <div class="col-11 d-block d-sm-none title ">
+                         Add Facility
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-4 d-none d-sm-block">
+                         <a role="button" href="#" id="add_facility" class="btn btnY">Add facility</a>
+                    </div>
+                    <div class="col-11 d-block d-sm-none">
                          <a role="button" href="#" id="add_facility" class="btn btnY">Add facility</a>
                     </div>
                     <script>
@@ -102,18 +108,18 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                {% csrf_token %}
                     {% for facility in facilities %}
                     <div class="row justify-content-center form-group">
-                         <div class="col-2">
+                         <div class="col-sm-2 col-3">
                               {{facility.additionalinfoid}}
                          </div>
-                         <div class="col-6">
+                         <div class="col-sm-5 col-3">
                               {% if facility.description %}
                               {{facility.description}}
                               {% endif %}
                          </div>
-                         <div class="col-1">
+                         <div class="col-sm-1 col-2">
                               <a class="nav-link" id="edit_{{facility.housingadditionalinfoid}}" href="#{{facility.housingadditionalinfoid}}">edit</a>
                          </div>
-                         <div class="col-1">
+                         <div class="col-sm-1 col-2">
                               <a class="nav-link" href="#{{facility.housingadditionalinfoid}}" id="delete_{{facility.housingadditionalinfoid}}">delete</a>
                          </div>
                     </div>  
