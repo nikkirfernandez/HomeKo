@@ -319,6 +319,7 @@ def editArea(request, id):
 			'recordExist' : True,
 			'record' : record, 				
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordArea.html', content)
@@ -498,7 +499,8 @@ def editHousetype(request, id):
 			'tableChoices' : TABLES_CHOICES,
 			'recordExist' : True,
 			'record' : record, 	
-			'form' : form,			
+			'form' : form,		
+			'isdeletable': not record.is_deletable(),	
 		}
 
 		return render(request, 'adminpage/recordHousetype.html', content)
@@ -571,6 +573,7 @@ def editHousing(request, id):
 			'recordExist' : True,
 			'record' : record, 			
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordHousing.html', content)
@@ -641,6 +644,7 @@ def editPropertytype(request, id):
 			'recordExist' : True,
 			'record' : record,
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordPropertytype.html', content)
@@ -683,6 +687,7 @@ def editRequest(request, id):
 			'recordExist' : True,
 			'record' : record, 		
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordRequest.html', content)
@@ -1105,6 +1110,7 @@ def editOwner(request, id):
 			'recordExist' : True,
 			'record' : record, 
 			'form' : form,
+			'isdeletable': not record.is_deletable(),
 		}
 
 		return render(request, 'adminpage/recordOwner.html', content)

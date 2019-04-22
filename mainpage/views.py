@@ -168,7 +168,7 @@ def enduserSearchResult(request):
                          filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
                          
                # Filter round 1: get the queryset with the filtersSet1 
-               housingResults = Housing.objects.filter(**filtersSet1)
+               housingResults = Housing.objects.filter(**filtersSet1).values('housingid')
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
                if priceMax!=None:
@@ -179,8 +179,9 @@ def enduserSearchResult(request):
                     housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
                results = []
+               print(housingResults)
                for i in housingResults:
-                    results.append(i.housingid)
+                    results.append(i['housingid'])
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 

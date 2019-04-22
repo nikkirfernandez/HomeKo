@@ -47,21 +47,21 @@ CODE HISTORY
           <div class="container">
                <!-- housing name -->
                <div class="row housing_name justify-content-center">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          {{housing.housingname}}     
                     </div>
                </div>
 
                <!-- housing types -->
                <div class="row subtitle justify-content-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          {{housing.propertytype.propertytypename}} | {{housing.housetype.housetypename}}
                     </div>
                </div>
 
                <!-- housing contact -->
                <div class="row housing_contact justify-content-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          <div class="subtitle">
                               Contact: 
                          </div>
@@ -73,7 +73,7 @@ CODE HISTORY
 
                <!-- housing address -->
                <div class="row housing_address justify-content-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          <div class="subtitle">
                               Address: 
                          </div>
@@ -84,7 +84,7 @@ CODE HISTORY
                <!-- housing map -->
                {% if housing.maphtml %}
                <div class="row housing_map justify-content-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          <div class="iframe-container">                             
                               <iframe src="{{housing.maphtml}}" allowfullscreen></iframe>
                          </div>
@@ -94,7 +94,7 @@ CODE HISTORY
 
                <!-- housing cost -->
                <div class="row subtitle justify-content-center align-items-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          <a class="subtitle_link" data-toggle="collapse" data-target="#housing_price_desc" aria-expanded="true" aria-controls="housing_price_desc">
                               Cost
                               <ion-icon name="arrow-dropdown"></ion-icon>
@@ -103,7 +103,7 @@ CODE HISTORY
                </div>
                {% if rooms %}
                <div class="row description justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
-                    <div class="col-8 table-responsive">
+                    <div class="col-lg-8 col-md-9 col-10 table-responsive">
                          <table class="table">
                               <tbody>
                               
@@ -120,7 +120,7 @@ CODE HISTORY
                </div>
                {% else %}
                <div class="row description justify-content-center collapse multi-collapse pb-3" id="housing_price_desc">
-                    <div class="col-8">
+                    <div class="col-lg-8 col-md-9 col-10">
                          NONE
                     </div>
                </div>
@@ -128,7 +128,7 @@ CODE HISTORY
 
                <!-- housing amenities -->
                <div class="row subtitle justify-content-center align-items-center pb-3">
-                    <div class="col-9">
+                    <div class="col-lg-9 col-md-10 col-11">
                          <a class="subtitle_link" data-toggle="collapse" data-target="#housing_amenity_desc" aria-expanded="false" aria-controls="housing_amenity_desc">
                               Amenities
                               <ion-icon name="arrow-dropdown"></ion-icon>
@@ -138,11 +138,11 @@ CODE HISTORY
                {% if amenities %}
                {% for amenity in amenities %}         
                <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
-                    <div class="col-8 item">
+                    <div class="col-lg-8 col-md-9 col-10 item">
                          {{amenity.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if amenity.description %}
-                    <div class="col-7 description">
+                    <div class="col-lg-7 col-md-8 col-9 description">
                          {{amenity.description}}
                     </div>
                     {% endif %} 
@@ -150,7 +150,7 @@ CODE HISTORY
                {% endfor %}
                {% else %}
                <div class="row housing_amenity_desc justify-content-center collapse multi-collapse pb-3" id="housing_amenity_desc">
-                    <div class="col-8">
+                    <div class="col-lg-8 col-md-9 col-10">
                          NONE
                     </div>
                </div>
@@ -158,7 +158,7 @@ CODE HISTORY
 
                <!-- housing facilities -->         
                <div class="row subtitle justify-content-center align-items-center pb-3">
-                    <div class="col-9">         
+                    <div class="col-lg-9 col-md-10 col-11">         
                          <a class="subtitle_link" data-toggle="collapse" data-target="#housing_facility_desc" aria-expanded="false" aria-controls="housing_facility_desc">
                               Facilities
                               <ion-icon name="arrow-dropdown"></ion-icon>
@@ -168,11 +168,11 @@ CODE HISTORY
                {% if facilities %}
                {% for facility in facilities %}
                <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">          
-                    <div class="col-8 item">
+                    <div class="col-lg-8 col-md-9 col-10 item">
                          {{facility.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if facility.description %}
-                    <div class="col-7 description">
+                    <div class="col-lg-7 col-md-8 col-9 description">
                          {{facility.description}}
                     </div>
                     {% endif %}
@@ -180,7 +180,7 @@ CODE HISTORY
                {% endfor %}
                {% else %}
                <div class="row housing_facility_desc justify-content-center collapse multi-collapse pb-3" id="housing_facility_desc">
-                    <div class="col-8">
+                    <div class="col-lg-8 col-md-9 col-10">
                          NONE
                     </div>
                </div>
@@ -188,7 +188,7 @@ CODE HISTORY
 
                <!-- housing rules -->
                <div class="row subtitle justify-content-center align-items-center pb-3">
-                    <div class="col-9">         
+                    <div class="col-lg-9 col-md-10 col-11">         
                          <a class="subtitle_link" data-toggle="collapse" data-target="#housing_rule_desc" aria-expanded="false" aria-controls="housing_rule_desc">
                               House Rules
                               <ion-icon name="arrow-dropdown"></ion-icon>
@@ -198,11 +198,11 @@ CODE HISTORY
                {% if rules %}
                {% for rule in rules %}
                <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">         
-                    <div class="col-8 item">
+                    <div class="col-lg-8 col-md-9 col-10 item">
                          {{rule.additionalinfoid.additionalinfoname}}
                     </div>
                     {% if rule.description %}
-                    <div class="col-7 description">
+                    <div class="col-lg-7 col-md-8 col-9 description">
                          {{rule.description}}
                     </div>
                     {% endif %}
@@ -210,7 +210,7 @@ CODE HISTORY
                {% endfor %}
                {% else %}
                <div class="row housing_rule_desc justify-content-center collapse multi-collapse pb-3" id="housing_rule_desc">
-                    <div class="col-8">
+                    <div class="col-lg-8 col-md-9 col-10">
                          NONE
                     </div>
                </div>
@@ -218,18 +218,18 @@ CODE HISTORY
 
                <!-- housing comments -->
                <div class="row justify-content-center pt-5 pb-2">
-                    <div class="col-9 subtitle ">      
+                    <div class="col-lg-9 col-md-10 col-11 subtitle ">      
                          Comments  
                     </div>
                </div>
                {% for comment in comments %}
                <div class="row justify-content-center pt-2">
-                    <div class="col-8 description ">         
+                    <div class="col-lg-8 col-md-9 col-10 description ">         
                          {{comment.comment}}
                     </div>
                </div>
                <div class="row justify-content-center">
-                    <div class="col-8 comment_date pb-2">
+                    <div class="col-lg-8 col-md-9 col-10 comment_date pb-2">
                          {{comment.dateposted}}
                     </div>
                </div>
@@ -239,7 +239,7 @@ CODE HISTORY
                <form method="post" id="myForm">
                     {% csrf_token %}
                     <div class="row justify-content-center">          
-                         <div class="col-7 comment_new pt-4">
+                         <div class="col-lg-7 col-md-8 col-9 comment_new pt-4">
                               {{commentForm.comment}}
                          </div>
                          <div class="col-1 comment_post pt-4">

@@ -40,10 +40,16 @@ This is a course requirement for CS 192 Software Engineering II under the superv
           <!-- Container -->          
           <div class="container">
                <div class="row justify-content-center">
-                    <div class="col-8 title ">
+                    <div class="col-lg-8 col-md-7 col-6 d-none d-sm-block title ">
                          {{tableName}}  
                     </div>
-                    <div class="col-2">
+                    <div class="col-11 d-block d-sm-none title ">
+                         {{tableName}}  
+                    </div>
+                    <div class="col-lg-2 col-md-3 col-sm-4 d-none d-sm-block">
+                         <a role="button" href="/adminpage/{{tableName}}/add" class="btn btnY">Add record</a>
+                    </div>
+                    <div class="col-11 d-block d-sm-none">
                          <a role="button" href="/adminpage/{{tableName}}/add" class="btn btnY">Add record</a>
                     </div>
                </div>   
@@ -52,7 +58,7 @@ This is a course requirement for CS 192 Software Engineering II under the superv
                <div class="separator"></div>
 
                <div class="row form_login justify-content-center">
-                    <div class="col-9 table-responsive">
+                    <div class="col-sm-9 col-10 table-responsive">
                          <table class="table">
                               <thead>
                                    <th class="th_tabsTable">PK</th>
