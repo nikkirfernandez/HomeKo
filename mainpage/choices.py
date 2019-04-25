@@ -8,26 +8,28 @@ AREA_CHOICES = (
      (1, ("Anywhere")),
      (2, ("Area 1")),
      (3, ("Area 2")),
-     (4, ("Hardin ng Doña Aurora")),
-     (5, ("Kapitbalay ng Kalinaw")),
-     (6, ("Pook Dagohoy")),
-     (7, ("Pook Palaris")),
-     (8, ("Pook Ricarte")),
-     (9, ("Village A")),
-     (10, ("Village B")),
+     # (4, ("Hardin ng Doña Aurora")),
+     # (5, ("Kapitbalay ng Kalinaw")),
+     # (6, ("Pook Dagohoy")),
+     # (7, ("Pook Palaris")),
+     # (8, ("Pook Ricarte")),
+     # (9, ("Village A")),
+     # (10, ("Village B")),
 )
 
 PROPERTY_CHOICES = (
      (1, ("Anything")),
-     (2, ("House")),
-     (3, ("Apartment")),
+     # (2, ("House")),
+     # (3, ("Apartment")),
+	(2, ("DummyPropertyType1")),
+	(3, ("DummyPropertyType2")),
 )
 
 HOME_CHOICES = (
      (1, ("Anything")),
-     (2, ("Entire place")),
-     (3, ("Private room")),
-     (4, ("Shared room")),
+     (2, ("DummyHouseType1")),
+     (3, ("DummyHouseType2")),
+     # (4, ("Shared room")),
 )
 
 AMENITY_CHOICES = (
