@@ -71,19 +71,19 @@ def enduserHome(request):
                          filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
                          
                # Filter round 1: get the queryset with the filtersSet1 
-               housingResults = Housing.objects.filter(**filtersSet1)
-               
+               housingResults = Housing.objects.filter(**filtersSet1).values('housingid')
+
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
                if priceMax!=None:
                     housingResults = RoomCost.objects.filter(housingid__in=housingResults, cost__lte = priceMax).values('housingid').distinct()
-                         
+
                # Filter round 3: filter the result of filter round 2. this time, filter based on the filtersSet2 
                if len(filtersSet2)!=0:
                     housingResults = HousingAdditionalInfo.objects.filter(housingid__in=housingResults, additionalinfoid__in=filtersSet2).annotate(num_additionalinfoid=Count('additionalinfoid')).filter(num_additionalinfoid=len(filtersSet2)).values('housingid')
                
                results = []
                for i in housingResults:
-                    results.append(i.housingid)
+                    results.append(i['housingid'])
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
@@ -265,7 +265,7 @@ def enduserRecord(request, housingid):
                          filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
                          
                # Filter round 1: get the queryset with the filtersSet1 
-               housingResults = Housing.objects.filter(**filtersSet1)
+               housingResults = Housing.objects.filter(**filtersSet1).values('housingid')
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
                if priceMax!=None:
@@ -277,7 +277,7 @@ def enduserRecord(request, housingid):
                
                results = []
                for i in housingResults:
-                    results.append(i.housingid)
+                    results.append(i['housingid'])
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
@@ -346,7 +346,7 @@ def enduserRequest(request):
                          filtersSet2.append(Additionalinfo.objects.get(additionalinfoid=j))
                          
                # Filter round 1: get the queryset with the filtersSet1 
-               housingResults = Housing.objects.filter(**filtersSet1)
+               housingResults = Housing.objects.filter(**filtersSet1).values('housingid')
                
                # Filter round 2: filter the result of filter round 1. this time, filter based on the max cost
                if priceMax!=None:
@@ -358,7 +358,7 @@ def enduserRequest(request):
                
                results = []
                for i in housingResults:
-                    results.append(i.housingid)
+                    results.append(i['housingid'])
                # do this so that the list can be passed to the enduserSearchResult method
                request.session['searchResult'] = results
                # go to enduserSearchResult method to display the search result 
@@ -503,7 +503,7 @@ def register(request):
                         newContactRecord = Contact.objects.create(ownerid=newOwnerRecord, contactno=request.POST['contact']) 
 
                     post.save()
-
+                    print(post)
                     user = authenticate(request, username=post.username, password=post.password1)
                     if user is not None:
                          login(request, user)
